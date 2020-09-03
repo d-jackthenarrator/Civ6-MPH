@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Name="VotePanel" ColorSet="Beige_Black" FontStyle="Shadow">
+	
+	<AlphaAnim ID="CountdownTimerAnim" Size="1,1" AlphaStart="0" AlphaEnd="0" />	<!-- Animations always tick, even when hidden; use to update countdown timer -->
+	
+	<Include File="PopupDialog"/>
+	
+	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
+		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
+			<Grid																	   Size="auto,auto"			Anchor="C,T" Offset="0,250" Style="DropShadow2"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+				<Grid																	 Size="600,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameTitle" AutoSizePadding="0,10">
+					<Container													 Size="parent,38"                         Offset="0,4">
+						<Label			ID="VoteTitle"				Style="WindowHeader"	Anchor="C,C" String="VoteTitle" />
+					</Container>
+					<Container			ID="VoteContainer"											 Size="parent,auto"                        Hidden="0">
+					<Stack				ID="VoteStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,50" StackGrowth="Bottom" StackPadding="30">
+						<Label			ID="VoteLabel"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="VoteLabel" Offset="15,0"  />
+						<Label			ID="PlayerList"       Anchor="C,T" Style="BodyTextDark16" Align="Center" WrapWidth="550" String="PlayerList" />
+						<Label			ID="VoteFeedback"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="VoteFeedback" Offset="15,0"  />
+						<Grid Size="600,auto"	Anchor="C,C" Offset="0,0">
+							<GridButton ID="VoteButton_Left" Style="ButtonConfirm" Align="Center" Anchor="L,C" String="VoteButtonLeft" Size="200,41" Offset="35,0" />
+							<GridButton ID="VoteButton_Right" Style="ButtonConfirm" Align="Center" Anchor="R,C" String="VoteButtonRight" Size="200,41" Offset="35,0" />
+							<GridButton ID="Button_Confirm" Style="ButtonConfirm" Align="Center" Anchor="C,C" String="OK" Size="150,41" Offset="0,0" />
+							<GridButton ID="Button_Obs" Style="ButtonConfirm" Align="Center" Anchor="C,C" String="OK" Size="150,41" Offset="0,0" Hidden="1" />
+							<Container  ID="TimerContainer" Size="300,130"  Anchor="C,C" Offset="0,0" Hidden="0">
+								<Image ID="TurnTimerBG"						Anchor="C,C" Offset="0,-17"	Size="109,110"	Texture="Shell_CountdownTimerBacking"/>
+								<Meter ID="TurnTimerMeter" Anchor="C,C" Offset="0,-19"	Size="93,94" Texture="Shell_CountdownTimerFill" Speed="0"/>
+								<GridButton	ID="TimerButton"				SliceCorner="40,40" SliceTextureSize="80,80" Anchor="C,C" Offset="0,-18"	Size="80,80"	Texture="Shell_BeginButton" StateOffsetIncrement="0,80" String="##" FontSize="40"/>
+							</Container>
+						</Grid>
+					</Stack>
+					</Container>
+					<Container			ID="RemapContainer"										 Size="parent,auto"  Hidden="1" >
+						<Stack				ID="RemapStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,50" StackGrowth="Bottom" StackPadding="30">
+						<Label			ID="RemapLabel"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="RemapLabel" Offset="15,0"  />
+						<Stack Anchor="C,T" StackGrowth="Bottom" Size="parent,1000"	 Padding="5">
+							<Label Anchor="C,C" Style="BodyTextDark18" WrapWidth="500" String="LOC_GAME_SYNC_RANDOM_SEED"/>
+							<Grid Style="EditTextArea" Size="auto,30" Anchor="C,T" InnerPadding="6,6">
+								<EditBox ID="GameSeedEdit" Anchor="C,T" Offset="0,0" Size="200,23" EditMode="0" Style="BodyTextDark18" ColorSet="BodyTextCool"   NumberInput="1" FontStyle="stroke" MaxLength="12"/>
+							</Grid>
+							<Label Anchor="C,C"  Style="BodyTextDark18"  WrapWidth="500" String="LOC_MAP_RANDOM_SEED"/>
+							<Grid Style="EditTextArea2" Size="200,30" Anchor="C,T" InnerPadding="6,6" >
+								<EditBox ID="MapSeedEdit" Anchor="C,T" Offset="0,0" Size="parent,23" EditMode="0" Style="BodyTextDark18" ColorSet="BodyTextCool"  NumberInput="1" FontStyle="stroke" MaxLength="12"/>
+							</Grid>
+						</Stack>
+						<Grid Size="600,auto"	Anchor="C,C" Offset="0,0">
+							<GridButton ID="Remap_Confirm" Style="ButtonConfirm" Align="Center" Anchor="C,C" String="OK" Size="150,41" Offset="0,0" />
+							<GridButton ID="Remap_Abort" Style="ButtonRed" Align="Center" Anchor="R,C" String="Cancel" Size="150,41" Offset="50,0" />
+						</Grid>
+					</Stack>
+					</Container>
+				</Grid>
+			</Grid>
+		</SlideAnim>
+	</AlphaAnim>
+	
+	<!-- Dialog Support -->
+	<MakeInstance Name="PopupDialog" />
+	
+</Context>

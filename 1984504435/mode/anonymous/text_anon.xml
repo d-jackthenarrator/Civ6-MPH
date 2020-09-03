@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+  <BaseGameText>
+	<!-- Multiplayer Notifications -->
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_CONNECTING">
+			<Text>Anon Joining</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_CONNECTING_TT">
+			<Text>Anon is joining the game.  This process might take a few minutes.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_CONNECTED">
+			<Text>Anon Joined</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_CONNECTED_TT">
+			<Text>Anon has finished joining the game.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_DISCONNECT">
+			<Text>Anon Disconnected</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_DISCONNECT_TT">
+			<Text>Anon has disconnected from the game.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_KICKED">
+			<Text>Anon Kicked</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_KICKED_TT">
+			<Text>Anon has been kicked from the game.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_MOD_STATUS">
+			<Text>Anon Downloading Mods</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_MOD_STATUS_TT">
+			<Text>Anon is downloading mods required to play in this game. ({2 : number} of {3 : number} total)</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_HOST_MIGRATION">
+			<Text>Host Migration</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_HOST_MIGRATION_TT">
+			<Text>The game is migrating to a new game host.  The game will resume shortly.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_HOST_CHANGED">
+			<Text>Host Migrated</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_HOST_CHANGED_TT">
+			<Text>Anon is the new game host.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_YOURTURN">
+			<Text>Play By Cloud Your Turn</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_YOURTURN_TT">
+			<Text>It is your turn in a Play By Cloud game. ({1_cloudGameName})</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_GAMEREADY">
+			<Text>Play By Cloud Game Ready</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_GAMEREADY_TT">
+			<Text>One of your Play By Cloud games is ready to start. ({1_cloudGameName})</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_UNSEENCOMPLETE">
+			<Text>Play By Cloud Game Completed</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYBYCLOUD_UNSEENCOMPLETE_TT">
+			<Text>One of your Play By Cloud games recently completed. ({1_cloudGameName})</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_WRONG_PHASE_TT">
+			<Text>[color:Civ6Red]Wrong Phase[ENDCOLOR]</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_SIMULTANEOUS_TURNS">
+			<Text>Simultaneous Turns</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_SIMULTANEOUS_TURNS_TT">
+			<Text>Your war with a human player has ended. Your turns will be played simultaneously with all non-warring civilizations.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_SEQUENTIAL_TURNS">
+			<Text>Sequential Turns</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_SEQUENTIAL_TURNS_TT">
+			<Text>You are at war with a human player.  Your turns will be played sequentially with all warring civilizations until the conflict is over.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_DESYNCED">
+			<Text>Anon Desynced</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_DESYNCED_TT">
+			<Text>Anon's game has deviated from the host's.  They are reloading to correct the problem.</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_RESYNC_COMPLETE">
+			<Text>Anon Resync Complete</Text>
+		</Replace>
+		<Replace Tag="LOC_NOTIFICATION_PLAYER_RESYNC_COMPLETE_TT">
+			<Text>Anon has finished loading.</Text>
+		</Replace>
+  </BaseGameText>
+</GameData>

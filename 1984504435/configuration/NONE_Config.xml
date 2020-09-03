@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+	<Players>
+		<Row>
+			<Domain>PLAYER_NONE</Domain>
+			<CivilizationType>CIVILIZATION_NONE</CivilizationType>
+			<LeaderType>LEADER_NONE</LeaderType>
+			<CivilizationName>LOC_CIVILIZATION_NONE_NAME</CivilizationName>
+			<CivilizationIcon>ICON_CIVILIZATION_NONE</CivilizationIcon>
+			<LeaderName>LOC_LEADER_NONE_NAME</LeaderName>
+			<LeaderIcon>ICON_LEADER_NONE</LeaderIcon>
+			<CivilizationAbilityName>LOC_TRAIT_CIVILIZATION_NONE_NAME</CivilizationAbilityName>
+			<CivilizationAbilityDescription>LOC_TRAIT_CIVILIZATION_NONE_DESCRIPTION</CivilizationAbilityDescription>
+			<CivilizationAbilityIcon>ICON_CIVILIZATION_NONE</CivilizationAbilityIcon>
+			<LeaderAbilityName>LOC_TRAIT_LEADER_NONE_NAME</LeaderAbilityName>
+			<LeaderAbilityDescription>LOC_TRAIT_LEADER_NONE_DESCRIPTION</LeaderAbilityDescription>
+			<LeaderAbilityIcon>ICON_LEADER_NONE</LeaderAbilityIcon>
+			<Portrait>LEADER_NONE_NEUTRAL</Portrait>
+		</Row>
+	</Players>
+</GameData>

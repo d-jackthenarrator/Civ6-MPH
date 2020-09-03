@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Style="FontNormal18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow">
+
+	<Include File="PopupDialog" />
+
+	<Box ID="MainGrid" Style="ShellBGBox">
+
+		<Container ID="MainWindow" Size="1024,768" Anchor="C,B" >
+			<Grid ID="LogoContainer" Style="SubContainer4" Size="parent-10,116" Anchor="C,T" Color="7,28,50" AnchorSide="I,O" Offset="0,4">
+      			<Image ID="Logo"				Anchor="C,C" Texture="MainLogo.dds" StretchMode="Auto"/>
+   			</Grid>
+			<Container Style="ShellHeaderContainer">
+				<Grid Style="ShellHeaderButtonGrid">
+					<GridButton ID="BackButton" Style="ShellButtonOrnateFlat" Anchor="R,C" Offset="1,0" String="LOC_MULTIPLAYER_BACK"/>
+					<GridButton ID="DefaultButton" Style="ShellButtonOrnateFlat" Anchor="L,C" Offset="1,0" String="{LOC_SETUP_RESTORE_DEFAULT:upper}" ToolTip="LOC_SETUP_RESTORE_DEFAULT_TT" />
+				</Grid>
+				<Label ID="TitleLabel" Style="ShellHeader" Anchor="C,C" String="LOC_MULTIPLAYER_HOST_GAME"/>
+			</Container>
+
+			<!-- Decorative Border -->
+			<Grid ID="DecoBorder" Style="SubContainer4" Offset="0,94" Size="parent-10,624" Anchor="C,T" Color="7,28,50">
+
+				<Stack ID="ShellTabs" Offset="0,-40" Anchor="C,T" StackGrowth="Right" Padding="10"/>
+
+				<GridButton ID="ModsButton"			Anchor="L,T" Offset="0,-40"	Size="250,41"	Style="MainButton" String="LOC_MAIN_MENU_ADDITIONAL_CONTENT"/>
+
+				<!-- Parameters Panel -->
+				<Grid ID="DecoGrid" Style="DecoGrid" Anchor="C,T" Size="parent-6,parent-6" Offset="0,3" Color="26,61,90,255"/>
+				<ScrollPanel ID="ParametersScrollPanel" Anchor="C,T" Offset="-2,6" Size="parent-8,parent-12" Vertical="1" AutoScrollBar="1">
+
+					<!-- Scroll Controls -->
+					<ScrollBar Style="Slider_Blue" Length="420" Offset="2,0" Anchor="R,T"/>
+					<Stack ID="ParametersStack" Anchor="C,T" Offset="0,0" Padding="10" StackGrowth="Bottom" >
+
+						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_MPH_GAME_OPTIONS"/>
+						</Grid>
+
+						<!-- Primary Parameters Stack -->
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="PrimaryParametersStack"/>
+
+						<Grid ID="GameModeParametersHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_SETUP_GAME_MODES"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="GameModeParameterStack" />
+						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_SETUP_VICTORY_CONDITIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="VictoryParameterStack" />
+
+
+						<!-- Ban Parameters Stack -->
+						<Grid ID="BanHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_OPTIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanParametersStack"/>
+						<!-- Ban Parameters Stack -->
+						<Grid ID="BanPoolHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_POOL_OPTIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanPoolParametersStack"/>
+
+						<!-- Secondary Parameters Stack -->
+						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_ADVANCED_OPTIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="SecondaryParametersStack"/>
+					</Stack>
+				</ScrollPanel>
+			</Grid>
+
+			<Stack Anchor="C,B" Offset="0,0" Padding="2" StackGrowth="Right" ID="BottomButtonStack">
+				<!-- TODO: Add contents of mods screen into the ParametersStack (in the SecondaryParametersStack, or in its own ModsStack)  -->
+				<GridButton ID="LoadButton"			Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_GAME"/>
+				<GridButton ID="LoadConfigButton"	Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_CONFIG"/>
+				<GridButton ID="SaveConfigButton"	Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_SAVE_CONFIG"/>
+				<GridButton ID="ConfirmButton"		Anchor="L,C" Offset="0,0"	Size="250,41"	Style="ButtonConfirm" String="LOC_MULTIPLAYER_CONFIRM_SETTINGS" ToolTip="LOC_MULTIPLAYER_HOST_GAME_TT"/>
+			</Stack>
+		</Container>
+	</Box>
+
+	<!-- TODO: Remove line below and place contents of mods screen into the ParametersStack -->
+	<LuaContext FileName="UI/FrontEnd/Mods"			ID="ModsMenu"		Hidden="1" />
+	<LuaContext FileName="UI/FrontEnd/LoadGameMenu" ID="LoadGameMenu"	Hidden="1" />
+	<LuaContext FileName="UI/FrontEnd/SaveGameMenu" ID="SaveGameMenu"	Hidden="1" />
+	<LuaContext FileName="MultiSelectWindow" ID="MultiSelectWindow"  Hidden="1"/>
+	
+	<Instance Name="ShellTab">
+		<Container ID="TopControl"  Size="auto,auto">
+			<GridButton ID="Button" Anchor="C,T" Style="ShellTab"/>
+			<AlphaAnim ID="Selected" Anchor="C,T" Speed="5" AlphaBegin="0" AlphaEnd="1" Cycle="Once" Function="Root" Hidden="1" >
+				<GridButton ID="SelectedButton" Style="ShellTabSelected" Anchor="C,T"/>
+			</AlphaAnim>
+		</Container>
+	</Instance>
+
+
+	<!-- Instance for a boolean parameters -->
+	<Instance Name="BooleanParameterInstance">
+		<GridButton ID="CheckBox" Offset="0,0" Anchor="C,T" Style="CheckBoxControl"  Size="300,24" States="8"/>
+	</Instance>
+
+	<!-- Slider with number display -->
+	<Instance Name="SliderParameterInstance">
+		<Container ID="Root" Size="330,55" Anchor="C,T">
+			<Container Size="auto,55" Anchor="R,T">
+					<Stack StackGrowth="Right" Size="auto,53" Anchor="R,T">
+						<Label ID="OptionTitle" Style="ShellOptionText" Anchor="L,C" String=""/>
+						<Slider ID="OptionSlider" Style="SliderControl" Size="198,13" Anchor="L,C" />
+						<Image Texture="Controls_CircleCompass" Size="52,53" Color="ShellControl">
+							<Label ID="NumberDisplay" Style="FontFlair40" String="10" Anchor="C,C" FontStyle="stroke" Color0="208,212,217,255"	Color1="0,0,0,50"/>
+						</Image>
+					</Stack>
+			</Container>
+		</Container>
+	</Instance>
+
+
+	<!-- Instance for a string parameters -->
+	<Instance Name="StringParameterInstance">
+		<Container			ID="StringRoot" Anchor="C,T"	Size="300,30">
+				<Grid				Style="EditTextArea"					Size="300,30">
+					<EditBox	ID="StringEdit" Anchor="L,C" Offset="6,0" Size="parent,23" EditMode="1" Style="FontNormal14" ColorSet="BodyTextCool" FontStyle="stroke" MaxLength="22"/>
+					<Label		ID="StringName" Anchor="L,C" AnchorSide="O,I" Style="FontNormal16" ColorSet="ShellOptionText" FontStyle="stroke" WrapWidth="180" String="UNKNOWN_EDIT_BOX"/>
+				</Grid>
+		</Container>
+	</Instance>
+
+	<!-- Instance for a parameter that has multiple choices for the value, displayed as a dropdown -->
+	<Instance Name="PullDownParameterInstance">
+		<Container ID="Root" Anchor="L,T" Size="parent,24" Offset="0,0">
+			<PullDown Anchor="C,T" ID="PullDown" Style="PullDownBlue" Size="300,24" Offset="0,0">
+				<Label Style="ShellOptionText" ID="StringName" AnchorSide="O,I" Anchor="L,C" String=""/>
+			</PullDown>
+		</Container>
+	</Instance>
+
+	<!-- Instance for a parameter that has a button to launch a popup (e.g., map-select) -->
+	<Instance Name="ButtonParameterInstance">
+		<Container		ID="ButtonRoot" Anchor="L,T" Size="parent,24" Offset="0,0">
+			<GridButton ID="Button"			Anchor="C,T" Style="ButtonControl" Size="300,24" Offset="0,0">
+				<Label		ID="StringName"	Anchor="L,C" Style="ShellOptionText" AnchorSide="O,I" String="$Name$"/>
+			</GridButton>
+		</Container>
+	</Instance>
+
+	<!-- Dialog Support -->
+	<MakeInstance Name="PopupDialog" />
+
+</Context>

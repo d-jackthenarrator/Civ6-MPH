@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Name="SuddenDeathPanel" ColorSet="Beige_Black" FontStyle="Shadow">
+	
+	<AlphaAnim ID="CountdownTimerAnim" Size="1,1" AlphaStart="0" AlphaEnd="0" />	<!-- Animations always tick, even when hidden; use to update countdown timer -->
+	
+	<Include File="PopupDialog"/>
+	
+	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
+		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
+			<Grid																	   Size="auto,auto"			Anchor="C,B" Offset="0,0" Style="TutorialContainer"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+				<Grid																	 Size="300,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameHUD" AutoSizePadding="0,0">
+					<Container			ID="SuddenDeathContainer"											 Size="parent,auto"                        Hidden="0">
+					<Stack				ID="SuddenDeathStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,0" StackGrowth="Bottom" StackPadding="0">
+						<Label			ID="SuddenDeathTitle"       Anchor="C,T" Style="FontNormal14" Align="Left" WrapWidth="550" String="LOC_SUDDEN_DEATH_TOP_BOX" Offset="0,0"  />
+						<Label			ID="SuddenDeathLabel"       Anchor="C,T" Style="FontNormal14" Align="Left" WrapWidth="550" String="[ICON_TURN]" Offset="0,0"  />
+						<Label			ID="SuddenDeathPlayer"       Anchor="C,T" Style="FontNormal14" Align="Left" WrapWidth="550" String="Player" Offset="0,0"  />
+					</Stack>
+					</Container>
+				</Grid>
+			</Grid>
+		</SlideAnim>
+	</AlphaAnim>
+	
+	<!-- Dialog Support -->
+	<MakeInstance Name="PopupDialog" />
+	
+</Context>

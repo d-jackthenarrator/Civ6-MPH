@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects::GameDependencyData>
+  <ID>
+    <name text="ExpansionistUnit"/>
+    <id text="6ad2d524-acf8-4924-a0ca-3f52d8fa745e"/>
+  </ID>
+  <RequiredGameArtIDs/>
+  <SystemDependencies>
+    <Element>
+      <ConsumerName text="Units"/>
+      <ArtDefDependencyPaths>
+        <Element text="Units.artdef"/>
+      </ArtDefDependencyPaths>
+    </Element>
+  </SystemDependencies>
+</AssetObjects::GameDependencyData>

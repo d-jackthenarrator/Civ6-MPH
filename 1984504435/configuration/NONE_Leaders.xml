@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+	<Types>
+		<Row Type="LEADER_NONE"                 Kind="KIND_LEADER" />
+		<Row Type="TRAIT_LEADER_NONE"           Kind="KIND_TRAIT"/>
+	</Types>
+
+	<Leaders>
+		<Row>
+			<LeaderType>LEADER_NONE</LeaderType>
+			<Name>LOC_LEADER_NONE_NAME</Name>
+			<Sex>Female</Sex>
+			<InheritFrom>LEADER_DEFAULT</InheritFrom>
+		</Row>
+	</Leaders>
+	<LeaderQuotes>
+		<Row LeaderType="LEADER_NONE" Quote="LOC_LEADER_NONE_QUOTE"/>
+	</LeaderQuotes>
+	<LeaderTraits>
+		<Row LeaderType="LEADER_NONE" TraitType="TRAIT_LEADER_NONE"/>			<!-- 指導者特性 -->
+	</LeaderTraits>
+
+	<Traits>
+		<Row TraitType="TRAIT_LEADER_NONE"           Name="LOC_TRAIT_LEADER_NONE_NAME" Description="LOC_TRAIT_LEADER_NONE_DESCRIPTION"/>
+	</Traits>
+	<TraitModifiers>
+		<!-- 乗船および下船時に追加の移動コストがかからなくなる -->
+		<Row>
+			<TraitType>TRAIT_LEADER_NONE</TraitType>
+			<ModifierId>TRAIT_IGNORE_EMBARK_DISEMBARK_COST_NONE</ModifierId>
+		</Row>
+		<!-- 沿岸タイルにいる海洋ユニットの戦闘力+5 -->
+		<Row>
+			<TraitType>TRAIT_LEADER_NONE</TraitType>
+			<ModifierId>TRAIT_COMBAT_BONUS_NAVAL_SHALLOW_WATER_NONE</ModifierId>
+		</Row>
+		<!-- 海に接した陸上タイルにいる陸上ユニットの戦闘力+5 -->
+		<Row>
+			<TraitType>TRAIT_LEADER_NONE</TraitType>
+			<ModifierId>TRAIT_COMBAT_BONUS_LAND_ON_COAST_NONE</ModifierId>
+		</Row>
+	</TraitModifiers>
+	
+	<!-- Modifier系 -->
+	<Modifiers>
+		<!-- 乗船および下船時に追加の移動コストがかからなくなる -->
+		<Row>
+			<ModifierId>TRAIT_IGNORE_EMBARK_DISEMBARK_COST_NONE</ModifierId>
+			<ModifierType>MODIFIER_PLAYER_UNITS_GRANT_ABILITY</ModifierType>
+		</Row>
+		<!-- 沿岸、浅瀬の戦闘ボーナス -->
+		<Row>
+			<ModifierId>TRAIT_COMBAT_BONUS_NAVAL_SHALLOW_WATER_NONE</ModifierId>
+			<ModifierType>MODIFIER_PLAYER_UNITS_GRANT_ABILITY</ModifierType>
+		</Row>
+		<Row>
+			<ModifierId>TRAIT_COMBAT_BONUS_LAND_ON_COAST_NONE</ModifierId>
+			<ModifierType>MODIFIER_PLAYER_UNITS_GRANT_ABILITY</ModifierType>
+		</Row>
+	</Modifiers>
+	<ModifierArguments>
+		<!-- 乗船および下船時に追加の移動コストがかからなくなる -->
+		<Row>
+			<ModifierId>TRAIT_IGNORE_EMBARK_DISEMBARK_COST_NONE</ModifierId>
+			<Name>AbilityType</Name>
+			<Value>ABILITY_NONE_IGNORE_EMBARK_DISEMBARK_COST</Value>
+		</Row>
+		<!-- 沿岸、浅瀬の戦闘ボーナス -->
+		<Row>
+			<ModifierId>TRAIT_COMBAT_BONUS_NAVAL_SHALLOW_WATER_NONE</ModifierId>
+			<Name>AbilityType</Name>
+			<Value>ABILITY_NONE_SHALLOW_WATER_COMBAT_BONUS</Value>
+		</Row>
+		<Row>
+			<ModifierId>TRAIT_COMBAT_BONUS_LAND_ON_COAST_NONE</ModifierId>
+			<Name>AbilityType</Name>
+			<Value>ABILITY_NONE_COASTAL_COMBAT_BONUS</Value>
+		</Row>
+	</ModifierArguments>
+
+	<!-- AIの好み -->
+	<AiListTypes>
+		<Row ListType="NONEWonders"/>
+		<Row ListType="NONECivics"/>
+		<Row ListType="NONETechs"/>
+		<Row ListType="NONEEncampmentDistrict"/>
+	</AiListTypes>
+	<AiLists>
+		<!-- Buildings -->
+		<Row ListType="NONEWonders"            LeaderType="TRAIT_LEADER_YNL_NAGATO" System="Buildings"/>
+		<!-- Civics -->								     
+		<Row ListType="NONECivics"             LeaderType="TRAIT_LEADER_YNL_NAGATO" System="Civics"/>
+		<!-- Techs -->								     
+		<Row ListType="NONETechs"              LeaderType="TRAIT_LEADER_YNL_NAGATO" System="Technologies"/>
+		<!-- District -->
+		<Row ListType="NONEEncampmentDistrict" LeaderType="TRAIT_LEADER_YNL_NAGATO" System="Districts"/>
+	</AiLists>
+	<AiFavoredItems>
+		<!-- Buildings -->
+		<Row ListType="NONEWonders"            Item="BUILDING_STONEHENGE"/>		<!-- ストーンヘンジ -->
+		<Row ListType="NONEWonders"            Item="BUILDING_TERRACOTTA_ARMY"/>	<!-- 兵馬俑 -->
+		<Row ListType="NONEWonders"            Item="BUILDING_ALHAMBRA"/>			<!-- アルハンブラ宮殿 -->
+		<Row ListType="NONEWonders"            Item="BUILDING_RUHR_VALLEY"/>		<!-- ルール地方 -->
+		<Row ListType="NONEWonders"            Item="BUILDING_BIG_BEN"/>			<!-- ビッグ・ベン -->
+		<!-- Civics -->								     
+		<Row ListType="NONECivics"             Item="CIVIC_MERCENARIES"/>			<!-- 傭兵 -->
+		<Row ListType="NONECivics"             Item="CIVIC_CIVIL_ENGINEERING"/>	<!-- 土木技術 -->
+		<Row ListType="NONECivics"             Item="CIVIC_MOBILIZATION"/>		<!-- 戦時動員 -->
+		<Row ListType="NONECivics"             Item="CIVIC_NATIONALISM"/>			<!-- ナショナリズム -->
+		<Row ListType="NONECivics"             Item="CIVIC_SCORCHED_EARTH"/>		<!-- 焦土作戦 -->
+		<!-- Techs -->
+		<Row ListType="NONETechs"              Item="TECH_BRONZE_WORKING"/>		<!-- 青銅器 -->
+		<Row ListType="NONETechs"              Item="TECH_IRON_WORKING"/>			<!-- 鉄器 -->
+		<Row ListType="NONETechs"              Item="TECH_STEEL"/>				<!-- 鋼鉄 -->
+		<Row ListType="NONETechs"              Item="TECH_GUNPOWDER" />			<!-- 火薬 -->
+		<Row ListType="NONETechs"              Item="TECH_STEAM_POWER"/>			<!-- 蒸気機関 -->
+		<Row ListType="NONETechs"              Item="TECH_ELECTRICITY"/>			<!-- 電気 -->
+		<!-- District -->
+		<Row ListType="NONEEncampmentDistrict" Item="DISTRICT_ENCAMPMENT" Favored="true"/>
+	</AiFavoredItems>
+
+	<HistoricalAgendas>
+		<Row LeaderType="LEADER_NONE" AgendaType="AGENDA_BUSHIDO"/>
+	</HistoricalAgendas>
+	<!-- 指導者が好む宗教 -->
+	<FavoredReligions>
+		<Row LeaderType="LEADER_NONE" ReligionType="RELIGION_SHINTO"/>
+	</FavoredReligions>
+
+	<!-- 外交交渉画面 -->
+	<DiplomacyInfo>
+		<Row Type="LEADER_NONE" BackgroundImage="Background_DiplomcayInfo_Spectator.dds"/>
+	</DiplomacyInfo>
+	<!-- ローディング画面 -->
+	<LoadingInfo>
+		<Row LeaderType="LEADER_NONE" BackgroundImage="Background_LoadingInfo_Spectator.dds" ForegroundImage="Foreground_LoadingInfo_Spectator.dds" LeaderText="LOC_LEADER_NONE_DOM_TEXT" PlayDawnOfManAudio="1"/>
+	</LoadingInfo>
+</GameData>
