@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..XLP>
+	<m_Version>
+		<major>4</major>
+		<minor>0</minor>
+		<build>451</build>
+		<revision>343</revision>
+	</m_Version>
+	<m_ClassName text="StrategicView_Sprite"/>
+	<m_PackageName text="strategicview/strategicview_improvements"/>
+	<m_Entries>
+		<Element>
+			<m_EntryID text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_REVEALED"/>
+			<m_ObjectName text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_REVEALED"/>
+		</Element>
+		<Element>
+			<m_EntryID text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_REVEALED_PILLAGED"/>
+			<m_ObjectName text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_REVEALED_PILLAGED"/>
+		</Element>
+		<Element>
+			<m_EntryID text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_VISIBLE"/>
+			<m_ObjectName text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_VISIBLE"/>
+		</Element>
+		<Element>
+			<m_EntryID text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_VISIBLE_PILLAGED"/>
+			<m_ObjectName text="IMPROVEMENT_SAILOR_WATCHTOWER_SV_VISIBLE_PILLAGED"/>
+		</Element>
+	</m_Entries>
+	<m_AllowedPlatforms>
+		<Element>WINDOWS</Element>
+		<Element>LINUX</Element>
+		<Element>MACOS</Element>
+		<Element>IOS</Element>
+	</m_AllowedPlatforms>
+</AssetObjects..XLP>
+

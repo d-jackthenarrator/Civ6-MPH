@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..XLP>
+	<m_Version>
+		<major>4</major>
+		<minor>0</minor>
+		<build>451</build>
+		<revision>343</revision>
+	</m_Version>
+	<m_ClassName text="UITexture"/>
+	<m_PackageName text="UI/Icons"/>
+	<m_Entries>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_200"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_200"/>
+		</Element>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_256"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_256"/>
+		</Element>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_38"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_38"/>
+		</Element>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_40"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_40"/>
+		</Element>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_50"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_50"/>
+		</Element>
+		<Element>
+			<m_EntryID text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_80"/>
+			<m_ObjectName text="ICON_IMPROVEMENT_SAILOR_WATCHTOWER_80"/>
+		</Element>
+	</m_Entries>
+	<m_AllowedPlatforms>
+		<Element>WINDOWS</Element>
+		<Element>LINUX</Element>
+		<Element>MACOS</Element>
+		<Element>IOS</Element>
+	</m_AllowedPlatforms>
+</AssetObjects..XLP>
+

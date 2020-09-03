@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..XLP>
+	<m_Version>
+		<major>4</major>
+		<minor>0</minor>
+		<build>451</build>
+		<revision>343</revision>
+	</m_Version>
+	<m_ClassName text="TileBase"/>
+	<m_PackageName text="landmarks/tilebases"/>
+	<m_Entries>
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_SV"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_SV"/>
+		</Element>
+		<!-- Default -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical"/>
+			<m_ObjectName text="SAILOR_Tower_Classical"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Default"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Default"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Crate"/>
+			<m_ObjectName text="SAILOR_Watchtower_Crate"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pot"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pot"/>
+		</Element>
+		<!-- Default Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Base_Decal"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Base_Decal"/>
+		</Element>
+		<!-- Default Alt -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_ALT"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_ALT"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Alt"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Alt"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Dirt_Decal_Red"/>
+			<m_ObjectName text="SAILOR_Watchtower_Dirt_Decal_Red"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Default_Alt"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Default_Alt"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Alt"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Alt"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Rice_Clutter_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Rice_Clutter_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Rice_Clutter_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Rice_Clutter_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Rice_Clutter_003"/>
+			<m_ObjectName text="SAILOR_Watchtower_Rice_Clutter_003"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Rice_Clutter_004"/>
+			<m_ObjectName text="SAILOR_Watchtower_Rice_Clutter_004"/>
+		</Element>
+		<!-- Default Alt Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_ALT_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_ALT_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Alt"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Alt"/>
+		</Element>
+		<!-- Desert -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_DESERT"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_DESERT"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Desert"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Desert"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Desert"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Desert"/>
+		</Element>
+		<!-- Desert Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_DESERT_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_DESERT_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Desert"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Desert"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Desert_Wall"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Desert_Wall"/>
+		</Element>
+		<!-- Forest -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_FOREST"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_FOREST"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Forest"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Forest"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Forest"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Forest"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Clump_1"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Clump_1"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Clump_2"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Clump_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Sm"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Sm"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Dirt_Decal"/>
+			<m_ObjectName text="SAILOR_Watchtower_Dirt_Decal"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Boulder_Clump"/>
+			<m_ObjectName text="SAILOR_Watchtower_Boulder_Clump"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Boulder01"/>
+			<m_ObjectName text="SAILOR_Watchtower_Boulder01"/>
+		</Element>
+		<!-- Forest Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_FOREST_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_FOREST_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Forest"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Forest"/>
+		</Element>
+		<!-- Forest (Snow) -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_FOREST_SNOW"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_FOREST_SNOW"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Clump_Snow_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Clump_Snow_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Clump_Snow_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Clump_Snow_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Snow_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Snow_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Snow_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Snow_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Pine_Snow_003"/>
+			<m_ObjectName text="SAILOR_Watchtower_Pine_Snow_003"/>
+		</Element>
+		<!-- Forest (Snow) Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_FOREST_SNOW_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_FOREST_SNOW_MODERN"/>
+		</Element>
+		<!-- Jungle -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_JUNGLE"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_JUNGLE"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Jungle"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Jungle"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Jungle"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Jungle"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Sm_Alt"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Sm_Alt"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Decal_01"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Decal_01"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Decal_02"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Decal_02"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Grass_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Grass_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Grass_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Grass_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Grass_003"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Grass_003"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Grass_004"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Grass_004"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Palm_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Palm_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Palm_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Palm_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Palm_003"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Palm_003"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Plant_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Plant_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Jungle_Plant_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Jungle_Plant_002"/>
+		</Element>
+		<!-- Jungle Modern-->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_JUNGLE_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_JUNGLE_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Jungle"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Jungle"/>
+		</Element>
+		<!-- Marsh -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_MARSH"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_MARSH"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Marsh"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Marsh"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Marsh"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Marsh"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Marsh"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Marsh"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Floodplains_Log_001"/>
+			<m_ObjectName text="SAILOR_Watchtower_Floodplains_Log_001"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Floodplains_Log_002"/>
+			<m_ObjectName text="SAILOR_Watchtower_Floodplains_Log_002"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Floodplains_Log_003"/>
+			<m_ObjectName text="SAILOR_Watchtower_Floodplains_Log_003"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Marsh_Decal_003"/>
+			<m_ObjectName text="SAILOR_Marsh_Decal_003"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Marsh_Decal_005"/>
+			<m_ObjectName text="SAILOR_Marsh_Decal_005"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Marsh_Decal_007"/>
+			<m_ObjectName text="SAILOR_Marsh_Decal_007"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Marsh_Decal_008"/>
+			<m_ObjectName text="SAILOR_Marsh_Decal_008"/>
+		</Element>
+		<!-- Marsh Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_MARSH_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_MARSH_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Marsh"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Marsh"/>
+		</Element>
+		<!-- Oasis -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_OASIS"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_OASIS"/>
+		</Element>
+		<!-- Oasis Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_OASIS_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_OASIS_MODERN"/>
+		</Element>
+		<!-- Tundra -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_TUNDRA"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_TUNDRA"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Tent_Tundra"/>
+			<m_ObjectName text="SAILOR_Watchtower_Tent_Tundra"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Standard_Tundra"/>
+			<m_ObjectName text="SAILOR_Watchtower_Standard_Tundra"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Tower_Classical_Tundra"/>
+			<m_ObjectName text="SAILOR_Tower_Classical_Tundra"/>
+		</Element>
+		<!-- Tundra Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_TUNDRA_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_TUNDRA_MODERN"/>
+		</Element>
+		<!-- Snow -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_SNOW"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_SNOW"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Snowball"/>
+			<m_ObjectName text="SAILOR_Watchtower_Snowball"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Snow_Bank"/>
+			<m_ObjectName text="SAILOR_Watchtower_Snow_Bank"/>
+		</Element>
+		<!-- Snow Modern -->
+		<Element>
+			<m_EntryID text="IMP_SAILOR_WATCHTOWER_SNOW_MODERN"/>
+			<m_ObjectName text="IMP_SAILOR_WATCHTOWER_SNOW_MODERN"/>
+		</Element>
+		<Element>
+			<m_EntryID text="SAILOR_Watchtower_Modern_Snow"/>
+			<m_ObjectName text="SAILOR_Watchtower_Modern_Snow"/>
+		</Element>
+	</m_Entries>
+	<m_AllowedPlatforms>
+		<Element>WINDOWS</Element>
+		<Element>LINUX</Element>
+		<Element>MACOS</Element>
+		<Element>IOS</Element>
+	</m_AllowedPlatforms>
+</AssetObjects..XLP>
+
