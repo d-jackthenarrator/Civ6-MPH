@@ -316,7 +316,7 @@ function UpdateButtonStates(data:table)
 		canExtendGame = data.OneMoreTurn;
 	end
 	
-	canExtendGame = canExtendGame and player and player:IsAlive();
+	canExtendGame = canExtendGame and player and player:IsAlive() and Game.GetLocalObserver() ~= PlayerTypes.OBSERVER;
 	
 	-- Don't show next player button if Just One More Turn will be shown as the functionality is the same.
 	nextPlayer = nextPlayer and not canExtendGame;
@@ -351,6 +351,8 @@ function OnNextPlayer()
 		and pLocalPlayer:IsTurnActive() == true) then
 		UI.RequestAction(ActionTypes.ACTION_ENDTURN);
 	end
+	--Reset waiting for show so next player to be defeated/win can view the end game screen
+	m_waitingForShow = false;																												  
 
 	Close();
 end
@@ -582,6 +584,9 @@ end
 -- ===========================================================================
 function OnShow()
 	print("Showing EndGame Menu of MPH");
+	-- Under really broken circumstances we can get here with the menu music/Dawn of Man VO still playing.  Stop it.
+	UI.PlaySound("STOP_SPEECH_DAWNOFMAN");
+	UI.StartStopMenuMusic(false);																												 									  							  
 
 	m_waitingForShow = false;
 
@@ -1108,22 +1113,29 @@ function OnTeamVictory(team, victory, eventID)
 	end
 end
 
+-- =============================================================
+function OnShowEndGame(playerID : number)
+	ShowEndGame(playerID);
+end
+
 ----------------------------------------------------------------
 -- Called when the display is to be manually shown.
 ----------------------------------------------------------------
-function OnShowEndGame(playerId)
+function ShowEndGame(playerId : number)
 	if(playerId == nil) then
 		playerId = Game.GetLocalPlayer();
 	end
 
-	local player = Players[playerId];
-	if(player:IsAlive()) then
-		local victor, victoryType = Game.GetWinningTeam();
-		if(victor == player:GetTeam()) then
-			local victory = GameInfo.Victories[victoryType];
-			if(victory) then
-				View(TeamVictoryData(victor, victory.VictoryType));
-				return;
+	if(playerId ~= PlayerTypes.NO_PLAYER)then
+		local player : table = Players[playerId];
+		if(player:IsAlive()) then
+			local victor, victoryType = Game.GetWinningTeam();
+			if(victor == player:GetTeam()) then
+				local victory = GameInfo.Victories[victoryType];
+				if(victory) then
+					View(TeamVictoryData(victor, victory.VictoryType));
+					return;
+				end
 			end
 		end
 	end
@@ -1193,7 +1205,7 @@ function OnChat( fromPlayer:number, toPlayer:number, text:string, eTargetType:nu
 	text = ParseChatText(text);
 
 	chatString			= chatString .. ": [ENDCOLOR]" .. chatColor;
-	chatString			= chatString .. text .. "[ENDCOLOR]";
+	chatString			= chatString .. text .. " [ENDCOLOR]";
 
 	AddChatEntry( chatString, Controls.ChatStack, m_ChatInstances, Controls.ChatScroll);
 end
@@ -1432,7 +1444,7 @@ function Initialize()
 	-- Events
 
 	LuaEvents.GameDebug_Return.Add(OnGameDebugReturn);	
-	LuaEvents.ShowEndGame.Add(OnShowEndGame);
+	LuaEvents.ShowEndGame.Add(ShowEndGame);
 	LuaEvents.MPHMenu_Concede.Add(OnConcede);
 	LuaEvents.MPHMenu_ConcedeWin.Add(OnWinByConcede);
 	

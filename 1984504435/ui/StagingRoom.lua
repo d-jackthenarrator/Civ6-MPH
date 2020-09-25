@@ -191,7 +191,8 @@ local g_slotTypeData =
 	{ name ="LOC_SLOTTYPE_OPEN",		tooltip = "LOC_SLOTTYPE_OPEN_TT",		hotseatOnly=false,	slotStatus=SlotStatus.SS_OPEN,		hotseatInProgress = false,		hotseatAllowed=false},
 	{ name ="LOC_SLOTTYPE_AI",			tooltip = "LOC_SLOTTYPE_AI_TT",			hotseatOnly=false,	slotStatus=SlotStatus.SS_COMPUTER,	hotseatInProgress = true,		hotseatAllowed=true },
 	{ name ="LOC_SLOTTYPE_CLOSED",		tooltip = "LOC_SLOTTYPE_CLOSED_TT",		hotseatOnly=false,	slotStatus=SlotStatus.SS_CLOSED,	hotseatInProgress = false,		hotseatAllowed=true },		
-	{ name ="LOC_SLOTTYPE_HUMAN",		tooltip = "LOC_SLOTTYPE_HUMAN_TT",		hotseatOnly=true,	slotStatus=SlotStatus.SS_TAKEN,		hotseatInProgress = true,		hotseatAllowed=true },		
+	{ name ="LOC_SLOTTYPE_HUMAN",		tooltip = "LOC_SLOTTYPE_HUMAN_TT",		hotseatOnly=true,	slotStatus=SlotStatus.SS_TAKEN,		hotseatInProgress = true,		hotseatAllowed=true },
+	{ name ="LOC_SLOTTYPE_OBSERVER",		tooltip = "LOC_SLOTTYPE_HUMAN_TT",		hotseatOnly=true,	slotStatus=SlotStatus.SS_OBSERVER,		hotseatInProgress = false,		hotseatAllowed=false },	
 	{ name ="LOC_MP_SWAP_PLAYER",		tooltip = "TXT_KEY_MP_SWAP_BUTTON_TT",	hotseatOnly=false,	slotStatus=-1,						hotseatInProgress = true,		hotseatAllowed=true },		
 };
 
@@ -3900,7 +3901,7 @@ function OnChat( fromPlayer, toPlayer, text, eTargetType, playSounds :boolean )
 		text = ParseChatText(text);
 
 		chatString			= chatString .. ": [ENDCOLOR]" .. chatColor;
-		chatString			= chatString .. text .. "[ENDCOLOR]";
+		chatString			= chatString .. text .. " [ENDCOLOR]";
 
 		AddChatEntry( chatString, Controls.ChatStack, m_ChatInstances, Controls.ChatScroll);
 
@@ -4545,7 +4546,7 @@ function CheckGameAutoStart()
 			
 			if((curSlotStatus == SlotStatus.SS_TAKEN -- Human civ
 				or Network.IsPlayerConnected(iPlayer))	-- network connection on this slot, could be an multiplayer autoplay.
-				and curPlayerConfig:IsAlive()) then -- Dead players do not block launch countdown.
+				and (curPlayerConfig:IsAlive() or curSlotStatus == SlotStatus.SS_OBSERVER)) then -- Dead players do not block launch countdown.  Observers count as dead but should still block launch to be consistent. 
 				if(not curPlayerConfig:GetReady()) then
 					print("CheckGameAutoStart: Can't start game because player ".. iPlayer .. " isn't ready");
 					startCountdown = false;
@@ -4789,30 +4790,30 @@ function PopulateSlotTypePulldown( pullDown, playerID, slotTypeOptions )
 			and not pPlayerConfig:IsLocked() -- Can't swap to locked slots.
 			and not GameConfiguration.IsHotseat() -- no swap option in hotseat.
 			and not GameConfiguration.IsPlayByCloud() -- no swap option in PlayByCloud.
-			and not GameConfiguration.IsMatchMaking(); -- or when matchmaking
+			and not GameConfiguration.IsMatchMaking() -- or when matchmaking
+			and playerID ~= Network.GetLocalPlayerID();
 
 		-- This option is a valid slot type option.
-		local showSlotButton = pair.slotStatus ~= -1 
-			and Network.IsGameHost() -- Only the game host can change slot types.
-			-- You can't switch a civilization to open/closed if the game is at the minimum player count.
-			and ((pair.slotStatus ~= SlotStatus.SS_CLOSED and pair.slotStatus ~= SlotStatus.SS_OPEN)		-- Target SlotType isn't open/close
-				or (playerSlotStatus ~= SlotStatus.SS_TAKEN and playerSlotStatus ~= SlotStatus.SS_COMPUTER) -- Current SlotType isn't a civ
-				or (GameConfiguration.IsPlayByCloud() and pair.slotStatus == SlotStatus.SS_OPEN)			-- In PlayByCloud OPEN slots are autoflagged as HumanRequired.
-																											-- We allow them to bypass the minimum player count because 
-																											-- a human player must occupy the slot for the game to launch. 
-				or GameConfiguration.GetParticipatingPlayerCount() > g_currentMinPlayers)					-- Above player count
-			and (playerSlotStatus ~= SlotStatus.SS_TAKEN or GameConfiguration.IsHotseat())					-- You can only change the slot type of humans while in hotseat.
-			and not pPlayerConfig:IsLocked() -- Can't change the slot type of locked player slots.
-			-- Can normally only change slot types in the pregame unless this is a option that can be changed mid-game in hotseat.
-			and (GameConfiguration.GetGameState() == GameStateTypes.GAMESTATE_PREGAME 
-				or (pair.hotseatInProgress and GameConfiguration.IsHotseat()))
-			and not GameConfiguration.IsMatchMaking();	-- Can't change slot type in matchmaded games. 
+		local showSlotButton = CheckShowSlotButton(pair, playerID);
+																		
+																								
+																																
+																															   
+																																					 
+																					   
+																						  
+																									   
+																																					  
+																						 
+																														 
+																			 
+																  
 
 		-- Valid state for hotseatOnly flag
 		local hotseatOnlyCheck = (GameConfiguration.IsHotseat() and pair.hotseatAllowed) or (not GameConfiguration.IsHotseat() and not pair.hotseatOnly);
 
 		if(	hotseatOnlyCheck 
-			and playerID ~= Network.GetLocalPlayerID()
+
 			and (showSwapButton or showSlotButton)) then
 
 			pullDown.ItemCount = pullDown.ItemCount + 1;
@@ -4843,6 +4844,59 @@ function PopulateSlotTypePulldown( pullDown, playerID, slotTypeOptions )
 	pullDown:SetDisabled(pullDown.ItemCount < 1);
 end
 
+function CheckShowSlotButton(slotData :table, playerID: number)
+	local pPlayerConfig :object = PlayerConfigurations[playerID];
+	local playerSlotStatus :number = pPlayerConfig:GetSlotStatus();
+
+	if(slotData.slotStatus == -1) then
+		return false;
+	end
+
+	
+	-- Special conditions for changing slot types for human slots in network games.
+	if(playerSlotStatus == SlotStatus.SS_TAKEN and not GameConfiguration.IsHotseat()) then
+		-- You can't change human player slots outside of hotseat mode.
+		return false;
+	end
+
+	-- You can't switch a civilization to open/closed if the game is at the minimum player count.
+	if(slotData.slotStatus == SlotStatus.SS_CLOSED or slotData.slotStatus == SlotStatus.SS_OPEN) then
+		if(playerSlotStatus == SlotStatus.SS_TAKEN or playerSlotStatus == SlotStatus.SS_COMPUTER) then -- Current SlotType is a civ
+			-- In PlayByCloud OPEN slots are autoflagged as HumanRequired.
+			-- We allow them to bypass the minimum player count because 
+			-- a human player must occupy the slot for the game to launch. 
+			if(not GameConfiguration.IsPlayByCloud() or slotData.slotStatus ~= SlotStatus.SS_OPEN) then
+				if(GameConfiguration.GetParticipatingPlayerCount() <= g_currentMinPlayers)	 then
+					return false;				
+				end
+			end
+		end
+	end
+
+	-- Can't change the slot type of locked player slots.
+	if(pPlayerConfig:IsLocked()) then
+		return false;
+	end
+
+	-- Can't change slot type in matchmaded games. 
+	if(GameConfiguration.IsMatchMaking()) then
+		return false;
+	end
+
+	-- Only the host can change non-local slots.
+	if(not Network.IsGameHost() and playerID ~= Network.GetLocalPlayerID()) then
+		return false;
+	end
+
+	-- Can normally only change slot types before the game has started unless this is a option that can be changed mid-game in hotseat.
+	if(GameConfiguration.GetGameState() ~= GameStateTypes.GAMESTATE_PREGAME) then
+		if(not slotData.hotseatInProgress or not GameConfiguration.IsHotseat()) then
+			return false;
+		end
+	end
+
+	return true;
+end
 -------------------------------------------------
 -- Team Scripting
 -------------------------------------------------
@@ -4993,7 +5047,10 @@ function UpdatePlayerEntry(playerID)
 		local slotStatus = pPlayerConfig:GetSlotStatus();
 		local isMinorCiv = pPlayerConfig:GetCivilizationLevelTypeID() ~= CivilizationLevelTypes.CIVILIZATION_LEVEL_FULL_CIV;
 		local isAlive = pPlayerConfig:IsAlive();
-		local isActiveSlot = not isMinorCiv and (slotStatus ~= SlotStatus.SS_CLOSED) and (slotStatus ~= SlotStatus.SS_OPEN) 
+		local isActiveSlot = not isMinorCiv 
+			and (slotStatus ~= SlotStatus.SS_CLOSED) 
+			and (slotStatus ~= SlotStatus.SS_OPEN) 
+			and (slotStatus ~= SlotStatus.SS_OBSERVER)											 
 			-- In PlayByCloud, the local player still gets an active slot even if they are dead.  We do this so that players
 			--		can rejoin the match to see the end game screen,
 			and (isAlive or (GameConfiguration.IsPlayByCloud() and playerID == localPlayerID));
@@ -5017,7 +5074,7 @@ function UpdatePlayerEntry(playerID)
 
 			
 		local isKickable:boolean = Network.IsGameHost()			-- Only the game host may kick
-			and slotStatus == SlotStatus.SS_TAKEN
+			and (slotStatus == SlotStatus.SS_TAKEN or slotStatus == SlotStatus.SS_OBSERVER)
 			and playerID ~= localPlayerID			-- Can't kick yourself
 			and not isHotSeat;	-- Can't kick in hotseat, players use the slot type pulldowns instead.
 
@@ -5055,15 +5112,20 @@ function UpdatePlayerEntry(playerID)
 
 		local statusText:string = "";
 		if slotStatus == SlotStatus.SS_TAKEN then
+			local hostID:number = Network.GetGameHostPlayerID();
 			statusText = Locale.Lookup(playerID == hostID and "LOC_SLOTLABEL_HOST" or "LOC_SLOTLABEL_PLAYER");
 		elseif slotStatus == SlotStatus.SS_COMPUTER then
 			statusText = Locale.Lookup("LOC_SLOTLABEL_COMPUTER");
+		elseif slotStatus == SlotStatus.SS_OBSERVER then
+			local hostID:number = Network.GetGameHostPlayerID();
+			statusText = Locale.Lookup(playerID == hostID and "LOC_SLOTLABEL_OBSERVER_HOST" or "LOC_SLOTLABEL_OBSERVER");
 		end
+		
 		playerEntry.PlayerStatus:SetText(statusText);
 		playerEntry.AlternateStatus:SetText(statusText);
 
 		-- Update cached ready status and play sound if player is newly ready.
-		if slotStatus == SlotStatus.SS_TAKEN then
+		if slotStatus == SlotStatus.SS_TAKEN or slotStatus == SlotStatus.SS_OBSERVER then
 			local isReady:boolean = pPlayerConfig:GetReady();
 			if(isReady ~= g_PlayerReady[playerID]) then
 				g_PlayerReady[playerID] = isReady;
@@ -5168,6 +5230,13 @@ function UpdatePlayerEntry(playerID)
 				else
 					playerEntry.Root:SetHide(true);
 				end
+			elseif slotStatus == SlotStatus.SS_OBSERVER and Network.IsPlayerConnected(playerID) then
+				playerEntry.Root:SetHide(false);
+				playerEntry.PlayerPullDown:SetHide(true);
+				playerEntry.TeamPullDown:SetHide(true);
+				playerEntry.ReadyImage:SetHide(false);
+				playerEntry.HandicapPullDown:SetHide(true);
+				playerEntry.KickButton:SetHide(not isKickable);																						   												   
 			else 
 				if(gameInProgress
 					-- Explicitedly always hide city states.  
@@ -5463,20 +5532,31 @@ function UpdatePlayerEntry_Hotseat(playerID)
 end
 
 function UpdateAllDefaultPlayerNames()
-	local humanDefaultPlayerNameConfigs = {};
-	local humanDefaultPlayerNameEntries = {};
-	local numHumanPlayers = 0;
-	local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
-	for i, iPlayer in ipairs(player_ids) do
-		local curPlayerConfig = PlayerConfigurations[iPlayer];
-		local curPlayerEntry = g_PlayerEntries[iPlayer];
-		if(curPlayerConfig:GetSlotStatus() == SlotStatus.SS_TAKEN) then
+	local humanDefaultPlayerNameConfigs :table = {};
+	local humanDefaultPlayerNameEntries :table = {};
+	local numHumanPlayers :number = 0;
+	local kPlayerIDs :table = GameConfiguration.GetMultiplayerPlayerIDs();
+
+	for i, iPlayer in ipairs(kPlayerIDs) do
+		local pCurPlayerConfig	:object = PlayerConfigurations[iPlayer];
+		local pCurPlayerEntry	:object = g_PlayerEntries[iPlayer];
+		local slotStatus		:number = pCurPlayerConfig:GetSlotStatus();
+		
+		-- Case where multiple times on one machine it appeared a config could exist
+		-- for a taken player but no player object?
+		local isSafeToReferencePlayer:boolean = true;
+		if pCurPlayerEntry==nil and (slotStatus == SlotStatus.SS_TAKEN) then
+			isSafeToReferencePlayer = false;
+			UI.DataError("Mismatch player config/entry for player #"..tostring(iPlayer)..". SlotStatus: "..tostring(slotStatus));
+		end
+		
+		if isSafeToReferencePlayer and (slotStatus == SlotStatus.SS_TAKEN) then
 			local strRegEx = "^" .. DefaultHotseatPlayerName .. " %d+$"
-			print(strRegEx .. " " .. curPlayerConfig:GetNickName());
-			local isDefaultPlayerName = string.match(curPlayerConfig:GetNickName(), strRegEx);
+			print(strRegEx .. " " .. pCurPlayerConfig:GetNickName());
+			local isDefaultPlayerName = string.match(pCurPlayerConfig:GetNickName(), strRegEx);
 			if(isDefaultPlayerName ~= nil) then
-				humanDefaultPlayerNameConfigs[#humanDefaultPlayerNameConfigs+1] = curPlayerConfig;
-				humanDefaultPlayerNameEntries[#humanDefaultPlayerNameEntries+1] = curPlayerEntry;
+				humanDefaultPlayerNameConfigs[#humanDefaultPlayerNameConfigs+1] = pCurPlayerConfig;
+				humanDefaultPlayerNameEntries[#humanDefaultPlayerNameEntries+1] = pCurPlayerEntry;
 			end
 		end
 	end
@@ -6367,15 +6447,40 @@ function BuildGameSetupParameter(o, parameter)
 
 	control = {
 		Control = c,
-		UpdateValue = function(value)
-			local type:string = type(value);
-			if type == "table" then
-				c.Value:SetText(value.Name);
-			elseif type == "boolean" then
-				c.Value:SetText(Locale.Lookup(value and "LOC_MULTIPLAYER_TRUE" or "LOC_MULTIPLAYER_FALSE"));
+		UpdateValue = function(value, p)
+			local t:string = type(value);
+			if(p.Array) then
+				local valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
+				if(t == "table") then
+					local count = #value;
+					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
+						if(count == 0) then
+							valueText = Locale.Lookup("LOC_SELECTION_EVERYTHING");
+						elseif(count == #p.Values) then
+							valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
+						else
+							valueText = Locale.Lookup("LOC_SELECTION_CUSTOM", #p.Values-count);
+						end
+					else
+						if(count == 0) then
+							valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
+						elseif(count == #p.Values) then
+							valueText = Locale.Lookup("LOC_SELECTION_EVERYTHING");
+						else
+							valueText = Locale.Lookup("LOC_SELECTION_CUSTOM", count);
+						end
+					end
+				end
+				c.Value:SetText(valueText);
 			else
-				c.Value:SetText(tostring(value));
-			end
+				if t == "table" then
+					c.Value:SetText(value.Name);
+				elseif t == "boolean" then
+					c.Value:SetText(Locale.Lookup(value and "LOC_MULTIPLAYER_TRUE" or "LOC_MULTIPLAYER_FALSE"));
+				else
+					c.Value:SetText(tostring(value));
+				end
+			end			
 		end,
 		SetVisible = function(visible)
 			c.Root:SetHide(not visible);
@@ -6538,7 +6643,7 @@ function UpdateFriendsList()
 	m_friendsIM:ResetInstances();
 	Controls.InfoContainer:SetHide(false);
 	local friends:table = GetFriendsList();
-	local bCanInvite:boolean = CanInviteFriends(false);
+	local bCanInvite:boolean = CanInviteFriends(false) and Network.HasSingleFriendInvite();
 
 	-- DEBUG
 	--for i = 1, 19 do

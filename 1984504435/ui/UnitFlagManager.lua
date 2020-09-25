@@ -2,58 +2,70 @@
 --	Unit Flag Manager
 --	Manages all the 2d "flags" above units on the world map.
 -- ===========================================================================
+
 include( "InstanceManager" );
 include( "SupportFunctions" );
 include( "Civ6Common" );
-include( "Colors" );
 print("UnitFlagManager for Better Spectator Mod")
 -- Duplicated in MPH
 
 -- ===========================================================================
+--	GLOBALS
+-- ===========================================================================
+g_UnitsMilitary		= UILens.CreateLensLayerHash("Units_Military");
+g_UnitsReligious	= UILens.CreateLensLayerHash("Units_Religious");
+g_UnitsCivilian		= UILens.CreateLensLayerHash("Units_Civilian");
+g_UnitsArcheology	= UILens.CreateLensLayerHash("Units_Archaeology");
+
+
+-- ===========================================================================
 --	CONSTANTS
 -- ===========================================================================
-local YOFFSET_2DVIEW			:number = 26;
-local ZOFFSET_3DVIEW			:number = 36;
-local ALPHA_DIM					:number = 0.45;
-local COLOR_RED					:number = UI.GetColorValueFromHexLiteral(0xFF0101F5);
-local COLOR_YELLOW				:number = UI.GetColorValueFromHexLiteral(0xFF2DFFF8);
-local COLOR_GREEN				:number = UI.GetColorValueFromHexLiteral(0xFF4CE710);
-local FLAGSTATE_NORMAL			:number= 0;
-local FLAGSTATE_FORTIFIED		:number= 1;
-local FLAGSTATE_EMBARKED		:number= 2;
-local FLAGSTYLE_MILITARY		:number= 0;
-local FLAGSTYLE_CIVILIAN		:number= 1;
-local FLAGSTYLE_SUPPORT			:number= 2;
-local FLAGSTYLE_TRADE			:number= 3;
-local FLAGSTYLE_NAVAL			:number= 4;
-local FLAGSTYLE_RELIGION		:number= 5;
-local FLAGTYPE_UNIT				:number= 0;
-local TEXTURE_BASE				:string = "UnitFlagBase_Combo.dds";
-local TEXTURE_CIVILIAN			:string = "UnitFlagCivilian_Combo.dds";
-local TEXTURE_RELIGION			:string = "UnitFlagReligion_Combo.dds";
-local TEXTURE_EMBARK			:string = "UnitFlagEmbark_Combo.dds";
-local TEXTURE_FORTIFY			:string = "UnitFlagFortify_Combo.dds";
-local TEXTURE_NAVAL				:string = "UnitFlagNaval_Combo.dds";
-local TEXTURE_SUPPORT			:string = "UnitFlagSupport_Combo.dds";
-local TEXTURE_TRADE				:string = "UnitFlagTrade_Combo.dds";
-local TXT_UNITFLAG_ARMY_SUFFIX			:string = " " .. Locale.Lookup("LOC_UNITFLAG_ARMY_SUFFIX");
-local TXT_UNITFLAG_CORPS_SUFFIX			:string = " " .. Locale.Lookup("LOC_UNITFLAG_CORPS_SUFFIX");
-local TXT_UNITFLAG_ARMADA_SUFFIX			:string = " " .. Locale.Lookup("LOC_UNITFLAG_ARMADA_SUFFIX");
-local TXT_UNITFLAG_FLEET_SUFFIX			:string = " " .. Locale.Lookup("LOC_UNITFLAG_FLEET_SUFFIX");
-local TXT_UNITFLAG_ACTIVITY_ON_SENTRY	:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_ON_SENTRY");
-local TXT_UNITFLAG_ACTIVITY_ON_INTERCEPT:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_ON_INTERCEPT");
-local TXT_UNITFLAG_ACTIVITY_AWAKE		:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_AWAKE");
-local TXT_UNITFLAG_ACTIVITY_HOLD		:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_HOLD");
-local TXT_UNITFLAG_ACTIVITY_SLEEP		:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_SLEEP");
-local TXT_UNITFLAG_ACTIVITY_HEALING		:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_HEALING");
-local TXT_UNITFLAG_ACTIVITY_NO_ACTIVITY	:string = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_NO_ACTIVITY");
+COLOR_RED			= UI.GetColorValue("COLOR_RED");		-- Obtain colors from colorDB (not const or colorAtlas)
+COLOR_YELLOW		= UI.GetColorValue("COLOR_YELLOW");		-- ditto
+COLOR_GREEN			= UI.GetColorValue("COLOR_STANDARD_GREEN_LT");		-- "
+HEALTH_PERCENT_GOOD = 0.8;	-- This and above means a unit is still in good shape
+HEALTH_PERCENT_BAD	= 0.4;	-- Above this the unit is okay but below it, the unit is considered to be in bad shape
 
-local m_FlagOffsets :table = {};
+YOFFSET_2DVIEW		= 26;
+ZOFFSET_3DVIEW		= 36;
+ALPHA_DIM			= 0.65;
+FLAGSTATE_NORMAL	= 0;
+FLAGSTATE_FORTIFIED	= 1;
+FLAGSTATE_EMBARKED	= 2;
+FLAGSTYLE_MILITARY	= 0;
+FLAGSTYLE_CIVILIAN	= 1;
+FLAGSTYLE_SUPPORT	= 2;
+FLAGSTYLE_TRADE		= 3;
+FLAGSTYLE_NAVAL		= 4;
+FLAGSTYLE_RELIGION	= 5;
+FLAGTYPE_UNIT		= 0;
+TEXTURE_BASE		= "UnitFlagBase_Combo";
+TEXTURE_CIVILIAN	= "UnitFlagCivilian_Combo";
+TEXTURE_RELIGION	= "UnitFlagReligion_Combo";
+TEXTURE_EMBARK		= "UnitFlagEmbark_Combo";
+TEXTURE_FORTIFY		= "UnitFlagFortify_Combo";
+TEXTURE_NAVAL		= "UnitFlagNaval_Combo";
+TEXTURE_SUPPORT		= "UnitFlagSupport_Combo";
+TEXTURE_TRADE		= "UnitFlagTrade_Combo";
+TXT_UNITFLAG_ARMY_SUFFIX			 = " " .. Locale.Lookup("LOC_UNITFLAG_ARMY_SUFFIX");
+TXT_UNITFLAG_CORPS_SUFFIX			 = " " .. Locale.Lookup("LOC_UNITFLAG_CORPS_SUFFIX");
+TXT_UNITFLAG_ARMADA_SUFFIX			 = " " .. Locale.Lookup("LOC_UNITFLAG_ARMADA_SUFFIX");
+TXT_UNITFLAG_FLEET_SUFFIX			 = " " .. Locale.Lookup("LOC_UNITFLAG_FLEET_SUFFIX");
+TXT_UNITFLAG_ACTIVITY_ON_SENTRY		 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_ON_SENTRY");
+TXT_UNITFLAG_ACTIVITY_ON_INTERCEPT	 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_ON_INTERCEPT");
+TXT_UNITFLAG_ACTIVITY_AWAKE			 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_AWAKE");
+TXT_UNITFLAG_ACTIVITY_HOLD			 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_HOLD");
+TXT_UNITFLAG_ACTIVITY_SLEEP			 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_SLEEP");
+TXT_UNITFLAG_ACTIVITY_HEALING		 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_HEALING");
+TXT_UNITFLAG_ACTIVITY_NO_ACTIVITY	 = " " .. Locale.Lookup("LOC_UNITFLAG_ACTIVITY_NO_ACTIVITY");
+
+m_FlagOffsets = {};
 	m_FlagOffsets[1] = {-32,0};
 	m_FlagOffsets[2] = {32,0};
 	m_FlagOffsets[3] = {0,-45};
 
-local m_LinkOffsets :table = {};
+m_LinkOffsets = {};
 	m_LinkOffsets[1] = {0,0};
 	m_LinkOffsets[2] = {0,-20};
 	m_LinkOffsets[3] = {16,22};
@@ -62,11 +74,6 @@ local m_LinkOffsets :table = {};
 -- ===========================================================================
 --	VARIABLES
 -- ===========================================================================
-
-local m_UnitsMilitary : number = UILens.CreateLensLayerHash("Units_Military");
-local m_UnitsReligious : number = UILens.CreateLensLayerHash("Units_Religious");
-local m_UnitsCivilian : number = UILens.CreateLensLayerHash("Units_Civilian");
-local m_UnitsArcheology : number = UILens.CreateLensLayerHash("Units_Archaeology");
 
 -- A link to a container that is rendered after the Unit/City flags.  This is used
 -- so that selected units will always appear above the other objects.
@@ -188,7 +195,7 @@ function UnitFlag.destroy( self )
 									
 		if (self.m_Instance ~= nil) then
 			if(self.m_Instance.AirUnitInstance) then
-				self.m_Instance.FlagRoot:DestroyChild(self.m_Instance.AirUnitInstance.Top);
+				self.m_Instance.FlagRoot:DestroyChild(self.m_Instance.AirUnitInstance.Root);
 				self.m_Instance.AirUnitInstance = nil;
 			end
 
@@ -249,13 +256,12 @@ function UnitFlag.Initialize( self, playerID: number, unitID : number, flagType 
 	if (bspec == true) then
 			self.m_IsCurrentlyVisible = true
 			self.m_FogState = 2;
-	end
+	end				   
 	
 		self.m_Player = Players[playerID];
 		self.m_UnitID = unitID;
 
 		self:SetFlagUnitEmblem();
-
 		self:SetInteractivity();
 		self:UpdateFlagType();
 		self:UpdateHealth();
@@ -268,46 +274,16 @@ function UnitFlag.Initialize( self, playerID: number, unitID : number, flagType 
 			self:UpdateReadyState();
 		end
 		self:UpdateDimmedState();
-
-		-- Ensure this happens near the end in case we need to color addon instances like AirUnitInstance
-		if (self.m_Player:IsBarbarian()) then
-			local pUnit = self.m_Player:GetUnits():FindID(unitID);
-			local iTribe = -1;
-			if (pUnit ~= nil) then
-				iTribe = pUnit:GetBarbarianTribeIndex();
-			end
-			self:SetBarbarianColor(iTribe);
-		else
-			self:SetColor();
-		end
+		self:SetColor(); -- Ensure this happens near the end in case we need to color addon instances like AirUnitInstance
 
 		self.m_IsInitialized = true;
 	end
 end
 
-------------------------------------------------------------------
--- Update the unit religion indicator icon
-function UnitFlag.UpdateReligion( self )
-	local pUnit : table = self:GetUnit();
-	if pUnit ~= nil then
-		local religionType = pUnit:GetReligionType();
-		if (religionType > 0 and pUnit:GetReligiousStrength() > 0) then
-			local religion:table = GameInfo.Religions[religionType];
-			local religionIcon:string = "ICON_" .. religion.ReligionType;
-			local religionColor:number = UI.GetColorValue(religion.Color);
-
-			self.m_Instance.ReligionIcon:SetIcon(religionIcon);
-			self.m_Instance.ReligionIcon:SetColor(religionColor);
-			self.m_Instance.ReligionIconBacking:LocalizeAndSetToolTip(religion.Name);
-			self.m_Instance.ReligionIconBacking:SetHide(false);
-		else
-			self.m_Instance.ReligionIconBacking:SetHide(true);
-		end
-	end
-end
 
 -- ===========================================================================
 function OnUnitFlagClick( playerID : number, unitID : number )
+
 	local pPlayer = Players[playerID];
 	if (pPlayer == nil) then return; end
 
@@ -341,7 +317,7 @@ function OnUnitFlagClick( playerID : number, unitID : number )
 			UI.DeselectUnit( pUnit );
 			return
 		end
-	end
+	end					
 
 	if Game.GetLocalPlayer() ~= pUnit:GetOwner() then
 
@@ -379,6 +355,8 @@ function CanSelectUnit( playerID : number, unitID : number )
 		 interfaceMode ~= InterfaceModeTypes.MAKE_TRADE_ROUTE and
 		 interfaceMode ~= InterfaceModeTypes.SPY_CHOOSE_MISSION and
 		 interfaceMode ~= InterfaceModeTypes.SPY_TRAVEL_TO_CITY and
+		 interfaceMode ~= InterfaceModeTypes.CITY_RANGE_ATTACK and
+		 interfaceMode ~= InterfaceModeTypes.DISTRICT_RANGE_ATTACK and
 		 interfaceMode ~= InterfaceModeTypes.VIEW_MODAL_LENS then
 		return false;
 	end
@@ -386,10 +364,10 @@ function CanSelectUnit( playerID : number, unitID : number )
 	return Game.GetLocalPlayer() == playerID;
 end
 
+
 ------------------------------------------------------------------
 -- Set the user interativity for the flag.
 function UnitFlag.SetInteractivity( self )
-
 	local unitID:number = self.m_UnitID;
 	local flagPlayerID:number = self.m_Player:GetID();
 
@@ -408,6 +386,23 @@ function UnitFlag.SetInteractivity( self )
 	-- UI (e.g., CombatPreview) may want to query this.
 	self.m_Instance.FlagRoot:RegisterMouseEnterCallback( function()
 		LuaEvents.UnitFlagManager_PointerEntered( flagPlayerID, unitID );
+
+		-- Signal to who is handling drawing the arrow lens.
+		--[[ 
+			TODO: Refactor: Currently WorldInput receives the input from the LUAContext 
+			so while the flag is signaled (control gets eHasMouseOver) the input chain
+			still sends input through to the context.
+		interfaceMode = UI.GetInterfaceMode();
+		if	interfaceMode == InterfaceModeTypes.CITY_RANGE_ATTACK or 
+			interfaceMode == InterfaceModeTypes.DISTRICT_RANGE_ATTACK  then			
+			local pUnit :table = self:GetUnit();
+			local unitX :number = pUnit:GetX();
+			local unitY :number = pUnit:GetY();
+			local pPlot	:table = Map.GetPlot( unitX, unitY );
+			local plotIndex :number = pPlot:GetIndex();
+			LuaEvents.UnitFlagManager_DrawRangeAttackPreview( plotIndex );
+		end	
+		]]	
 	end );
 	
 	self.m_Instance.FlagRoot:RegisterMouseExitCallback( function()
@@ -455,6 +450,8 @@ function UnitFlag.UpdateAircraftCounter( self )
 
 			local bHasAirUnits, tAirUnits = pUnit:GetAirUnits();
 			if (bHasAirUnits and tAirUnits ~= nil) then
+				
+
 				-- Set current capacity
 				local numAirUnits = table.count(tAirUnits);
 				instance.CurrentUnitCount:SetText(numAirUnits);
@@ -468,7 +465,7 @@ function UnitFlag.UpdateAircraftCounter( self )
 					unitEntry.UnitName:SetText( Locale.ToUpper(unit:GetName()) );
 
 					-- Update icon
-					local iconInfo:table = GetUnitIcon(unit, 22);
+					local iconInfo:table, iconShadowInfo:table = GetUnitIcon(unit, 22, true);
 					if iconInfo.textureSheet then
 						unitEntry.UnitTypeIcon:SetTexture( iconInfo.textureOffsetX, iconInfo.textureOffsetY, iconInfo.textureSheet );
 					end
@@ -516,11 +513,13 @@ end
 
 -- ===========================================================================
 function OnUnitSelected( playerID:number, unitID:number )
-	local playerUnits:table = Players[playerID]:GetUnits();
-	if playerUnits then
-		local selectedUnit:table = playerUnits:FindID(unitID);
-		if selectedUnit then
-			UI.SelectUnit( selectedUnit );
+	if playerID == Game.GetLocalPlayer() then	-- The local player can only select their own units.
+		local playerUnits:table = Players[playerID]:GetUnits();
+		if playerUnits then
+			local selectedUnit:table = playerUnits:FindID(unitID);
+			if selectedUnit then
+				UI.SelectUnit( selectedUnit );
+			end
 		end
 	end
 end
@@ -532,6 +531,7 @@ function UnitFlag.SetColor( self )
 
 	local instance:table = self.m_Instance;
 	instance.FlagBase:SetColor( primaryColor );
+	instance.HealthBarBG:SetColor( primaryColor );
 	instance.UnitIcon:SetColor( secondaryColor );
 	instance.FlagMouseOut:SetColor( secondaryColor );
 	instance.FlagMouseOver:SetColor( secondaryColor );
@@ -545,47 +545,22 @@ function UnitFlag.SetColor( self )
 end
 
 ------------------------------------------------------------------
--- Set the flag color based on the player colors.
-function UnitFlag.SetBarbarianColor( self, iTribeNumber )
-
-	local primaryColor, secondaryColor  = UI.GetPlayerColors( self.m_Player:GetID() );
-	
-	self.m_Instance.FlagBase:SetColor( primaryColor );
-	
-	-- Here is where we override the color of the unit icon (instead of using the usual barbarian secondary color)
-	local iconColor:string;
-	if (iTribeNumber == 0 or iTribeNumber == 1) then
-		iconColor = "COLOR_PLAYER_GRAY";
-	elseif (iTribeNumber == 2 or iTribeNumber == 3) then
-		iconColor = "COLOR_PLAYER_BLACK";
-	elseif (iTribeNumber == 4) then
-		iconColor = "COLOR_PLAYER_LIGHT_YELLOW";
-	elseif (iTribeNumber == 5) then
-		iconColor = "COLOR_WHITE";
-	elseif (iTribeNumber == 6) then
-		iconColor = "COLOR_PLAYER_DARK_GREEN";
-	else
-		iconColor = "COLOR_PLAYER_DARK_BLUE";
-	end	
-	self.m_Instance.UnitIcon:SetColor( UI.GetColorValue(iconColor) );
-
-	self.m_Instance.FlagMouseOut:SetColor( secondaryColor );
-	self.m_Instance.FlagMouseOver:SetColor( secondaryColor );
-
-	-- Set air unit list button color
-	local instance = self.m_Instance.AirUnitInstance;
-	if instance then
-		instance.AirUnitListButton_Base:SetColor( primaryColor );
-		instance.AirUnitListButtonIcon:SetColor( secondaryColor );
-	end
-end
-
-------------------------------------------------------------------
 -- Set the flag texture based on the unit's type
-function UnitFlag.SetFlagUnitEmblem( self )      
-	local pUnit = self:GetUnit();
-	local iconInfo = "ICON_"..GameInfo.Units[pUnit:GetUnitType()].UnitType;
-	self.m_Instance.UnitIcon:SetIcon(iconInfo);
+function UnitFlag.SetFlagUnitEmblem( self )
+	local icon:string = nil;
+	local pUnit:table = self:GetUnit();
+	local individual:number = pUnit:GetGreatPerson():GetIndividual();
+	if individual >= 0 then
+		local individualType:string = GameInfo.GreatPersonIndividuals[individual].GreatPersonIndividualType;
+		local iconModifier:table = GameInfo.GreatPersonIndividualIconModifiers[individualType];
+		if iconModifier then
+			icon = iconModifier.OverrideUnitIcon;
+		end 
+	end
+	if not icon then
+		icon = "ICON_"..GameInfo.Units[pUnit:GetUnitType()].UnitType;
+	end
+	self.m_Instance.UnitIcon:SetIcon(icon);
 end
 
 ------------------------------------------------------------------
@@ -637,7 +612,7 @@ function UnitFlag.SetFogState( self, fogState : number )
 		self:SetHide( false )
 		self.m_FogState = 2
 		return
-	end
+	end						
 
 	self.m_eVisibility = fogState;
 
@@ -668,10 +643,10 @@ function UnitFlag.SetForceHide( self, bHide : boolean )
 end
 
 ------------------------------------------------------------------
--- Update the flag's type.  This adjust the look of the flag based
+-- Update the flag's type. This adjust the look of the flag based
 -- on the state of the unit.
 function UnitFlag.UpdateFlagType( self )
-			
+
 	local pUnit = self:GetUnit();
 	if pUnit == nil then
 		return;
@@ -726,12 +701,13 @@ function UnitFlag.UpdateHealth( self )
 		self.m_Instance.HealthBar:SetHide( false );
 		self.m_Instance.HealthBarButton:SetHide( false );
 					
-		-- hide the normal button
+		-- hide the normal bg and button
+		self.m_Instance.FlagBase:SetHide( true );
 		self.m_Instance.NormalButton:SetHide( true );
-		
-		if ( healthPercent >= 0.8 ) then
+			 
+		if ( healthPercent >= HEALTH_PERCENT_GOOD ) then
 			self.m_Instance.HealthBar:SetColor( COLOR_GREEN );
-		elseif( healthPercent > 0.4 and healthPercent < .8) then
+		elseif( healthPercent >= HEALTH_PERCENT_BAD ) then
 			self.m_Instance.HealthBar:SetColor( COLOR_YELLOW );
 		else
 			self.m_Instance.HealthBar:SetColor( COLOR_RED );
@@ -746,8 +722,9 @@ function UnitFlag.UpdateHealth( self )
 		self.m_Instance.HealthBarBG:SetHide( true );
 		self.m_Instance.HealthBarButton:SetHide( true );
 		
-		-- show the normal button
+		-- show the normal bg and button
 		self.m_Instance.NormalButton:SetHide( false );
+		self.m_Instance.FlagBase:SetHide( false );
 	end
 		
 	self.m_Instance.HealthBar:SetPercent( healthPercent );
@@ -846,33 +823,25 @@ function UnitFlag.UpdatePromotions( self )
 end
 
 ------------------------------------------------------------------
-function GetTribeName(iIndex)
+-- Update the unit religion indicator icon
+function UnitFlag.UpdateReligion( self )
+	local pUnit : table = self:GetUnit();
+	if pUnit ~= nil then
+		local religionType = pUnit:GetReligionType();
+		if (religionType > 0 and pUnit:GetReligiousStrength() > 0) then
+			local religion:table = GameInfo.Religions[religionType];
+			local religionIcon:string = "ICON_" .. religion.ReligionType;
+			local religionColor:number = UI.GetColorValue(religion.Color);
+			local religionName:string = Game.GetReligion():GetName(religion.Index);
 
-	local szLocString;
-
-	if (iIndex == 0) then
-		szLocString = "LOC_BARBARIAN_KNIGHTS_1";
-	elseif (iIndex == 1) then
-		szLocString = "LOC_BARBARIAN_KNIGHTS_1";
-	elseif (iIndex == 2) then
-		szLocString = "LOC_BARBARIAN_RUS_1";
-	elseif (iIndex == 3) then
-		szLocString = "LOC_BARBARIAN_RUS_1";
-	elseif (iIndex == 4) then
-		szLocString = "LOC_BARBARIAN_CAVALRY_2";
-	elseif (iIndex == 5) then
-		szLocString = "LOC_BARBARIAN_MOLDAVA_1";
-	elseif (iIndex == 6) then
-		szLocString = "LOC_BARBARIAN_OTTOMAN_1";
-	elseif (iIndex == 7) then
-		szLocString = "LOC_BARBARIAN_SWEDES_1";
-	elseif (iIndex == 8) then
-		szLocString = "LOC_BARBARIAN_SWEDES_1";
-	elseif (iIndex == 9) then
-		szLocString = "LOC_BARBARIAN_SWEDES_1";
+			self.m_Instance.ReligionIcon:SetIcon(religionIcon);
+			self.m_Instance.ReligionIcon:SetColor(religionColor);
+			self.m_Instance.ReligionIconBacking:LocalizeAndSetToolTip(religionName);
+			self.m_Instance.ReligionIconBacking:SetHide(false);
+		else
+			self.m_Instance.ReligionIconBacking:SetHide(true);
+		end
 	end
-
-	return szLocString and Locale.Lookup(szLocString);
 end
 
 ------------------------------------------------------------------
@@ -892,18 +861,18 @@ function UnitFlag.UpdateName( self )
 		
 		local nameString : string;
 
-		local pPlayer = Players[ pUnit:GetOwner() ];
-		if pPlayer:IsBarbarian() then
-			local szTribeName = GetTribeName(pUnit:GetBarbarianTribeIndex());
-			if (szTribeName) then
-				nameString = Locale.Lookup( pPlayerCfg:GetCivilizationShortDescription() ) .. " (" .. szTribeName .. ") - " .. Locale.Lookup( unitName );
-			else
-				nameString = Locale.Lookup( pPlayerCfg:GetCivilizationShortDescription() ) .. " - " .. Locale.Lookup( unitName );
-			end
-		elseif(GameConfiguration.IsAnyMultiplayer() and pPlayerCfg:IsHuman()) then
+		if(GameConfiguration.IsAnyMultiplayer() and pPlayerCfg:IsHuman()) then
 			nameString = Locale.Lookup( pPlayerCfg:GetCivilizationShortDescription() ) .. " (" .. playername .. ") - " .. Locale.Lookup( unitName );
 		else
 			nameString = Locale.Lookup( pPlayerCfg:GetCivilizationShortDescription() ) .. " - " .. Locale.Lookup( unitName );
+		end
+	
+		local pUnitDef = GameInfo.Units[pUnit:GetUnitType()];
+		if pUnitDef then
+			local unitTypeName:string = pUnitDef.Name;
+			if unitName ~= unitTypeName then
+				nameString = nameString .. " " .. Locale.Lookup("LOC_UNIT_UNIT_TYPE_NAME_SUFFIX", unitTypeName);
+			end
 		end
 
 		-- display military formation indicator(s)
@@ -952,7 +921,7 @@ function UnitFlag.UpdateName( self )
 				if (iGreatWorkIndex >= 0) then
 					local eGWType = Game.GetGreatWorkType(iGreatWorkIndex);
 					local eGWPlayer = Game.GetGreatWorkPlayer(iGreatWorkIndex);
-					nameString = nameString .. "[NEWLINE]" .. Locale.Lookup("LOC_UNITFLAG_ARCHAEOLOGY_ARTIFACT", GameInfo.GreatWorks[eGWType].Name, PlayerConfigurations[eGWPlayer]:GetLeaderName());
+					nameString = nameString .. "[NEWLINE]" .. Locale.Lookup("LOC_UNITFLAG_ARCHAEOLOGY_ARTIFACT", GameInfo.GreatWorks[eGWType].Name, PlayerConfigurations[eGWPlayer]:GetPlayerName());
 				end
 			end
 		end
@@ -981,7 +950,7 @@ function UnitFlag.UpdateSelected( self, isSelected : boolean )
 	local pUnit : table = self:GetUnit();
 	if (pUnit ~= nil) then
 		self.m_IsSelected = isSelected;
-		self:OverrideDimmed( self.m_IsSelected );
+		self:OverrideDimmed( isSelected );
 	end
 end
 
@@ -1085,13 +1054,26 @@ function UnitFlag.SetPosition( self, worldX : number, worldY : number, worldZ : 
 					end
 				end
 			end
-
+			
 			self.m_Instance.Anchor:SetZoomOffsetFarVal( 0, 0, 0 );
 			if (bNearCityBanner) then
 				-- If we are near a city banner, we want to match its behavior to avoid covering it up
 				self.m_Instance.Anchor:SetZoomOffsetFarVal( 0, 0, -20 );
 			end
 
+			-- Offset the flag for specified units, unless a nearby city/district 'ducked' the flag
+			self.m_Instance.Anchor:SetZoomOffsetNearVal( 0, 0, 0 );
+			if (cityBannerZOffset == 0) then
+				local pUnitType = GameInfo.Units[pUnit:GetUnitType()].UnitType;
+				local kUnitPresentationDef:table = GameInfo.Units_Presentation[pUnitType];
+				if kUnitPresentationDef ~= nil then
+					local flagOffset:number = kUnitPresentationDef.UIFlagOffset;
+					if flagOffset ~= 0 then
+						-- Only offset when fully zoomed in, when zoomed out the flag will move down onto the hex
+						self.m_Instance.Anchor:SetZoomOffsetNearVal( 0, 0, flagOffset );
+					end
+				end
+			end
 		end
 	end
 
@@ -1127,18 +1109,17 @@ function CreateUnitFlag( playerID: number, unitID : number, unitX : number, unit
 	local pPlayer	:table = Players[playerID];
 	local pUnit		:table = pPlayer:GetUnits():FindID(unitID);
 	if pUnit ~= nil and pUnit:GetUnitType() ~= -1 then
-		if (pUnit:GetCombat() ~= 0 or pUnit:GetRangedCombat() ~= 0) then		-- Need a simpler what to test if the unit is a combat unit or not.
-			if "DOMAIN_SEA" == GameInfo.Units[pUnit:GetUnitType()].Domain then
-				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_NAVAL );
-			else
-				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_MILITARY );
-			end
-		else
-			if GameInfo.Units[pUnit:GetUnitType()].MakeTradeRoute then
+		local formationClassType = GameInfo.Units[pUnit:GetUnitType()].FormationClass;
+		if		(formationClassType == "FORMATION_CLASS_LAND_COMBAT" or formationClassType == "FORMATION_CLASS_AIR") then
+			UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_MILITARY );
+		elseif	(formationClassType == "FORMATION_CLASS_NAVAL") then
+			UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_NAVAL );
+		elseif	(formationClassType == "FORMATION_CLASS_SUPPORT") then
+			UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_SUPPORT );
+		elseif	(formationClassType == "FORMATION_CLASS_CIVILIAN") then
+			if	(GameInfo.Units[pUnit:GetUnitType()].MakeTradeRoute) then
 				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_TRADE );
-			elseif "FORMATION_CLASS_SUPPORT" == GameInfo.Units[pUnit:GetUnitType()].FormationClass then
-				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_SUPPORT );
-			elseif pUnit:GetReligiousStrength() > 0 then
+			elseif (pUnit:GetReligiousStrength() > 0) then
 				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_RELIGION );
 			else
 				UnitFlag:new( playerID, unitID, FLAGTYPE_UNIT, FLAGSTYLE_CIVILIAN );
@@ -1153,21 +1134,6 @@ end
 function OnUnitAddedToMap( playerID: number, unitID : number, unitX : number, unitY : number )
 	CreateUnitFlag( playerID, unitID, unitX, unitY );
 	UpdateIconStack(unitX, unitY);
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
-		Refresh()
-	end
 end
 
 ------------------------------------------------------------------
@@ -1184,27 +1150,11 @@ function OnUnitRemovedFromMap( playerID: number, unitID : number )
 		end
 
 	end
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
-		Refresh()
-	end
 	
 end
 
 ------------------------------------------------------------------
 function OnUnitVisibilityChanged( playerID: number, unitID : number, eVisibility : number )
-
 	local flagInstance = GetUnitFlag( playerID, unitID );
 	if (flagInstance ~= nil) then
 		flagInstance:SetFogState( eVisibility );
@@ -1214,7 +1164,6 @@ function OnUnitVisibilityChanged( playerID: number, unitID : number, eVisibility
 		if (pUnit ~= nil) then
 			UpdateIconStack(pUnit:GetX(), pUnit:GetY());
 		end
-
 	end
 end
 
@@ -1234,13 +1183,6 @@ function OnUnitSelectionChanged( playerID : number, unitID : number, hexI : numb
 	end
 
 	if (bSelected) then
-		--[[
-		local pPlayer = Players[ playerID ];
-		if (pPlayer ~= nil) then
-			local pUnit = pPlayer:GetUnits():FindID(unitID);
-			print(pUnit:GetUnitType(), hexI, hexJ);
-		end
-		--]]
 		UpdateIconStack(hexI, hexJ);
 	end
 end
@@ -1359,17 +1301,19 @@ function UpdateIconStack( plotX:number, plotY:number )
 				numUnits = numUnits - 1; 
 			end
 		end
-		local multiSpacingX = 32;
-		local landCombatOffsetX = 0;
-		local civilianOffsetX =  0;
-		local formationIndex = 0;
-		local DuoFlag;
+		local multiSpacingX		:number = 32;
+		local landCombatOffsetX	:number = 0;
+		local civilianOffsetX	:number = 0;
+		local formationIndex	:number = 0;
+		local bHideLink			:boolean= false;
+		local DuoFlag			:table;
+
 		for _, pUnit in ipairs(unitList) do
 			-- Cache commonly used values (optimization)
 			local unitID:number = pUnit:GetID();
 			local unitOwner:number = pUnit:GetOwner();
 			local flag = GetUnitFlag( unitOwner, unitID );
-
+			
 			if ( flag ~= nil and flag.m_eVisibility == RevealedState.VISIBLE ) then
 				local unitInfo:table = GameInfo.Units[pUnit:GetUnitType()];
 
@@ -1405,21 +1349,50 @@ function UpdateIconStack( plotX:number, plotY:number )
 							flag.m_Instance.Formation2:SetHide(true);
 							flag.m_Instance.Formation3:SetHide(true);
 							if formationClassString ~= "FORMATION_CLASS_LAND_COMBAT" then
-								if(DuoFlag and (formationClassString == "FORMATION_CLASS_CIVILIAN" or formationClassString == "FORMATION_CLASS_SUPPORT")) then
+								-- Only show formation links on the last flag
+								if DuoFlag then
 									DuoFlag.m_Instance.Formation2:SetHide(true);
-								else
-									flag.m_Instance.Formation2:SetHide(false);
-									flag.m_Instance.Formation2:SetOffsetVal(m_LinkOffsets[1][1], m_LinkOffsets[1][2]);
-									flag.m_Instance.Formation2:SetSizeX(64);
+
+									-- If the flags share the same parent, ensure the flag with the formation control renders below the DuoFlag
+									local flagParent = flag.m_Instance.Anchor:GetParent();
+									if flagParent == DuoFlag.m_Instance.Anchor:GetParent() then
+										flagParent:AddChildAtIndex(flag.m_Instance.Anchor, 0);
+									end
 								end
 								DuoFlag = flag;
-							end
+								--Check if any unit in the formation has a hidden flag.
+								for i, pUnit in ipairs(unitList) do
+									local unitID	:number = pUnit:GetID();
+									local unitOwner	:number = pUnit:GetOwner();
+									local flag		:table  = GetUnitFlag( unitOwner, unitID );
+									if flag ~= nil and flag.m_eVisibility == RevealedState.HIDDEN then
+										bHideLink = true;
+									end
+								end
+								--Hide the formation link if not local player and cloaking is active.
+								flag.m_Instance.Formation2:SetHide(bHideLink and unitOwner ~= Game.GetLocalPlayer());
+								flag.m_Instance.Formation2:SetOffsetVal(m_LinkOffsets[1][1], m_LinkOffsets[1][2]);
+								flag.m_Instance.Formation2:SetSizeX(64);
+							end	
 							
 						else
 							flag.m_Instance.Formation2:SetHide(true);
 							flag.m_Instance.Formation3:SetHide(true);
-							if formationClassString == "FORMATION_CLASS_CIVILIAN" or formationClassString == "FORMATION_CLASS_SUPPORT" then	
-								flag.m_Instance.Formation3:SetHide(false);
+							if formationClassString == "FORMATION_CLASS_CIVILIAN" or formationClassString == "FORMATION_CLASS_SUPPORT" then
+								-- Ensure the flag with Formation3 set to visible renders below the other flags
+								local flagParent = flag.m_Instance.Anchor:GetParent();
+								flagParent:AddChildAtIndex(flag.m_Instance.Anchor, 0);
+								--Check if any unit in the formation has a hidden flag.
+								for i, pUnit in ipairs(unitList) do
+									local unitID	:number = pUnit:GetID();
+									local unitOwner	:number = pUnit:GetOwner();
+									local flag		:table  = GetUnitFlag( unitOwner, unitID );
+									if flag ~= nil and flag.m_eVisibility == RevealedState.HIDDEN then
+										bHideLink = true;
+									end
+								end
+								--Hide the formation link if not local player and a unit in the formation has a hidden flag.
+								flag.m_Instance.Formation3:SetHide(bHideLink and unitOwner ~= Game.GetLocalPlayer());
 								flag.m_Instance.Formation3:SetOffsetVal(m_LinkOffsets[2][1], m_LinkOffsets[2][2]);
 								flag.m_Instance.Formation3:SetSizeX(100);
 								flag.m_Instance.Formation3:SetSizeY(80);
@@ -1429,8 +1402,13 @@ function UpdateIconStack( plotX:number, plotY:number )
 						
 						formationIndex = formationIndex + 1;
 						flag.m_Instance.FlagRoot:SetOffsetVal(m_FlagOffsets[formationIndex][1], m_FlagOffsets[formationIndex][2] );
+						--No offset if a unit in the formation has a hidden flag
+						if (bHideLink and unitOwner ~= Game.GetLocalPlayer()) then 
+							flag.m_Instance.FlagRoot:SetOffsetX(0);
+							flag.m_Instance.FlagRoot:SetOffsetY(0);
+						end
 					end
-
+				
 				else
 					-- If there is not more than one unit remove the offset and hide the formation indicator
 					flag.m_Instance.FlagRoot:SetOffsetX(0);
@@ -1494,7 +1472,7 @@ function ShouldHideFlag(pUnit:table)
 		if not shouldHideFlag then
 			local districtID:number = unitPlot:GetDistrictID();
 			if districtID > 0 then
-				local pPlayer = Players[unitOwner];
+				local pPlayer = Players[unitPlot:GetOwner()];
 				local pDistrict = pPlayer:GetDistricts():FindID(districtID);
 				local pDistrictInfo = GameInfo.Districts[pDistrict:GetType()];
 				if pDistrict and not pDistrictInfo.CityCenter then
@@ -1881,21 +1859,6 @@ function OnUnitUpgraded(player, unitID, eUpgradeUnitType)
 			end
 		end
 	end
-		local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
-		Refresh()
-	end
 end
 
 ----------------------------------------------------------------
@@ -1919,40 +1882,6 @@ function OnMilitaryFormationChanged( playerID : number, unitID : number )
 				end
 			end
 		end
-	end
-
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
-		Refresh()
-	end
-end
-
-function OnUnitCaptured( currentUnitOwner, unit, owningPlayer, capturingPlayer )
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
-		Refresh()
 	end
 end
 
@@ -2005,10 +1934,10 @@ end
 --	or when a player explicitly turns off the layer from the "player" lens.
 -- ===========================================================================
 function OnLensLayerOn( layerNum:number )		
-	if	layerNum == m_UnitsMilitary or
-		layerNum == m_UnitsReligious or
-		layerNum == m_UnitsCivilian or
-		layerNum == m_UnitsArcheology then
+	if	layerNum == g_UnitsMilitary or
+		layerNum == g_UnitsReligious or
+		layerNum == g_UnitsCivilian or
+		layerNum == g_UnitsArcheology then
 		ContextPtr:SetHide(false);
 	end
 end
@@ -2019,10 +1948,10 @@ end
 --	or when a player explicitly turns off the layer from the "player" lens.
 -- ===========================================================================
 function OnLensLayerOff( layerNum:number )
-	if	layerNum == m_UnitsMilitary or
-		layerNum == m_UnitsReligious or
-		layerNum == m_UnitsCivilian or
-		layerNum == m_UnitsArcheology then
+	if	layerNum == g_UnitsMilitary or
+		layerNum == g_UnitsReligious or
+		layerNum == g_UnitsCivilian or
+		layerNum == g_UnitsArcheology then
 		ContextPtr:SetHide(true);
 	end
 end
@@ -2080,13 +2009,113 @@ function OnTutorial_DisableMapSelect( isDisabled:boolean )
 	m_isMapDeselectDisabled = isDisabled;
 end
 
+
+-- ===========================================================================
+-- ===========================================================================
+function Unsubscribe()
+	Events.BarbarianSpottedCity.Remove( OnBarbarianSpottedCity );
+	Events.CityVisibilityChanged.Remove( OnCityVisibilityChanged );
+	Events.CombatVisBegin.Remove( OnCombatVisBegin );		
+	Events.CombatVisEnd.Remove( OnCombatVisEnd );
+	Events.GameCoreEventPlaybackComplete.Remove(OnEventPlaybackComplete);
+	Events.LensLayerOn.Remove( OnLensLayerOn );
+	Events.LensLayerOff.Remove( OnLensLayerOff );
+	Events.LevyCounterChanged.Remove( OnLevyCounterChanged );
+	Events.LocalPlayerChanged.Remove(OnLocalPlayerChanged);	
+	Events.MultiplayerPlayerConnected.Remove( OnPlayerConnectChanged );
+	Events.MultiplayerPostPlayerDisconnected.Remove( OnPlayerConnectChanged );
+	Events.ObjectPairing.Remove(OnObjectPairingChanged);
+	Events.PlayerTurnActivated.Remove( OnPlayerTurnActivated );
+	Events.UnitAbilityGained.Remove(OnUnitAbilityGained);
+	Events.UnitAddedToMap.Remove( OnUnitAddedToMap );
+	Events.UnitArtifactChanged.Remove( OnUnitArtifactChanged );
+	Events.UnitCommandStarted.Remove( OnUnitCommandStarted );
+	Events.UnitDamageChanged.Remove( OnUnitDamageChanged );
+	Events.UnitEmbarkedStateChanged.Remove( OnUnitEmbarkedStateChanged );
+	Events.UnitEnterFormation.Remove( OnEnterFormation );
+	Events.UnitExitFormation.Remove( OnEnterFormation );
+	Events.UnitFormArmy.Remove( OnMilitaryFormationChanged );
+	Events.UnitFormCorps.Remove( OnMilitaryFormationChanged );
+	Events.UnitFortificationChanged.Remove( OnUnitFortificationChanged );
+	Events.UnitMovementPointsChanged.Remove( OnUnitMovementPointsChanged );
+	Events.UnitMovementPointsCleared.Remove( OnUnitMovementPointsChanged );
+	Events.UnitMovementPointsRestored.Remove( OnUnitMovementPointsRestored );
+	Events.UnitPromoted.Remove(OnUnitPromotionChanged);
+	Events.UnitRemovedFromMap.Remove( OnUnitRemovedFromMap );
+	Events.UnitSelectionChanged.Remove( OnUnitSelectionChanged );
+	Events.UnitSimPositionChanged.Remove( UnitSimPositionChanged );
+	Events.UnitTeleported.Remove( OnUnitTeleported );
+	Events.UnitUpgraded.Remove( OnUnitUpgraded );
+	Events.UnitVisibilityChanged.Remove( OnUnitVisibilityChanged );
+	Events.WorldRenderViewChanged.Remove(PositionFlagsToView);
+
+	LuaEvents.CityBannerManager_UpdateRangeStrike.Remove( UpdateFlagPositions );
+	LuaEvents.Tutorial_DisableMapSelect.Remove( OnTutorial_DisableMapSelect );
+end
+
+
+-- ===========================================================================
+-- ===========================================================================
+function Subscribe()
+	Events.BarbarianSpottedCity.Add( OnBarbarianSpottedCity );
+	Events.CityVisibilityChanged.Add( OnCityVisibilityChanged );
+	Events.CombatVisBegin.Add( OnCombatVisBegin );		
+	Events.CombatVisEnd.Add( OnCombatVisEnd );
+	Events.GameCoreEventPlaybackComplete.Add(OnEventPlaybackComplete);
+	Events.LensLayerOn.Add( OnLensLayerOn );
+	Events.LensLayerOff.Add( OnLensLayerOff );
+	Events.LevyCounterChanged.Add( OnLevyCounterChanged );
+	Events.LocalPlayerChanged.Add(OnLocalPlayerChanged);	
+	Events.MultiplayerPlayerConnected.Add( OnPlayerConnectChanged );
+	Events.MultiplayerPostPlayerDisconnected.Add( OnPlayerConnectChanged );
+	Events.ObjectPairing.Add(OnObjectPairingChanged);
+	Events.PlayerTurnActivated.Add( OnPlayerTurnActivated );
+	Events.UnitAbilityGained.Add(OnUnitAbilityGained);
+	--Events.UnitActivityChanged.Add(OnUnitActivityChanged); --Currently only needed for debugging.  ??TRON: What case?
+	Events.UnitAddedToMap.Add( OnUnitAddedToMap );
+	Events.UnitArtifactChanged.Add( OnUnitArtifactChanged );
+	Events.UnitCommandStarted.Add( OnUnitCommandStarted );
+	Events.UnitDamageChanged.Add( OnUnitDamageChanged );
+	Events.UnitEmbarkedStateChanged.Add( OnUnitEmbarkedStateChanged );
+	Events.UnitEnterFormation.Add( OnEnterFormation );
+	Events.UnitExitFormation.Add( OnEnterFormation );
+	Events.UnitFormArmy.Add( OnMilitaryFormationChanged );
+	Events.UnitFormCorps.Add( OnMilitaryFormationChanged );
+	Events.UnitFortificationChanged.Add( OnUnitFortificationChanged );
+	Events.UnitMovementPointsChanged.Add( OnUnitMovementPointsChanged );
+	Events.UnitMovementPointsCleared.Add( OnUnitMovementPointsChanged );
+	Events.UnitMovementPointsRestored.Add( OnUnitMovementPointsRestored );
+	Events.UnitPromoted.Add(OnUnitPromotionChanged);
+	Events.UnitRemovedFromMap.Add( OnUnitRemovedFromMap );
+	Events.UnitSelectionChanged.Add( OnUnitSelectionChanged );
+	Events.UnitSimPositionChanged.Add( UnitSimPositionChanged );
+	Events.UnitTeleported.Add( OnUnitTeleported );
+	Events.UnitUpgraded.Add( OnUnitUpgraded );
+	Events.UnitVisibilityChanged.Add( OnUnitVisibilityChanged );
+	Events.WorldRenderViewChanged.Add(PositionFlagsToView);
+
+	LuaEvents.CityBannerManager_UpdateRangeStrike.Add( UpdateFlagPositions );
+	LuaEvents.Tutorial_DisableMapSelect.Add( OnTutorial_DisableMapSelect );
+end
+
+
+-- ===========================================================================
+--	Initialize pattern, override if modding.
+-- ===========================================================================
+function LateInitialize()
+end
+
+
 -- ===========================================================================
 --	UI Callback
 -- ===========================================================================
-function OnInit(isHotload : boolean)
-	-- If hotloading, rebuild from scratch.
+function OnInit(isHotload : boolean)	
+	Subscribe();
+	RegisterDirtyEvents();
+	LateInitialize();
+
 	if isHotload then
-		Refresh();
+		Refresh();	-- If hotloading, rebuild from scratch.
 	end
 end
 
@@ -2095,6 +2124,7 @@ end
 --	Handle the UI shutting down.
 -- ===========================================================================
 function OnShutdown()
+	Unsubscribe();
 	m_MilitaryInstanceManager:ResetInstances();
 	m_CivilianInstanceManager:ResetInstances();
 	m_SupportInstanceManager:ResetInstances();
@@ -2106,51 +2136,7 @@ end
 
 -- ===========================================================================
 function Initialize()
-
 	ContextPtr:SetInitHandler( OnInit );
 	ContextPtr:SetShutdown( OnShutdown );
-
-	Events.CombatVisBegin.Add( OnCombatVisBegin );		
-	Events.CombatVisEnd.Add( OnCombatVisEnd );
-	Events.GameCoreEventPlaybackComplete.Add(OnEventPlaybackComplete);
-	Events.LensLayerOn.Add(	OnLensLayerOn );
-	Events.LensLayerOff.Add( OnLensLayerOff );
-	Events.LevyCounterChanged.Add( OnLevyCounterChanged );
-	Events.LocalPlayerChanged.Add(OnLocalPlayerChanged);	
-	Events.MultiplayerPlayerConnected.Add( OnPlayerConnectChanged );
-	Events.MultiplayerPostPlayerDisconnected.Add( OnPlayerConnectChanged );
-	Events.ObjectPairing.Add(OnObjectPairingChanged);
-	Events.PlayerTurnActivated.Add( OnPlayerTurnActivated );
-	Events.CityVisibilityChanged.Add( OnCityVisibilityChanged );
-	Events.UnitAddedToMap.Add( OnUnitAddedToMap );
-	Events.UnitDamageChanged.Add( OnUnitDamageChanged );
-	Events.UnitEnterFormation.Add( OnEnterFormation );
-	Events.UnitExitFormation.Add( OnEnterFormation );
-	Events.UnitCaptured.Add(OnUnitCaptured);
-	Events.UnitFormCorps.Add( OnMilitaryFormationChanged );
-	Events.UnitFormArmy.Add( OnMilitaryFormationChanged );
-	Events.UnitArtifactChanged.Add( OnUnitArtifactChanged );
-	Events.UnitFortificationChanged.Add( OnUnitFortificationChanged );
-	Events.UnitRemovedFromMap.Add( OnUnitRemovedFromMap );
-	Events.UnitSelectionChanged.Add( OnUnitSelectionChanged );
-	Events.UnitSimPositionChanged.Add( UnitSimPositionChanged );
-	Events.UnitTeleported.Add( OnUnitTeleported );
-	Events.UnitVisibilityChanged.Add( OnUnitVisibilityChanged );
-	Events.UnitEmbarkedStateChanged.Add( OnUnitEmbarkedStateChanged );
-	Events.UnitCommandStarted.Add( OnUnitCommandStarted );
-	Events.UnitUpgraded.Add( OnUnitUpgraded );
-	Events.WorldRenderViewChanged.Add(PositionFlagsToView);
-	Events.UnitPromoted.Add(OnUnitPromotionChanged);
-	Events.UnitAbilityGained.Add(OnUnitAbilityGained);
-	Events.BarbarianSpottedCity.Add(OnBarbarianSpottedCity);
-	Events.UnitMovementPointsChanged.Add( OnUnitMovementPointsChanged );
-	Events.UnitMovementPointsCleared.Add( OnUnitMovementPointsChanged );
-	Events.UnitMovementPointsRestored.Add( OnUnitMovementPointsRestored );
-	--Events.UnitActivityChanged.Add(OnUnitActivityChanged); --Currently only needed for debugging.
-
-	LuaEvents.Tutorial_DisableMapSelect.Add( OnTutorial_DisableMapSelect );
-	LuaEvents.CityBannerManager_UpdateRangeStrike.Add( UpdateFlagPositions );
-		
-	RegisterDirtyEvents();
 end
 Initialize();

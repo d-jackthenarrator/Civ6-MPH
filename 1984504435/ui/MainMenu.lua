@@ -52,6 +52,7 @@ g_MostRecentSave = nil;					-- The most recent single player save a user has (lo
 function OnResumeGame()
 	if(g_MostRecentSave) then
 		local serverType : number = ServerType.SERVER_TYPE_NONE;
+		print("MainMenu::OnResumeGame() leaving the network session.");														 
 		Network.LeaveGame();
 		Network.LoadGame(g_MostRecentSave, serverType);
 	end
@@ -106,6 +107,7 @@ function OnPlayCiv6()
 	
 	local save = Options.GetAppOption("Debug", "PlayNowSave");
 	if(save ~= nil) then
+		print("MainMenu::OnPlayCiv6() PlayNowSave leaving the network session.");																   
 		Network.LeaveGame();
 
 		local serverType : number = ServerType.SERVER_TYPE_NONE;
@@ -385,6 +387,7 @@ function StartMatchMaking()
 	end
 
 	GameConfiguration.SetMatchMaking(true);
+	GameConfiguration.SetKickVoting(true);								   
 	Network.MatchMake();
 end
 
@@ -1307,30 +1310,47 @@ function UpdateCheckCloudNotify()
 	if(not m_checkedCloudNotify) then
 		local kandoConnected = FiraxisLive.IsFiraxisLiveLoggedIn();
 		if(kandoConnected) then
-			FiraxisLive.SetAutoCloudNotificationChecks(true); -- continue polling the turn notification check in the future.
-			local started = FiraxisLive.CheckForCloudNotifications();
-			if(started) then
-				m_checkedCloudNotify = true;
-			end
+																												   
+															
+				   
+			m_checkedCloudNotify = true;
+	  
 		end
 	end
 end
 
-function UpdateMenuLogo()
-	local logos = DB.ConfigurationQuery("SELECT LogoTexture, LogoMovie from Logos ORDER BY Priority DESC LIMIT 1");
+-- ===========================================================================
+--	Realize the design of the "Civilization" logo and the background movie
+--	to play, based on the (lack of) expansion loaded.
+-- ===========================================================================
+function RealizeLogoAndMovie()
+	local logos :table = DB.ConfigurationQuery("SELECT LogoTexture, LogoMovie from Logos ORDER BY Priority DESC LIMIT 1");
 	if(logos and #logos > 0) then
-		local logo = logos[1];
+		local logo:table = logos[1];
 		if(logo and g_LogoTexture ~= logo.LogoTexture and g_LogoMovie ~= logo.LogoMovie) then
 			g_LogoTexture = logo.LogoTexture
 			g_LogoMovie = logo.LogoMovie
 
 			-- change texture
-			Controls.Logo:SetTexture(g_LogoTexture);
+			Controls.Logo:SetTexture(g_LogoTexture);				
 
 			-- change movie
 			local movieControl:table = ContextPtr:LookUpControl("/FrontEnd/BackgroundMovie");
 			if(movieControl ~= nil) then
 				movieControl:SetMovie(g_LogoMovie, true);
+
+				-- Save some bandwidth if playing via remote desktop.
+				local iMovieDisabled: boolean = (Options.GetAppOption("UI", "EnablePausedShellMovies") == 1);
+				if iMovieDisabled then
+					-- Pause needs to occur one frame later so create lambda via refresh handler.
+					ContextPtr:SetRefreshHandler( 
+						function()
+							movieControl:Pause();
+							ContextPtr:ClearRefreshHandler();
+						end
+					);			
+					ContextPtr:RequestRefresh();	
+				end
 			end
 		end
 	end
@@ -1346,7 +1366,7 @@ end
 -- ===========================================================================
 function OnGameplayContentChanged( kEvent )
 	if(kEvent.Success and kEvent.ConfigurationChanged) then
-		UpdateMenuLogo();
+		RealizeLogoAndMovie();
 	end
 end
 
@@ -1407,6 +1427,6 @@ function Initialize()
 
 	BuildAllMenus();
 	UpdateMotD();
-	UpdateMenuLogo();
+	RealizeLogoAndMovie();
 end
 Initialize();

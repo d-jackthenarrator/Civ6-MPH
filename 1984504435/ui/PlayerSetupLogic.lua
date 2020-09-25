@@ -192,6 +192,24 @@ function ReleasePlayerParameters()
 end
 
 function GetPlayerParameterError(playerId)
+	local gameState = GameConfiguration.GetGameState(); 
+	local isPreGame = (gameState == GameStateTypes.GAMESTATE_PREGAME);	
+	local max_unique_players = GameConfiguration.GetValue("MAX_UNIQUE_PLAYERS");
+	local unique_leaders = GameConfiguration.GetValue("NO_DUPLICATE_LEADERS");
+	local unique_civilizations = GameConfiguration.GetValue("NO_DUPLICATE_CIVILIZATIONS");
+	local player_ids = GameConfiguration.GetParticipatingPlayerIDs();
+	local player_count = 0;
+
+	-- Only count major civs.
+	for _, pid in ipairs(player_ids) do
+		local pPlayerConfig = PlayerConfigurations[pid];
+		if(pPlayerConfig) then
+			local civLevel = pPlayerConfig:GetCivilizationLevelTypeID();
+			if(civLevel == nil or civLevel == 0 or civLevel == CivilizationLevelTypes.CIVILIZATION_LEVEL_FULL_CIV) then
+				player_count = player_count + 1;
+			end
+		end
+	end
 	for i, pp in ipairs(g_PlayerParameters) do
 		local id = pp[1];
 		if(id == playerId) then
@@ -203,6 +221,17 @@ function GetPlayerParameterError(playerId)
 				-- parameters.
 				local playerLeader = p.Parameters["PlayerLeader"];
 				if(playerLeader) then
+
+					-- Only perform this check in pre-game.
+					-- After a game has been made, there will be additional participants that break this check.
+					if(isPreGame) then
+						if(max_unique_players and (unique_leaders or unique_civilizations)) then
+							if(player_count > max_unique_players) then
+								print("Player Count - " .. player_count .. " Max Unique Players - " .. max_unique_players);
+								return {Reason="LOC_SETUP_PLAYER_PARAMETER_ERROR"};
+							end
+						end
+					end
 					-- TTP 31558 - In multiplayer, Open and Closed slots have nil for most of their player configuration values because the slots have not been reset yet.
 					-- On the client, the player setup logic will try to change the nil values to their default values and fail because the client does not have write access.
 					-- This is OK and should not count as a player parameter error, which would block game start incorrectly.
@@ -238,6 +267,177 @@ function CanShowCivAbility(playerInfo : table)
 	return false;
 end    
 
+
+-- NOTE: The follow contains some duplicate code from SetupParameters.
+-- This code was copied to minimize any risk of side effects.
+local _PlayerInfoOverridesChanges = -1;	-- DB Change counter to know when to invalidate.
+local _PlayerInfoOverrides = {};		-- Player Info Overrides.
+local _PlayerItemOverrides = {};		-- Player Item Overrides;
+
+function SyncPlayerOverrides()
+
+	-- If the cache is up-to-date, return it.
+	local changes = DB.ConfigurationChanges();
+	if(changes == _PlayerInfoOverridesChanges) then 
+		return _PlayerInfoOverrides, _PlayerItemOverrides;
+	end
+
+	-- Cache is out of date, fetch queries and rebuild cache.
+	_PlayerInfoOverrides = {};
+	_PlayerItemOverrides = {};
+
+	local Query = function(query)
+		-- This is a bit of hard-coded trickery.
+		-- It's to deal with how Lua handles nil values in tables..
+		local args = {};
+
+		local parameters = query.Parameters;
+		if(parameters ~= nil) then
+			for i = 1, 4, 1 do
+				local p = parameters[i];
+				if(p ~= nil) then
+					if(p.ConfigurationGroup == "Player" and p.ConfigurationId == "PLAYER_ID" and self.PlayerId) then
+						args[i] = self.PlayerId;
+					else			
+						args[i] = self:Config_Read(p.ConfigurationGroup, p.ConfigurationId);
+					end
+				end
+			end
+		end
+
+		return CachedQuery(query.SQL, args[1], args[2], args[3], args[4]);
+	end
+
+	local CriteriaOperators = {
+		["Equals"] = function(a,b) return a == b; end,
+		["NotEquals"] = function(a,b) return a ~= b; end,
+		["LessThan"] = function(a, b) return a < b; end,
+		["LessThanEquals"] = function(a,b) return a <= b; end,
+		["GreaterThan"] = function(a,b) return a > b; end,
+		["GreaterThanEquals"] = function(a,b) return a >= b; end,
+		["Exists"] = function(a,b) return Exists(a,b); end,
+		["NotExists"] = function(a,b) return not Exists(a,b); end
+	};
+
+	local ReadConfig = function(group, id)
+		if(group == "Game") then
+			return GameConfiguration.GetValue(id);
+		elseif(group == "Map") then
+			return MapConfiguration.GetValue(id);
+		elseif(group == "Player" and self.PlayerId ~= nil) then
+			return PlayerConfigurations[self.PlayerId]:GetValue(id);
+		end
+	end
+
+	local MeetsCriteria = function(criteria)
+		if(criteria) then
+			for i, v in ipairs(criteria) do
+				local cmp = CriteriaOperators[v.Operator];
+				if(cmp ~= nil) then
+					local expected_value = v.ConfigurationValue;
+					local actual_value = ReadConfig(v.ConfigurationGroup, v.ConfigurationId);
+
+					local t = type(actual_value);
+					if(t =="boolean") then
+
+						local a = SetupParameters.Utility_ToBool(actual_value);
+						local b = SetupParameters.Utility_ToBool(expected_value);
+						if(not cmp(a, b)) then
+							return false;
+						end
+
+					elseif(t == "number") then
+						-- If expected value was a string, and the config value was a number, use the hash.
+						if(type(expected_value) == "string") then
+							expected_value = DB.MakeHash(expected_value);					
+						end
+
+						local a = tonumber(actual_value);
+						local b = tonumber(expected_value);
+
+						if(not cmp(a,b)) then
+							return false;
+						end		
+					else
+						if(not cmp(actual_value, expected_value)) then
+							return false;
+						end
+					end
+				else
+					SetupParameters_Log("Warning! Could not find criteria operator - " .. tostring(v.Operator));
+				end
+			end
+		end
+
+		return true;
+	end
+
+	--Cache data.
+	local queries = {};
+	for i, row in ipairs(CachedQuery("SELECT * from Queries")) do
+		queries[row.QueryId] = {
+			Query = row
+		} 
+	end
+
+	for i, row in ipairs(CachedQuery("SELECT * from QueryParameters")) do
+		local query = queries[row.QueryId];
+		if(query) then
+			local parameters = query.Parameters;
+			if(parameters == nil) then
+				parameters = {};
+				query.Parameters = parameters;
+			end
+
+			parameters[tonumber(row.Index)] = row;
+		end
+	end
+
+	for i, row in ipairs(CachedQuery("SELECT * from QueryCriteria")) do
+		local query = queries[row.QueryId];
+		if(query) then
+			local criteria = query.Criteria;
+			if(criteria == nil) then
+				criteria = {};
+				query.Criteria = criteria;
+			end
+			table.insert(criteria, row);
+		end
+	end
+
+	-- Fetch overrides from queries
+	for _, row in ipairs(CachedQuery("SELECT * FROM PlayerInfoOverrideQueries")) do
+		local q = queries[row.QueryId];
+		if(q) then
+			-- Is the query's criteria met?
+			if(q.Criteria == nil or MeetsCriteria(q.Criteria)) then
+				for _, v in ipairs(Query(q.Query)) do
+					table.insert(_PlayerInfoOverrides, v);
+				end
+			end
+		end
+	end
+
+	for i, row in ipairs(CachedQuery("SELECT * FROM PlayerItemOverrideQueries")) do
+		local q = queries[row.QueryId];
+		if(q) then
+			-- Is the query's criteria met?
+			if(q.Criteria == nil or MeetsCriteria(q.Criteria)) then
+				for _, v in ipairs(Query(q.Query)) do
+					print(v);
+					table.insert(_PlayerItemOverrides, v);
+				end
+			end
+		end
+	end
+
+	-- Sort overrides ascending by Priority.
+	local sortByPriority = function(a,b) return a.Priority < b.Priority; end
+	table.sort(_PlayerInfoOverrides, sortByPriority);
+	table.sort(_PlayerItemOverrides, sortByPriority);
+
+	return _PlayerInfoOverrides, _PlayerItemOverrides;
+end
 -- Obtain additional information about a specific player value.
 -- Returns a table containing the following fields:
 --	CivilizationIcon					-- The icon id representing the civilization.
@@ -296,9 +496,7 @@ function GetPlayerIcons(domain, leader_type)
 			local results = CachedQuery(info_query, domain, leader_type);		
 			if(results) then
 				local row = results[1];
-				if row == nil then
-					return _GetPlayerIconsDefaultValue;
-				end
+
 				local playerColor = row.PlayerColor or leader_type;
 
 				local info = {
@@ -326,13 +524,26 @@ function GetPlayerInfo(domain, leader_type)
 	-- multiple 'random' pools.
 	if(leader_type ~= "RANDOM") then
 		local info_query = "SELECT CivilizationIcon, LeaderIcon, LeaderName, CivilizationName, LeaderAbilityName, LeaderAbilityDescription, LeaderAbilityIcon, CivilizationAbilityName, CivilizationAbilityDescription, CivilizationAbilityIcon, Portrait, PortraitBackground, PlayerColor from Players where Domain = ? and LeaderType = ? LIMIT 1";
-		local item_query = "SELECT Name, Description, Icon from PlayerItems where Domain = ? and LeaderType = ? ORDER BY SortIndex";
+		local item_query = "SELECT Type, Name, Description, Icon, SortIndex from PlayerItems where Domain = ? and LeaderType = ?";
 		local info_results = CachedQuery(info_query, domain, leader_type);
 		local item_results = CachedQuery(item_query, domain, leader_type);
+
+		-- Gather override data.
+		local playerInfoOverrides, playerItemOverrides = SyncPlayerOverrides();
+
+		-- Since there are many player items, reduce the list by filtering domain and leader item override matches.
+		local filteredItems = {};
+		for i,v in ipairs(playerItemOverrides) do
+			if(v.Domain == domain and v.LeaderType == leader_type) then
+				table.insert(filteredItems, v);
+			end
+		end
 		
 		if(info_results and item_results) then
 			local info = {};
 			info.LeaderType = leader_type;
+
+			local abilities = {};
 			for i,row in ipairs(info_results) do
 				
 				info.PlayerColor = row.PlayerColor or leader_type;
@@ -342,31 +553,98 @@ function GetPlayerInfo(domain, leader_type)
 				info.CivilizationName = row.CivilizationName;
 				info.Portrait = row.Portrait;
 				info.PortraitBackground = row.PortraitBackground;
-				if (CanShowLeaderAbility(row)) then
-					info.LeaderAbility = {
-						Name = row.LeaderAbilityName,
-						Description = row.LeaderAbilityDescription,
-						Icon = row.LeaderAbilityIcon
-					};
-				end
+									   
+						   
+								   
+												 
+								  
+	   
+	   
 
-				if (CanShowCivAbility(row)) then
-					info.CivilizationAbility = {
-						Name = row.CivilizationAbilityName,
-						Description = row.CivilizationAbilityDescription,
-						Icon = row.CivilizationAbilityIcon
-					};
+				abilities.LeaderAbilityName = row.LeaderAbilityName;
+				abilities.LeaderAbilityDescription = row.LeaderAbilityDescription;
+				abilities.LeaderAbilityIcon = row.LeaderAbilityIcon;
+
+				abilities.CivilizationAbilityName = row.CivilizationAbilityName;
+				abilities.CivilizationAbilityDescription = row.CivilizationAbilityDescription;
+				abilities.CivilizationAbilityIcon = row.CivilizationAbilityIcon;
+			end
+
+			-- Apply any overrides.
+			for i,v in ipairs(playerInfoOverrides) do
+				if(v.Domain == domain and v.LeaderType == leader_type) then
+					if(v.CivilizationAbilityName) then abilities.CivilizationAbilityName = v.CivilizationAbilityName; end
+					if(v.CivilizationAbilityDescription) then abilities.CivilizationAbilityDescription = v.CivilizationAbilityDescription; end
+					if(v.CivilizationAbilityIcon) then abilities.CivilizationAbilityIcon = v.CivilizationAbilityIcon; end
+					if(v.LeaderAbilityName) then abilities.LeaderAbilityName = v.LeaderAbilityName; end
+					if(v.LeaderAbilityDescription) then abilities.LeaderAbilityDescription = v.LeaderAbilityDescription; end
+					if(v.LeaderAbilityIcon) then abilities.LeaderAbilityIcon = v.LeaderAbilityIcon; end
 				end
 			end
 
-			info.Uniques = {};
+			-- Check whether abilities can be shown *after* overrides have been applied.
+			if (CanShowLeaderAbility(abilities)) then
+				info.LeaderAbility = {
+					Name = abilities.LeaderAbilityName,
+					Description = abilities.LeaderAbilityDescription,
+					Icon = abilities.LeaderAbilityIcon
+				};
+			end
+
+			if (CanShowCivAbility(abilities)) then
+				info.CivilizationAbility = {
+					Name = abilities.CivilizationAbilityName,
+					Description = abilities.CivilizationAbilityDescription,
+					Icon = abilities.CivilizationAbilityIcon
+				};
+			end
+
+			-- Generate a list of unique items while overriding.
+			local uniques = {};
 			for i,row in ipairs(item_results) do
-				table.insert(info.Uniques, {
+				uniques[row.Type] = {
 					Name = row.Name,
 					Description = row.Description,
-					Icon = row.Icon
-				});
+					Icon = row.Icon,
+					SortIndex = row.SortIndex,
+					ShouldRemove = false
+				};
 			end
+
+			for i,v in ipairs(filteredItems) do
+				local u = uniques[v.Type];
+				if(u == nil) then
+					u = {
+						SortIndex = 0,
+						ShouldRemove = false
+					};
+					uniques[v.Type] = u;
+				end
+
+				if(v.Name) then u.Name = v.Name end
+				if(v.Description) then u.Description = v.Description; end
+				if(v.Icon) then u.Icon = v.Icon; end
+				if(v.SortIndex ~= nil) then u.SortIndex = v.SortIndex; end
+				if(v.ShouldRemove ~= nil) then u.ShouldRemove = v.ShouldRemove; end
+			end
+
+
+			-- Validate and populate unique items.
+			info.Uniques = {};
+			for k,v in pairs(uniques) do
+				if(v.ShouldRemove == false and v.Name and v.Name ~= "NONE" and v.Description and v.Description ~= "NONE" and v.Icon) then
+					table.insert(info.Uniques, {
+						Name = v.Name,
+						Description = v.Description,
+						Icon = v.Icon,
+						SortIndex = v.SortIndex;
+					})
+				end
+			end
+
+			-- Ensure unique items are in the correct order.
+			table.sort(info.Uniques, function(a,b) return a.SortIndex < b.SortIndex; end);
+
 			return info;
 		end
 	end
@@ -513,13 +791,14 @@ function SetUniqueCivLeaderData(info:table, tooltipControls:table)
 		end
 	
 		tooltipControls.DummyImage:SetTexture(leaderPortrait);
+		tooltipControls.LeaderImage:SetTexture(leaderPortrait);												 
 		local imageRatio = tooltipControls.DummyImage:GetSizeX()/tooltipControls.DummyImage:GetSizeY();
 		if(imageRatio > .51) then
  			tooltipControls.LeaderImage:SetTextureOffsetVal(30,10)
 		else
 			tooltipControls.LeaderImage:SetTextureOffsetVal(10,50)
 		end
-		tooltipControls.LeaderImage:SetTexture(leaderPortrait);
+		
 
 		local leaderBGImage:string;
 		if info.PortraitBackground then
@@ -850,14 +1129,15 @@ function SetupLeaderPulldown(
 				refresh = false;
 			end
 						
+			-- If this is player 0, update the placard.
+			if(playerId == 0) then
+				local info = GetPlayerInfo(v.Domain, v.Value); 
+				info.PlayerColorIndex = colorIndex;
+				
+				m_currentInfo = info;
+			end
+
 			if(refresh) then
-				-- If this is player 0, update the placard.
-				if(playerId == 0) then
-					local info = GetPlayerInfo(v.Domain, v.Value); 
-					info.PlayerColorIndex = colorIndex;
-					
-					m_currentInfo = info;
-				end
 
 				local button = control:GetButton();
 
@@ -895,11 +1175,11 @@ function SetupLeaderPulldown(
 					end
 
 					if(not tooltipControls.HasLeaderPlacard) then
-						local info; -- Up-value
+							 
 						local domain = v.Domain;
 						local value = v.Value;
 						button:RegisterCallback( Mouse.eMouseEnter, function() 
-							if(info == nil) then info = GetPlayerInfo(domain, value); end
+							local info = GetPlayerInfo(domain, value);
 							info.PlayerColorIndex = colorIndex;
 							DisplayCivLeaderToolTip(info, tooltipControls, false); 
 						end);
@@ -967,12 +1247,11 @@ function SetupLeaderPulldown(
 					entry.Button:SetText(caption);
 					entry.LeaderIcon:SetIcon(icons.LeaderIcon);
 
-					local info;
 					local domain = v.Domain;
 					local value = v.Value;
 
 					entry.Button:RegisterCallback( Mouse.eMouseEnter, function() 
-						if(info == nil) then info = GetPlayerInfo(domain, value); end
+						local info = GetPlayerInfo(domain, value);
 						DisplayCivLeaderToolTip(info, tooltipControls, false); 
 					end);
 
