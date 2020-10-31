@@ -49,7 +49,6 @@
 		<File>UI/SetupParameters.lua</File>
 		<File>UI/GameSetupLogic.lua</File>
 		<File>UI/PlayerTargetLogic.lua</File>
-		<File>UI/PlayerSetupLogic.lua</File>
 		<File>UI/HostGame.xml</File>
 		
     </ImportFiles>
@@ -296,7 +295,6 @@
 	<File>UI/SetupParameters.lua</File>
 	<File>UI/GameSetupLogic.lua</File>
 	<File>UI/PlayerTargetLogic.lua</File>
-	<File>UI/PlayerSetupLogic.lua</File>
 
 	<File>Configuration/Text.xml</File>
 	<File>Configuration/Config.xml</File>
