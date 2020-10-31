@@ -41,26 +41,26 @@
         <LoadOrder>9999</LoadOrder>
       </Properties>
 	  
-		<File>UI/MainMenu.lua</File>
-		<File>UI/MainMenu.xml</File>
-		<File>UI/StagingRoom.lua</File>
-		<File>UI/StagingRoom.xml</File>
-		<File>UI/HostGame.lua</File>
-		<File>UI/SetupParameters.lua</File>
-		<File>UI/GameSetupLogic.lua</File>
-		<File>UI/PlayerTargetLogic.lua</File>
-		<File>UI/HostGame.xml</File>
+		<File>ui/MainMenu.lua</File>
+		<File>ui/MainMenu.xml</File>
+		<File>ui/StagingRoom.lua</File>
+		<File>ui/StagingRoom.xml</File>
+		<File>ui/HostGame.lua</File>
+		<File>ui/SetupParameters.lua</File>
+		<File>ui/GameSetupLogic.lua</File>
+		<File>ui/PlayerTargetLogic.lua</File>
+		<File>ui/HostGame.xml</File>
 		
     </ImportFiles>
 
     <UpdateDatabase id="None_Placeholder">
-      <File>Configuration/NONE_Config.xml</File>
+      <File>configuration/NONE_Config.xml</File>
     </UpdateDatabase>
         <UpdateDatabase id="CPL_SETTINGS">
-            	<File>Configuration/Config.xml</File>
+            	<File>configuration/Config.xml</File>
         </UpdateDatabase>
         <UpdateText id="CPL_SETTINGS_TEXTS">
-            <File>Configuration/Text.xml</File>
+            <File>configuration/Text.xml</File>
         </UpdateText>
 
 	
@@ -96,74 +96,74 @@
   </FrontEndActions>
    <InGameActions>
     	<UpdateColors id="GameplayColors">
-      		<File>Configuration/NONE_CoreColors.xml</File>
-      		<File>Configuration/NONE_PlayerColors.xml</File>
+      		<File>configuration/NONE_CoreColors.xml</File>
+      		<File>configuration/NONE_PlayerColors.xml</File>
     	</UpdateColors>
 
     	<UpdateDatabase id="Spectator_Gameplay">
       		<Properties>
         		<LoadOrder>9999</LoadOrder>
       		</Properties>
-      		<File>Configuration/NONE_Leaders.xml</File>
-      		<File>Configuration/NONE_Civilization.xml</File>
-      		<File>Configuration/NONE_LeaderAnimations.xml</File>
+      		<File>configuration/NONE_Leaders.xml</File>
+      		<File>configuration/NONE_Civilization.xml</File>
+      		<File>configuration/NONE_LeaderAnimations.xml</File>
     	</UpdateDatabase>
     	<AddGameplayScripts id="CPL_Helper">
-        	<File>Data/MP_helper.lua</File>
+        	<File>data/MP_helper.lua</File>
     	</AddGameplayScripts>
 
         <UpdateDatabase id="CPL_XML">
-            <File>Data/UnitAbilities.xml</File>
-			<File>Data/Victories.xml</File>
+            <File>data/UnitAbilities.xml</File>
+			<File>data/Victories.xml</File>
         </UpdateDatabase>
 		
         <UpdateText id="CPL_INGAME_TEXTS">
-            <File>Data/Text.xml</File>
+            <File>data/Text.xml</File>
         </UpdateText>
 
 	<ReplaceUIScript id="CPL_InGameTopOptionsMenu">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 			<LuaContext>InGameTopOptionsMenu</LuaContext>
-			<LuaReplace>UI/CPL_helper_InGameTopOptionsMenu.lua</LuaReplace>
+			<LuaReplace>ui/CPL_helper_InGameTopOptionsMenu.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 	<ImportFiles id="cpl_InGameTopOptionsMenu">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>UI/InGameTopOptionsMenu.xml</File>
+		<File>ui/InGameTopOptionsMenu.xml</File>
 	</ImportFiles>
 	<ImportFiles id="cpl_MPHOption">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>UI/MPHOptions.xml</File>
-		<File>UI/MPHOptions.lua</File>
-		<File>UI/VotePanel.xml</File>
-		<File>UI/VotePanel.lua</File>
-		<File>UI/DropControl.xml</File>
-		<File>UI/DropControl.lua</File>
-		<File>UI/EndGameMenu.lua</File>
-		<File>UI/EndGameMenu.xml</File>
-		<File>UI/PausePanel.lua</File>
-		<File>UI/PausePanel.xml</File>
-		<File>UI/SuddenDeathPanel.lua</File>
-		<File>UI/SuddenDeathPanel.xml</File>
+		<File>ui/MPHOptions.xml</File>
+		<File>ui/MPHOptions.lua</File>
+		<File>ui/VotePanel.xml</File>
+		<File>ui/VotePanel.lua</File>
+		<File>ui/DropControl.xml</File>
+		<File>ui/DropControl.lua</File>
+		<File>ui/EndGameMenu.lua</File>
+		<File>ui/EndGameMenu.xml</File>
+		<File>ui/PausePanel.lua</File>
+		<File>ui/PausePanel.xml</File>
+		<File>ui/SuddenDeathPanel.lua</File>
+		<File>ui/SuddenDeathPanel.xml</File>
 	</ImportFiles>
 	<ImportFiles id="cpl_InGame">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>UI/InGame.xml</File>
-		<File>UI/InGame.lua</File>
+		<File>ui/InGame.xml</File>
+		<File>ui/InGame.lua</File>
 	</ImportFiles>
 
 	<ReplaceUIScript id="CPL_ChatPanel">
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 			<LuaContext>ChatPanel</LuaContext>
-			<LuaReplace>UI/CPL_helper_ChatPanel.lua</LuaReplace>
+			<LuaReplace>ui/CPL_helper_ChatPanel.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 
@@ -171,7 +171,7 @@
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 			<LuaContext>ActionPanel</LuaContext>
-			<LuaReplace>UI/CPL_helper_ActionPanel.lua</LuaReplace>
+			<LuaReplace>ui/CPL_helper_ActionPanel.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 
@@ -179,14 +179,14 @@
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 			<LuaContext>StatusMessagePanel</LuaContext>
-			<LuaReplace>UI/StatusMessagePanel_Spectator.lua</LuaReplace>
+			<LuaReplace>ui/StatusMessagePanel_Spectator.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 	<ImportFiles id="Spectator_StatusMessagePanel" criteria="Expansion2">
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 		 </Properties>
-		<File>UI/StatusMessagePanel.xml</File>
+		<File>ui/StatusMessagePanel.xml</File>
 	</ImportFiles>
 
 	
@@ -254,56 +254,56 @@
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 		</Properties>
-		<File>UI/UnitFlagManager.lua</File>
+		<File>ui/UnitFlagManager.lua</File>
 	</ImportFiles>
  </InGameActions>
   <Files>
-    <File>Data/MP_helper.lua</File>
-	<File>Data/UnitAbilities.xml</File>
-	<File>Data/Victories.xml</File>
-	<File>Data/Text.xml</File>
+    <File>data/MP_helper.lua</File>
+	<File>data/UnitAbilities.xml</File>
+	<File>data/Victories.xml</File>
+	<File>data/Text.xml</File>
 
-	<File>UI/CPL_helper_ChatPanel.lua</File>
-	<File>UI/EndGameMenu.lua</File>
-	<File>UI/EndGameMenu.xml</File>
-	<File>UI/CPL_helper_ActionPanel.lua</File>
-	<File>UI/InGameTopOptionsMenu.xml</File>
-	<File>UI/CPL_helper_InGameTopOptionsMenu.lua</File>
-	<File>UI/MPHOptions.xml</File>
-	<File>UI/MPHOptions.lua</File>
-	<File>UI/InGame.xml</File>
-	<File>UI/InGame.lua</File>
-	<File>UI/VotePanel.xml</File>
-	<File>UI/VotePanel.lua</File>	
-	<File>UI/DropControl.xml</File>
-	<File>UI/DropControl.lua</File>
-	<File>UI/SuddenDeathPanel.lua</File>
-	<File>UI/SuddenDeathPanel.xml</File>
-   	<File>UI/MainMenu.lua</File>
-	<File>UI/MainMenu.xml</File>
-	<File>UI/PausePanel.lua</File>
-	<File>UI/PausePanel.xml</File>
-	<File>UI/UnitFlagManager.lua</File>
+	<File>ui/CPL_helper_ChatPanel.lua</File>
+	<File>ui/EndGameMenu.lua</File>
+	<File>ui/EndGameMenu.xml</File>
+	<File>ui/CPL_helper_ActionPanel.lua</File>
+	<File>ui/InGameTopOptionsMenu.xml</File>
+	<File>ui/CPL_helper_InGameTopOptionsMenu.lua</File>
+	<File>ui/MPHOptions.xml</File>
+	<File>ui/MPHOptions.lua</File>
+	<File>ui/InGame.xml</File>
+	<File>ui/InGame.lua</File>
+	<File>ui/VotePanel.xml</File>
+	<File>ui/VotePanel.lua</File>	
+	<File>ui/DropControl.xml</File>
+	<File>ui/DropControl.lua</File>
+	<File>ui/SuddenDeathPanel.lua</File>
+	<File>ui/SuddenDeathPanel.xml</File>
+   	<File>ui/MainMenu.lua</File>
+	<File>ui/MainMenu.xml</File>
+	<File>ui/PausePanel.lua</File>
+	<File>ui/PausePanel.xml</File>
+	<File>ui/UnitFlagManager.lua</File>
 
-	<File>UI/StatusMessagePanel_Spectator.lua</File>
-	<File>UI/StatusMessagePanel.xml</File>
+	<File>ui/StatusMessagePanel_Spectator.lua</File>
+	<File>ui/StatusMessagePanel.xml</File>
 
-   	<File>UI/StagingRoom.lua</File>
-	<File>UI/StagingRoom.xml</File>
-   	<File>UI/HostGame.lua</File>
-	<File>UI/HostGame.xml</File>
-	<File>UI/SetupParameters.lua</File>
-	<File>UI/GameSetupLogic.lua</File>
-	<File>UI/PlayerTargetLogic.lua</File>
+   	<File>ui/StagingRoom.lua</File>
+	<File>ui/StagingRoom.xml</File>
+   	<File>ui/HostGame.lua</File>
+	<File>ui/HostGame.xml</File>
+	<File>ui/SetupParameters.lua</File>
+	<File>ui/GameSetupLogic.lua</File>
+	<File>ui/PlayerTargetLogic.lua</File>
 
-	<File>Configuration/Text.xml</File>
-	<File>Configuration/Config.xml</File>
-      	<File>Configuration/NONE_CoreColors.xml</File>
-      	<File>Configuration/NONE_PlayerColors.xml</File>
-      	<File>Configuration/NONE_Leaders.xml</File>
-      	<File>Configuration/NONE_Civilization.xml</File>
-      	<File>Configuration/NONE_LeaderAnimations.xml</File>
-      	<File>Configuration/NONE_Config.xml</File>
+	<File>configuration/Text.xml</File>
+	<File>configuration/Config.xml</File>
+      	<File>configuration/NONE_CoreColors.xml</File>
+      	<File>configuration/NONE_PlayerColors.xml</File>
+      	<File>configuration/NONE_Leaders.xml</File>
+      	<File>configuration/NONE_Civilization.xml</File>
+      	<File>configuration/NONE_LeaderAnimations.xml</File>
+      	<File>configuration/NONE_Config.xml</File>
 	
 
 	<File>mode/watchtower/Artdefs/Improvements.artdef</File>
@@ -536,7 +536,7 @@
     <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Jungle_N1</File>
     <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_PIL_Decal_B</File>
     <File>mode/watchtower/Platforms/Windows/BLPs/strategicview/strategicview_improvements.blp</File>
-    <File>mode/watchtower/Platforms/Windows/BLPs/UI/Icons.blp</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/ui/Icons.blp</File>
     <File>mode/watchtower/Watchtower Improvement.dep</File>
     <File>mode/watchtower/XLPs/Atlas.xlp</File>
     <File>mode/watchtower/XLPs/StrategicView_Improvements.xlp</File>
