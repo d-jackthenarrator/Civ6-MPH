@@ -1484,7 +1484,9 @@ function SetupParameters:Parameter_FilterValues(parameter, values)
 						local dupes = banned_leaders and banned_leaders[leader];
 						if(dupes) then
 							for i,v in ipairs(dupes) do
-								leaders_in_bans[v] = true; 
+								if tostring(v) == tostring(leader) then
+									leaders_in_bans[v] = true;
+								end	
 							end
 						end
 					end

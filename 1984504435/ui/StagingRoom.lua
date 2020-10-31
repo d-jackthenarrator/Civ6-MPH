@@ -2374,17 +2374,16 @@ function HostLaunch()
 		
 		local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
 		for i, iPlayer in ipairs(player_ids) do	
-
 			if ( ( Network.IsPlayerConnected(iPlayer) or (g_debug == true  ) ) and PlayerConfigurations[iPlayer]:GetLeaderTypeName() == "LEADER_SPECTATOR") then
 				OnPlayerEntryReady(iPlayer)
 				allCount = allCount + 1
-				tmp = { ID = iPlayer, Observer = true, Team = -1, HasVotedMap = true, HasVotedBan = true, IsVisible = false, VotedScript = nil, VotedTemp = nil, VotedAge = nil, Ban_1 = nil, Ban_2 = nil, Ban_3 = nil  }
+				tmp = { ID = iPlayer, Observer = true, Team = -1, HasVotedMap = true, HasPicked = false, HasVotedBan = true, IsVisible = false, VotedScript = nil, VotedTemp = nil, VotedAge = nil, Ban_1 = nil, Ban_2 = nil, Ban_3 = nil  }
 				table.insert(g_cached_playerIDs,tmp)
 			end
 			if( ( Network.IsPlayerConnected(iPlayer) or (g_debug == true and PlayerConfigurations[iPlayer]:GetTeam() ~= -1) ) and PlayerConfigurations[iPlayer]:GetLeaderTypeName() ~= "LEADER_SPECTATOR") then
 				connectedCount = connectedCount + 1;
 				allCount = allCount + 1
-				tmp = { ID = iPlayer, Observer = false, Team = PlayerConfigurations[iPlayer]:GetTeam(), HasVotedMap = false, HasVotedBan = false, IsVisible = false, VotedScript = nil, VotedTemp = nil, VotedAge = nil, Ban_1 = nil, Ban_2 = nil, Ban_3 = nil   }
+				tmp = { ID = iPlayer, Observer = false, Team = PlayerConfigurations[iPlayer]:GetTeam(), HasVotedMap = false, HasPicked = false, HasVotedBan = false, IsVisible = false, VotedScript = nil, VotedTemp = nil, VotedAge = nil, Ban_1 = nil, Ban_2 = nil, Ban_3 = nil   }
 				table.insert(g_cached_playerIDs,tmp)
 			end
 		end
@@ -2907,7 +2906,7 @@ function GetNextID()
 	
 	-- Pick Phase
 	if g_phase == PHASE_LEADERPICK then
-	
+		print("Phase is: PHASE_LEADERPICK")
 	-- initialise (first time)
 		if last_ID == nil then
 			-- Slot order? Pick the first non spec player
@@ -3042,7 +3041,7 @@ function GetNextID()
 							found_previous = true
 						end
 					end
-
+					
 					if 	found_previous == true then
 						-- We finished the list restart from the beginning
 						for i, player in ipairs(g_cached_playerIDs) do
@@ -3622,6 +3621,7 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 			end
 		end
 	end
+
 	if localID == hostID then
 		bversion_display = true
 	end
@@ -3633,7 +3633,7 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 	if fromPlayer == g_next_ID then
 		b_isnext = true
 	end	
-		
+	
 	if string.sub(text,1,8) == ".version" then
 		g_version_map[fromPlayer] = string.sub(text,10)
 		if b_ishost == true then
