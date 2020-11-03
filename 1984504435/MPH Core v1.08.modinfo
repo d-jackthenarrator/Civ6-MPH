@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="108">
   <Properties>
-    <Name>Multiplayer Helper 1.08</Name>
+    <Name>Multiplayer Helper 1.0.8</Name>
     <Description>Help multiplayer Games being more than lobby simulators</Description>
     <Teaser>Allow eSport drafting, in-game remap etc...</Teaser>
     <Authors>D. / Jack The Narrator</Authors>
-	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, TC_, Sailor Cat</SpecialThanks>
+	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, TC_, Sailor Cat, coloo</SpecialThanks>
     <CompatibleVersions>1.2,2.0</CompatibleVersions>
   </Properties>
   <Dependencies>
@@ -30,6 +30,13 @@
 			<ConfigurationValueMatches>
 				<Group>Game</Group>
 				<ConfigurationId>GAMEMODE_ANONYMOUS</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="LastMove_Mode_Expansion2">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>GAMEMODE_LASTMOVE</ConfigurationId>
 				<Value>1</Value>
 			</ConfigurationValueMatches>
 		</Criteria>
@@ -67,11 +74,11 @@
 	<UpdateIcons id="MPHIcons FrontEnd">
      	<File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
 		<File>icons/Anonymous_Icons.xml</File>
+		<File>icons/LastMove_Icons.xml</File>
 		<File>icons/OneCity_Icons.xml</File>
 		<File>icons/Sudden_Death_Icons.xml</File>
 	</UpdateIcons>
 	
-
 
 	<ImportFiles id="FrontEnd_Arts_Icons_Import">
      	 <Items>
@@ -90,6 +97,9 @@
 			<File>icons/OneCityChallenge_44.dds</File>
 			<File>mode/onecity/OneCity_Portrait.dds</File>
 			<File>mode/onecity/OneCity_Background.dds</File>
+			<File>icons/LastMove_44.dds</File>
+			<File>mode/lastmove/LastMove_Portrait.dds</File>
+			<File>mode/lastmove/LastMove_Background.dds</File>
       </Items>
     </ImportFiles>
 
@@ -113,8 +123,7 @@
     	</AddGameplayScripts>
 
         <UpdateDatabase id="CPL_XML">
-            <File>data/UnitAbilities.xml</File>
-			<File>data/Victories.xml</File>
+		<File>data/Victories.xml</File>
         </UpdateDatabase>
 		
         <UpdateText id="CPL_INGAME_TEXTS">
@@ -241,6 +250,27 @@
       </Properties>
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
+        <AddUserInterfaces id="lastmove_ui_update" criteria="LastMove_Mode_Expansion2">
+		<Properties>
+			<Context>InGame</Context>
+		</Properties>
+		<File>mode/lastmove/lastmove_UI.xml</File>
+	</AddUserInterfaces>
+	 <UpdateDatabase id="lastmove_database_update" criteria="LastMove_Mode_Expansion2">
+      		<Properties>
+        		<LoadOrder>9999</LoadOrder>
+      		</Properties>
+      		<File>mode/lastmove/lastmove_unitabilities.xml</File>
+    </UpdateDatabase>
+	 <AddGameplayScripts id="lastmove_gamescript_update" criteria="LastMove_Mode_Expansion2">
+        	<File>mode/lastmove/lastmove.lua</File>
+    </AddGameplayScripts>
+	 <UpdateText id="lastmove_text_update" criteria="LastMove_Mode_Expansion2">
+      <Properties>
+        <LoadOrder>9999</LoadOrder>
+      </Properties>
+      <File>mode/lastmove/lastmove_text.xml</File>
+    </UpdateText>
     <UpdateText id="OCCText" criteria="OneCityChallenge_Mode_Expansion2">
       <Properties>
         <LoadOrder>9999</LoadOrder>
@@ -259,7 +289,6 @@
  </InGameActions>
   <Files>
     <File>data/MP_helper.lua</File>
-	<File>data/UnitAbilities.xml</File>
 	<File>data/Victories.xml</File>
 	<File>data/Text.xml</File>
 
@@ -563,5 +592,15 @@
     <File>icons/ExpansionistUnit_50.dds</File>
     <File>icons/ExpansionistUnit_80.dds</File>
     <File>icons/ExpansionistUnit_256.dds</File>
+	
+	<File>mode/lastmove/lastmove.lua</File>
+	<File>mode/lastmove/lastmove_UI.lua</File>
+	<File>mode/lastmove/lastmove_UI.xml</File>
+	<File>mode/lastmove/lastmove_text.xml</File>
+	<File>mode/lastmove/lastmove_unitabilities.xml</File>
+	<File>mode/lastmove/LastMove_Portrait.dds</File>
+	<File>mode/lastmove/LastMove_Background.dds</File>
+	<File>icons/LastMove_44.dds</File>
+	<File>icons/LastMove_Icons.xml</File>
   </Files>
 </Mod>
