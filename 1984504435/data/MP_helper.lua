@@ -74,14 +74,9 @@
 ExposedMembers.LuaEvents = LuaEvents
 local g_version = "v1.08"
 local Drop_Data = {};
-local Last_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0
-local b_clean = false
-local g_clean_delay = 10
 local b_onecity = false
-local b_last_move = false
-local b_debuff = false
 local b_teamer = false
 local g_timeshift = 0
 
@@ -243,70 +238,6 @@ end
 
 LuaEvents.UITimeAdjust.Add( OnAdjustTime )
 
-function OnUnitMoved( playerID:number, unitID:number )
-	if b_last_move == false or b_debuff == false then
-		return
-	end
-	OnLastMove(playerID,unitID)
-
-end
-
-GameEvents.OnUnitMoved.Add(OnUnitMoved)
-
-function ApplyDebuff(playerID:number, unitID:number)
-	unit = UnitManager.GetUnit(playerID, unitID)
-
-	if unit ~= nil then
-		local unitAbilities = unit:GetAbility()
-		if unitAbilities ~= nil then
-			if (unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED")==0) then
-				unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED",1)
-			end
-			if (unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED_READY")==1) then
-				unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED_READY",-1)
-			end
-		end
-	end
-
-end
-
-function ActivateDebuff()
-	b_debuff = true
-end
-
-
-LuaEvents.UIPulse2.Add( ActivateDebuff );
-
-function RemoveDebuff(current_turn:number)
-	b_clean = true
-	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
-		if Players[i] ~= nil then
-			if Players[i]:IsAlive() == true and Players[i]:IsHuman() == true then
-				local pPlayerUnits = Players[i]:GetUnits()
-				for k, unit in pPlayerUnits:Members() do
-					if unit ~= nil then
-						local unitAbilities = unit:GetAbility()
-						if unitAbilities ~= nil then
-							if (unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED")==1) then
-								unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED",-1)
-								if unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED_READY") == 0 or unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED_READY") == -1 then
-									unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED_READY",1)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end	
-end
-
-
-LuaEvents.UIPulse.Add( RemoveDebuff );
-
-
-
-
 --------------------------------------------------------------------------------
 function OnCapturedCityState(playerID,cityID)
 	print("OnCapturedCityState", playerID,cityID)
@@ -370,49 +301,6 @@ function OnGameTurnStarted(player)
 	b_clean = false
 	b_debuff = false
 	print("OnGameTurnStarted",g_turn_start_time)
-
-	-- Last Move
-	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
-		if Players[i] ~= nil then
-			if Players[i]:IsAlive() == true and Players[i]:IsHuman() == true then
-				local pPlayerUnits = Players[i]:GetUnits()
-				for k, unit in pPlayerUnits:Members() do
-					if unit ~= nil then
-						local unitAbilities = unit:GetAbility()
-						if unitAbilities ~= nil then
-							if (unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED_READY")==1) then
-								unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED_READY",-1)
-								print("Clean Buff",i,unit,"turn",Game.GetCurrentGameTurn())
-							end
-						end
-					end
-				end
-			end
-		end
-	end	
-	if Last_Data ~= nil then
-		local pUnit
-		for i, row in pairs(Last_Data) do
-			if row.player ~= nil and row.unit ~= nil then
-				print("OnGameTurnStarted",row.player,row.unit)
-				pUnit = UnitManager.GetUnit(row.player, row.unit)
-				if pUnit ~= nil then
-					local unitAbilities = pUnit:GetAbility()
-					if unitAbilities ~= nil then
-						print("unitAbilities:GetAbilityCount(ABILITY_LAST_MOVED)",unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED"))
-						if (unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED")==0) then
-							unitAbilities:ChangeAbilityCount("ABILITY_LAST_MOVED",1)
-							print("OnGameTurnStarted - Applied Debuff",row.player,row.unit,pUnit,"turn",Game.GetCurrentGameTurn())
-							print("unitAbilities:GetAbilityCount(ABILITY_LAST_MOVED) Add Debuff",unitAbilities:GetAbilityCount("ABILITY_LAST_MOVED"))
-						end
-					end
-				end
-			end	
-		end
-	end
-
-	Last_Data = {}
-
 
 end
 
@@ -521,17 +409,6 @@ function FreeCities_Sronger()
 			end
 		end
 end
-
-
-function OnLastMove(playerID:number, unitID:number)
-	print("OnLastMove", playerID,unitID)
-	local tmp = {player = playerID, unit = unitID}
-	table.insert(Last_Data,tmp)
-end
-
-
---LuaEvents.UICPLLastMove.Add( OnLastMove );
-
 
 
 -------------------------------------------------------------------------------------------------------------------------------
