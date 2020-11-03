@@ -509,6 +509,12 @@
 	<Row Tag="LOC_GAMEMODE_ONECITY_DESCRIPTION" Language="en_US">
 		<Text>We can only have one city... Plan ahead to build it into an unchallenged military center or a new tower of Babel![NEWLINE]Settlers are disabled.[NEWLINE]Any captured city would be immediately razed.</Text>
 	</Row>
+	<Row Tag="LOC_GAMEMODE_LASTMOVE_NAME" Language="en_US">
+		<Text>Last Move - First Move Mode</Text>
+	</Row>
+	<Row Tag="LOC_GAMEMODE_LASTMOVE_DESCRIPTION" Language="en_US">
+		<Text>Infamous end of turn last move first move are coming to an end![NEWLINE][NEWLINE]Moving or attacking during the last 15 secs of the turn would make your unit [COLOR_Civ6Red]Unprepared[ENDCOLOR].[NEWLINE][COLOR_Civ6Red]Unprepared[ENDCOLOR] units have a -20[ICON_Strength] penalty when attacking.[NEWLINE]An unit will stays [COLOR_Civ6Red]Unprepared[ENDCOLOR] until it is attacked or after 10 secs in the following game turn.</Text>
+	</Row>
 	<Row Tag="LOC_MPH_PHASE_BUTTON_TOOLTIP_ERROR" Language="en_US">
 		<Text>The draft cannot be launched at the moment. It could be due to:[NEWLINE]A player having an incorrect version of the mod or that hasn't subscribed to the mod.[NEWLINE]Host still waiting for data from other clients. (Shouldn't take more than 10 secs)</Text>
 	</Row>

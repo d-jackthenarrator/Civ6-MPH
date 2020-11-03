@@ -64,12 +64,14 @@
 		<Row ParameterId="GameMode_Sudden_Death" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_SUDDEN_DEATH" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="110"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_Anonymous" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ANONYMOUS" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="120"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_OneCity" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ONECITY" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="130"  SupportsSinglePlayer="1" Visible="1" />
+		<Row ParameterId="GameMode_LastMove" Name="LOC_GAMEMODE_LASTMOVE_NAME" Description="LOC_GAMEMODE_LASTMOVE_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_LASTMOVE" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="140"  SupportsSinglePlayer="1" Visible="1" />
 	</Parameters>
 
 	<GameModeItems>
 		<Row GameModeType="GAMEMODE_SUDDEN_DEATH" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Portrait="Sudden_Death_Portrait.dds" Background="Sudden_Death_Background.dds" Icon="ICON_GAMEMODE_SUDDEN_DEATH" SortIndex="20"  />
 		<Row GameModeType="GAMEMODE_ANONYMOUS" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Portrait="Anonymous_Portrait.dds" Background="Anonymous_Background.dds" Icon="ICON_GAMEMODE_ANONYMOUS" SortIndex="30"  />
 		<Row GameModeType="GAMEMODE_ONECITY" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Portrait="OneCity_Portrait.dds" Background="OneCity_Background.dds" Icon="ICON_GAMEMODE_ONECITY" UnitIcon="ICON_UNIT_EXPANSIONIST" UnitDescription="LOC_EXPANSIONIST_DESC" UnitName="LOC_EXPANSIONIST_NAME" SortIndex="40" />
+		<Row GameModeType="GAMEMODE_LASTMOVE" Name="LOC_GAMEMODE_LASTMOVE_NAME" Description="LOC_GAMEMODE_LASTMOVE_DESCRIPTION" Portrait="LastMove_Portrait.dds" Background="LastMove_Background.dds" Icon="ICON_GAMEMODE_LASTMOVE" SortIndex="50" />
 	</GameModeItems>
 
 
