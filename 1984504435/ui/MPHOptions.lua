@@ -185,8 +185,8 @@ function OnRequestHostResync()
 	local localID = Network.GetLocalPlayerID()
 	if localID ~= hostID then
 		Network.SendChat(".mph_ui_log_received_general_request_to_resync_to_host",-2,hostID)
-		Network.RequestSnapshot()
-		Network.TriggerTestSync()
+		--Network.RequestSnapshot()
+		--Network.TriggerTestSync()
 	end
 	OnReturn()
 end
@@ -344,7 +344,7 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 	
 	if (string.sub(string.lower(text),1,12)== ".mph_ui_seed" and localID == hostID)  then
 		local tmp = tostring(string.sub(text,14))
-		OnRequestHostSeedCheck(tmp,fromPlayer)
+		--OnRequestHostSeedCheck(tmp,fromPlayer)
 		return
 	end
 end
