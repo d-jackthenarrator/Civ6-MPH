@@ -80,9 +80,48 @@ local b_onecity = false
 local b_teamer = false
 local g_timeshift = 0
 
+-- ===========================================================================
+--	GLOBAL FLAGS
+-- ===========================================================================
+
+
+
 -- =========================================================================== 
 --	NEW FUNCTIONS
 -- =========================================================================== 
+
+function Init_Properties()
+	Game:SetProperty("MPH_REMAP_MODE", 0) 
+	local player_ids = PlayerManager.GetAliveMajorIDs();
+	for i, iPlayer in ipairs(player_ids) do
+		if Players[iPlayer] ~= nil then
+			Game:SetProperty("MPH_RESYNC_ARMED_"..iPlayer,0)
+		end
+	end	
+end
+
+function OnHostInstructsRemap(ePlayer : number, params : table)
+	print("OnHostInstructsRemap",ePlayer)
+	if params.GameSeed ~= nil then
+		print("params.GameSeed",params.GameSeed)
+		print("params.MapSeed",params.MapSeed)
+		Game:SetProperty("MPH_GAMESEED",params.GameSeed)
+		Game:SetProperty("MPH_MAPSEED",params.MapSeed)
+		Game:SetProperty("MPH_REMAP_MODE",1)
+	end
+end
+
+GameEvents.OnHostInstructsRemap.Add(OnHostInstructsRemap)
+
+function OnPlayerReceivedRemapInstructions(ePlayer : number, params : table)
+	print("OnPlayerReceivedRemapInstructions",ePlayer)
+	if params.Player ~= nil then
+		print("params.Player",params.Player)
+		Game:SetProperty("MPH_REMAP_READY_"..params.Player,1)
+	end
+end
+
+GameEvents.OnPlayerReceivedRemapInstructions.Add(OnPlayerReceivedRemapInstructions)
 
 function SmartTimer()
 	-- 0: Competitive
@@ -1959,6 +1998,7 @@ end
 
 function Initialize()
 	print("-- Init D. CPL Helper Gameplay Script"..g_version.." --");
+	Init_Properties()
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") ~= nil) then
 		if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") == true) then
