@@ -353,7 +353,14 @@ function ConfirmRestart()
 		if _kPopupDialog == nil then
 		_kPopupDialog = PopupDialog:new( "VotePanel" );
 		end
-
+		if (GameConfiguration.IsPaused() == true) then
+			local pausePlayerID  = GameConfiguration.GetPausePlayer();
+			local localPlayerConfig = PlayerConfigurations[pausePlayerID];
+			if(localPlayerConfig) then
+				localPlayerConfig:SetWantsPause(false);
+			end
+			Network.BroadcastPlayerInfo();
+		end
 		if (not _kPopupDialog:IsOpen()) then
 			_kPopupDialog:AddCountDown(10,OnYesRestart)
 			_kPopupDialog:AddTitle("Restart Game");
@@ -380,12 +387,24 @@ function OnYesRestart( )
 	ContextPtr:SetHide(true);
 	GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
 	Network.BroadcastGameConfig();
-	local kParameters:table = {};
-	kParameters.GameSeed = GameConfiguration.GetValue("GAME_SYNC_RANDOM_SEED")
-	kParameters.MapSeed = MapConfiguration.GetValue("RANDOM_SEED")
-	kParameters.OnStart = "OnHostInstructsRemap";
-	UI.RequestPlayerOperation(Network.GetGameHostPlayerID(), PlayerOperations.EXECUTE_SCRIPT, kParameters);
-	print("UI Remap Sent",kParameters.GameSeed,kParameters.MapSeed)
+	--local kParameters:table = {};
+	--kParameters.GameSeed = GameConfiguration.GetValue("GAME_SYNC_RANDOM_SEED")
+	--kParameters.MapSeed = MapConfiguration.GetValue("RANDOM_SEED")
+	--kParameters.OnStart = "OnHostInstructsRemap";
+	--if (GameConfiguration.IsPaused() == true) then
+	--	local pausePlayerID  = GameConfiguration.GetPausePlayer();
+	--	local localPlayerConfig = PlayerConfigurations[pausePlayerID];
+	--	if(localPlayerConfig) then
+	--		localPlayerConfig:SetWantsPause(false);
+	--	end
+	--	Network.BroadcastPlayerInfo();
+	--end
+	Network.SendChat("Initiating Remap",-2,Network.GetGameHostPlayerID())
+	Network.SendChat("----------------",-2,Network.GetGameHostPlayerID())
+	Network.SendChat("You'll be resynced to the new game once the Host has fully loaded.",-2,Network.GetGameHostPlayerID())
+	OnLocalHostRestart()
+	--UI.RequestPlayerOperation(Network.GetGameHostPlayerID(), PlayerOperations.EXECUTE_SCRIPT, kParameters);
+	--print("UI -> OnHostInstructsRemap",kParameters.GameSeed,kParameters.MapSeed,os.date())
 end
 
 function OnNoRestart( )
@@ -684,34 +703,53 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		
 end
 
+function OnLocalHostRestart()
+	if localID ~= hostID then
+		print("OnLocalHostRestart() - Not the Host")
+	end
+	print(tick,"REMAP - HOST IS RESTARTING",os.date())
+	GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
+	Network.BroadcastGameConfig();	
+	if (GameConfiguration.IsPaused() == false) then
+		local localPlayerID = hostID;
+		local localPlayerConfig = PlayerConfigurations[localPlayerID];
+		local newPause = not localPlayerConfig:GetWantsPause();
+		localPlayerConfig:SetWantsPause(newPause);
+		Network.BroadcastPlayerInfo();
+	end
+	Network.RestartGame();	
+end
+
 function OnRefresh()
 	if tick + 1 < os.clock() then
-		--print(tick,"Local Status: Snapshot Request",Game:GetProperty("MPH_RESYNC_ARMED_"..localID),"RESTART?",GameConfiguration.GetValue("GAME_HOST_IS_JUST_RELOADING"),Game:GetProperty("MPH_REMAP_MODE"))
+		--print(tick,"Local Status:",Game:GetProperty("MPH_RESYNC_ARMED_"..localID),"RESTART?",GameConfiguration.GetValue("GAME_HOST_IS_JUST_RELOADING"),Game:GetProperty("MPH_REMAP_MODE"))
 		-- triggering a Host Request (Restart Context - Pre Host Restart)
-		if Game:GetProperty("MPH_REMAP_MODE") == 1 and localID == hostID then
-		print(tick,"REMAP",Game:GetProperty("MPH_REMAP_MODE"),"SEED",Game:GetProperty("MPH_GAMESEED"),Game:GetProperty("MPH_MAPSEED"))
+		--if Game:GetProperty("MPH_REMAP_MODE") == 1 and localID == hostID then
+		--print(tick,"REMAP",Game:GetProperty("MPH_REMAP_MODE"),"SEED",Game:GetProperty("MPH_GAMESEED"),Game:GetProperty("MPH_MAPSEED"),os.date())
 		-- Arming the seeds manually 
-			if Game:GetProperty("MPH_GAMESEED") ~= nil and Game:GetProperty("MPH_MAPSEED") ~= nil then
-				if (GameConfiguration.IsPaused() == false) then
-					local localPlayerID = hostID;
-					local localPlayerConfig = PlayerConfigurations[localPlayerID];
-					local newPause = not localPlayerConfig:GetWantsPause();
-					localPlayerConfig:SetWantsPause(newPause);
-					Network.BroadcastPlayerInfo();
-				end
-				MapConfiguration.SetValue("RANDOM_SEED",Game:GetProperty("MPH_MAPSEED"))
-				GameConfiguration.SetValue("GAME_SYNC_RANDOM_SEED", Game:GetProperty("MPH_GAMESEED"))
-				GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
-				Network.BroadcastGameConfig();
-				Network.RestartGame();
-				return
-			end
-		end
+		--	if Game:GetProperty("MPH_GAMESEED") ~= nil and Game:GetProperty("MPH_MAPSEED") ~= nil then
+		--		if (GameConfiguration.IsPaused() == false) then
+		--			local localPlayerID = hostID;
+		--			local localPlayerConfig = PlayerConfigurations[localPlayerID];
+		--			local newPause = not localPlayerConfig:GetWantsPause();
+		--			localPlayerConfig:SetWantsPause(newPause);
+		--			Network.BroadcastPlayerInfo();
+		--		end
+		--		MapConfiguration.SetValue("RANDOM_SEED",Game:GetProperty("MPH_MAPSEED"))
+		--		GameConfiguration.SetValue("GAME_SYNC_RANDOM_SEED", Game:GetProperty("MPH_GAMESEED"))
+		--		GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
+		--		Network.BroadcastGameConfig();
+		--		print(tick,"REMAP - HOST IS RESTARTING",os.date())
+		--		Network.RestartGame();
+		--		return
+		--	end
+		--end
 
 		-- triggering a Snapshot Request (Restart Context - Host has Fully Loaded)
 		if localID == hostID and GameConfiguration.GetValue("GAME_HOST_IS_JUST_RELOADING") == "Y" and Game:GetProperty("MPH_REMAP_MODE") == 0 then
-			print(tick,"Host Command: Snapshot Request",Game:GetProperty("MPH_RESYNC_ARMED_"..localID))
-			GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","N")	
+			print(tick,"Host Command: Snapshot Request",Game:GetProperty("MPH_RESYNC_ARMED_"..localID),os.date())
+			GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","N")
+			Network.BroadcastGameConfig();			
 			Network.SendChat(".mph_ui_snap",-2,-1)
 			return	
 		end
