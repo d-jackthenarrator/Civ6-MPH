@@ -101,7 +101,7 @@ function Init_Properties()
 end
 
 function OnHostInstructsRemap(ePlayer : number, params : table)
-	print("OnHostInstructsRemap",ePlayer)
+	print("OnHostInstructsRemap",ePlayer,os.date())
 	if params.GameSeed ~= nil then
 		print("params.GameSeed",params.GameSeed)
 		print("params.MapSeed",params.MapSeed)
@@ -1993,6 +1993,39 @@ function FindTableIndex(t,val)
     end
 end
 
+function NoMoreStack()
+	print("No more stack check turn", Game.GetCurrentGameTurn())
+	if ( Game.GetCurrentGameTurn() ~= GameConfiguration.GetStartTurn()) then
+	for i = 0, PlayerManager.GetAliveMajorsCount() - 1 do
+		if (PlayerConfigurations[i]:GetLeaderTypeName() ~= "LEADER_SPECTATOR" and PlayerConfigurations[i]:GetHandicapTypeID() ~= 2021024770) then
+			local pPlayerCulture:table = Players[i]:GetCulture();
+			if pPlayerCulture:GetProgressingCivic() == -1 and pPlayerCulture:GetCultureYield()>0 then
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic")
+				for k = 0, 58 do
+					if (pPlayerCulture:HasCivic(k) == false) then
+						pPlayerCulture:SetProgressingCivic(k)
+						break
+					end	
+				end
+			end
+			local pPlayerTechs:table = Players[i]:GetTechs();
+			if pPlayerTechs:GetResearchingTech() == -1 and pPlayerTechs:GetScienceYield()>0 then
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech")
+				for k = 0, 73 do
+					if (pPlayerTechs:HasTech(k) == false) then
+						pPlayerTechs:SetResearchingTech(k)
+						break
+					end	
+				end
+			end
+		end		
+	end
+	end	
+end
+
+
+
+
 
 -------------------------------------------------------
 
@@ -2000,6 +2033,7 @@ function Initialize()
 	print("-- Init D. CPL Helper Gameplay Script"..g_version.." --");
 	Init_Properties()
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
+	GameEvents.OnGameTurnStarted.Add(NoMoreStack);
 	if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") ~= nil) then
 		if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") == true) then
 			print("Last Move Debuff Mechanics is On")

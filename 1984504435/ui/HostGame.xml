@@ -55,19 +55,27 @@
 
 
 						<!-- Ban Parameters Stack -->
-						<Grid ID="BanHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+						<Grid ID="BanHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" Hidden="1">
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_OPTIONS"/>
 						</Grid>
 
 						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanParametersStack"/>
 						<!-- Ban Parameters Stack -->
-						<Grid ID="BanPoolHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
+						<Grid ID="BanPoolHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" >
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_POOL_OPTIONS"/>
 						</Grid>
 
 						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanPoolParametersStack"/>
+						
+						<!-- Trading Parameters Stack -->
+						<Grid ID="TradingParametersHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" >
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_MPH_TRADING_PARAMETERS_OPTIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="TradingParametersStack"/>
 
 						<!-- Secondary Parameters Stack -->
 						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
@@ -82,10 +90,11 @@
 
 			<Stack Anchor="C,B" Offset="0,0" Padding="2" StackGrowth="Right" ID="BottomButtonStack">
 				<!-- TODO: Add contents of mods screen into the ParametersStack (in the SecondaryParametersStack, or in its own ModsStack)  -->
-				<GridButton ID="LoadButton"			Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_GAME"/>
-				<GridButton ID="LoadConfigButton"	Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_CONFIG"/>
-				<GridButton ID="SaveConfigButton"	Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_SAVE_CONFIG"/>
-				<GridButton ID="ConfirmButton"		Anchor="L,C" Offset="0,0"	Size="250,41"	Style="ButtonConfirm" String="LOC_MULTIPLAYER_CONFIRM_SETTINGS" ToolTip="LOC_MULTIPLAYER_HOST_GAME_TT"/>
+				<GridButton ID="LoadButton"				Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_GAME"/>
+				<GridButton ID="LoadConfigButton"		Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_LOAD_CONFIG"/>
+				<GridButton ID="SaveConfigButton"		Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_SAVE_CONFIG"/>
+				<GridButton ID="RefreshConfigButton"	Anchor="L,C" Offset="0,0"	Size="250,41"	Style="MainButton" String="LOC_MPH_GAME_REFRESH_SEED_CONFIG"/>
+				<GridButton ID="ConfirmButton"			Anchor="L,C" Offset="0,0"	Size="250,41"	Style="ButtonConfirm" String="LOC_MULTIPLAYER_CONFIRM_SETTINGS" ToolTip="LOC_MULTIPLAYER_HOST_GAME_TT"/>
 			</Stack>
 		</Container>
 	</Box>
@@ -95,7 +104,7 @@
 	<LuaContext FileName="UI/FrontEnd/LoadGameMenu" ID="LoadGameMenu"	Hidden="1" />
 	<LuaContext FileName="UI/FrontEnd/SaveGameMenu" ID="SaveGameMenu"	Hidden="1" />
 	<LuaContext FileName="MultiSelectWindow" ID="MultiSelectWindow"  Hidden="1"/>
-	
+	<LuaContext FileName="CityStatePicker" ID="CityStatePicker"  Hidden="1"/>
 	<Instance Name="ShellTab">
 		<Container ID="TopControl"  Size="auto,auto">
 			<GridButton ID="Button" Anchor="C,T" Style="ShellTab"/>

@@ -38,6 +38,7 @@ function GetControlStack(group)
 		["Victories"] = Controls.VictoryParameterStack,
 		["BanOptions"] = Controls.BanParametersStack,
 		["BanPoolOptions"] = Controls.BanPoolParametersStack,
+		["TradingOptions"] = Controls.TradingParametersStack,
 		["AdvancedOptions"] = Controls.SecondaryParametersStack,
 	};
 

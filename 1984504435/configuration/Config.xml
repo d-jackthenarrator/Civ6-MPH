@@ -19,12 +19,12 @@
 		<Row ParameterId="CPL_TRADING_LUXURY" Name="CPL_TRADING_LUXURY_NAME" Description="CPL_TRADING_LUXURY_DESC" Domain="TradingLimits" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="CPL_TRADING_LUXURY" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" Visible="0"  SortIndex="2913" />
 
 		<Row ParameterId="CPL_BAN_FORMAT" Name="CPL_BAN_FORMAT_NAME" Description="CPL_BAN_FORMAT_DESC" Domain="BanLimits" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_BAN_FORMAT" GroupId="GameOptions" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="2500" />
-		<Row ParameterId="BAN_1" Name="CPL_BAN_01_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_1" GroupId="BanOptions"  SortIndex="2800" />
-		<Row ParameterId="BAN_2" Name="CPL_BAN_02_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_2" GroupId="BanOptions"  SortIndex="2800" />
-		<Row ParameterId="BAN_3" Name="CPL_BAN_03_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_3" GroupId="BanOptions"  SortIndex="2800" />
-		<Row ParameterId="BAN_4" Name="CPL_BAN_04_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_4" GroupId="BanOptions"  SortIndex="2800" />
-		<Row ParameterId="BAN_5" Name="CPL_BAN_05_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_5" GroupId="BanOptions"  SortIndex="2800" />
-		<Row ParameterId="BAN_6" Name="CPL_BAN_06_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_6" GroupId="BanOptions"  SortIndex="2800" />
+		<Row ParameterId="BAN_1" Name="CPL_BAN_01_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_1" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
+		<Row ParameterId="BAN_2" Name="CPL_BAN_02_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_2" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
+		<Row ParameterId="BAN_3" Name="CPL_BAN_03_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_3" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
+		<Row ParameterId="BAN_4" Name="CPL_BAN_04_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_4" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
+		<Row ParameterId="BAN_5" Name="CPL_BAN_05_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_5" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
+		<Row ParameterId="BAN_6" Name="CPL_BAN_06_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_6" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
 		<Row ParameterId="BAN_7" Name="CPL_BAN_07_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_7" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
 		<Row ParameterId="BAN_8" Name="CPL_BAN_08_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_8" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
 		<Row ParameterId="BAN_9" Name="CPL_BAN_09_NAME" Description="CPL_BAN_DESC" Domain="BansQuery" DefaultValue="LEADER_NONE" ConfigurationGroup="Game" ConfigurationId="BAN_9" GroupId="BanOptions"  Visible="0" SortIndex="2800" />
@@ -61,6 +61,22 @@
 		<Row ParameterId="Terra_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Terra.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_13_NAME" GroupId="BanPoolOptions" Visible="0" SortIndex="2810"/>	
 		<Row ParameterId="Tilted_Axis_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Tilted_Axis.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_14_NAME" GroupId="BanPoolOptions" Visible="0" SortIndex="2810"/>	
 
+		<Row ParameterId="Diplomatic_Deal" 		Name="LOC_MPH_DIPLOMATIC_DEAL_NAME" 		Description="LOC_MPH_DIPLOMATIC_DEAL_DESC" 			Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="DIPLOMATIC_DEAL" 		GroupId="TradingOptions"  Visible="1" SortIndex="10" SupportsSinglePlayer="0" />
+		<Row ParameterId="Diplomatic_Deal" 		Name="LOC_MPH_DIPLOMATIC_DEAL_NAME" 		Description="LOC_MPH_DIPLOMATIC_DEAL_DESC" 			Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="DIPLOMATIC_DEAL" 		GroupId="AdvancedOptions"  Visible="1" SortIndex="10" SupportsSinglePlayer="1" SupportsPlayByCloud="0" SupportsLANMultiplayer="0" SupportsInternetMultiplayer="0" SupportsHotSeat="0"/>
+		<Row ParameterId="Trading_Favor" 		Name="LOC_MPH_NO_TRADING_FAVOR_NAME" 		Description="LOC_MPH_NO_TRADING_FAVOR_DESC" 		Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_FAVOR" 		GroupId="TradingOptions"  Visible="1" SortIndex="11" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Gold" 		Name="LOC_MPH_NO_TRADING_GOLD_NAME" 		Description="LOC_MPH_NO_TRADING_GOLD_DESC" 			Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_GOLD" 		GroupId="TradingOptions"  Visible="1" SortIndex="12" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Strategics" 	Name="LOC_MPH_NO_TRADING_STRATEGICS_NAME" 	Description="LOC_MPH_NO_TRADING_STRATEGICS_DESC" 	Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_STRATEGICS" GroupId="TradingOptions"  Visible="1" SortIndex="13" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Luxuries" 	Name="LOC_MPH_NO_TRADING_LUXURIES_NAME" 	Description="LOC_MPH_NO_TRADING_LUXURIES_DESC" 		Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_LUXURIES" 	GroupId="TradingOptions"  Visible="1" SortIndex="14" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Cities" 		Name="LOC_MPH_NO_TRADING_CITIES_NAME" 		Description="LOC_MPH_NO_TRADING_CITIES_DESC" 		Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_CITIES" 	GroupId="TradingOptions"  Visible="1" SortIndex="16" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Captives" 	Name="LOC_MPH_NO_TRADING_CAPTIVES_NAME" 	Description="LOC_MPH_NO_TRADING_CAPTIVES_DESC" 		Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_CAPTIVES" 	GroupId="TradingOptions"  Visible="1" SortIndex="18" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_Agreements" 	Name="LOC_MPH_NO_TRADING_AGREEMENTS_NAME" 	Description="LOC_MPH_NO_TRADING_AGREEMENTS_DESC" 	Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_AGREEMENTS" GroupId="TradingOptions"  Visible="1" SortIndex="15" SupportsSinglePlayer="0" />
+		<Row ParameterId="Trading_GreatWorks" 	Name="LOC_MPH_NO_TRADING_GREATWORKS_NAME" 	Description="LOC_MPH_NO_TRADING_GREATWORKS_DESC" 	Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="NO_TRADING_GREATWORKS" GroupId="TradingOptions"  Visible="1" SortIndex="17" SupportsSinglePlayer="0" />
+		<Row ParameterId="Alliance_Military" 	Name="LOC_MPH_ALLIANCE_MILITARY_NAME" 		Description="LOC_MPH_ALLIANCE_MILITARY_DESC" 		Domain="bool" DefaultValue="1" ConfigurationGroup="Game" 	ConfigurationId="ALLIANCE_MILITARY" 	GroupId="TradingOptions"  Visible="1" SortIndex="20" SupportsSinglePlayer="0"/>
+		<Row ParameterId="Alliance_Cultural" 	Name="LOC_MPH_ALLIANCE_CULTURAL_NAME" 		Description="LOC_MPH_ALLIANCE_CULTURAL_DESC" 		Domain="bool" DefaultValue="1" ConfigurationGroup="Game" 	ConfigurationId="ALLIANCE_CULTURAL" 	GroupId="TradingOptions"  Visible="1" SortIndex="20" SupportsSinglePlayer="0"/>
+		<Row ParameterId="Alliance_Religious" 	Name="LOC_MPH_ALLIANCE_RELIGIOUS_NAME" 		Description="LOC_MPH_ALLIANCE_RELIGIOUS_DESC" 		Domain="bool" DefaultValue="1" ConfigurationGroup="Game" 	ConfigurationId="ALLIANCE_RELIGIOUS" 	GroupId="TradingOptions"  Visible="1" SortIndex="20" SupportsSinglePlayer="0"/>
+		<Row ParameterId="Alliance_Economic" 	Name="LOC_MPH_ALLIANCE_ECONOMIC_NAME" 		Description="LOC_MPH_ALLIANCE_ECONOMIC_DESC" 		Domain="bool" DefaultValue="1" ConfigurationGroup="Game" 	ConfigurationId="ALLIANCE_ECONOMIC" 	GroupId="TradingOptions"  Visible="1" SortIndex="20" SupportsSinglePlayer="0"/>
+		<Row ParameterId="Alliance_Research" 	Name="LOC_MPH_ALLIANCE_RESEARCH_NAME" 		Description="LOC_MPH_ALLIANCE_RESEARCH_DESC" 		Domain="bool" DefaultValue="1" ConfigurationGroup="Game" 	ConfigurationId="ALLIANCE_RESEARCH" 	GroupId="TradingOptions"  Visible="1" SortIndex="20" SupportsSinglePlayer="0"/>
+								
 		<Row ParameterId="GameMode_Sudden_Death" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_SUDDEN_DEATH" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="110"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_Anonymous" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ANONYMOUS" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="120"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_OneCity" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ONECITY" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="130"  SupportsSinglePlayer="1" Visible="1" />
@@ -114,6 +130,26 @@
 		<!--  <Row Domain="FreeLimits" Value="2" Name="FC_RAZE_NAME" Description="FC_RAZE_DESC" SortIndex="3"/> -->
 
 	</DomainValues>
+
+	<ParameterCriteria>
+		<Row ParameterId="Trading_Favor" 						ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Gold" 						ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_GreatWorks" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Agreements" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Cities" 						ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Captives" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Strategics" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="Trading_Luxuries" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />		
+	</ParameterCriteria>
+
+	<ParameterDependencies>
+		<Row ParameterId="Alliance_Military" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
+		<Row ParameterId="Alliance_Cultural" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
+		<Row ParameterId="Alliance_Religious" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
+		<Row ParameterId="Alliance_Research" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
+		<Row ParameterId="Alliance_Economic" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
+		<Row ParameterId="TurnTimerType" 						ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" Operator="Equals" ConfigurationValue="1" />		
+	</ParameterDependencies>
 
 	<ConfigurationUpdates>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="NO_DUPLICATE_LEADERS" TargetValue="0" Hash="0" />

@@ -28,7 +28,7 @@ local MIN_SCREEN_OFFSET_Y	:number = -93;
 local m_lobbyModeName:string = MPLobbyTypes.STANDARD_INTERNET;
 local m_shellTabIM:table = InstanceManager:new("ShellTab", "TopControl", Controls.ShellTabs);
 local m_kPopupDialog:table;
-
+local m_pCityStateWarningPopup:table = PopupDialog:new("CityStateWarningPopup");
 
 
 function OnSetParameterValues(pid: string, values: table)
@@ -92,7 +92,11 @@ function CreateMultiSelectWindowDriver(o, parameter, parent)
 		
 			if(valueText == nil) then
 				if(value == nil) then
-					valueText = "LOC_SELECTION_NOTHING";
+					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
+						valueText = "LOC_SELECTION_EVERYTHING";
+					else
+						valueText = "LOC_SELECTION_NOTHING";
+					end
 				elseif(type(value) == "table") then
 					local count = #value;
 					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
@@ -116,6 +120,101 @@ function CreateMultiSelectWindowDriver(o, parameter, parent)
 					end
 				end
 			end				
+
+			c.Button:SetToolTipString(parameter.Description);
+
+			if(cache.ValueText ~= valueText) or (cache.ValueAmount ~= valueAmount) then
+				local button = c.Button;			
+				button:LocalizeAndSetText(valueText, valueAmount);
+				cache.ValueText = valueText;
+				cache.ValueAmount = valueAmount;
+			end
+		end,
+		UpdateValues = function(values, p) 
+			-- Values are refreshed when the window is open.
+		end,
+		SetEnabled = function(enabled, p)
+			c.Button:SetDisabled(not enabled or #p.Values <= 1);
+		end,
+		SetVisible = function(visible)
+			c.ButtonRoot:SetHide(not visible);
+		end,
+		Destroy = function()
+			g_ButtonParameterManager:ReleaseInstance(c);
+		end,
+	};	
+
+	return kDriver;
+end
+
+-- ===========================================================================
+-- This driver is for launching the city-state picker in a separate window.
+-- ===========================================================================
+function CreateCityStatePickerDriver(o, parameter, parent)
+
+	if(parent == nil) then
+		parent = GetControlStack(parameter.GroupId);
+	end
+			
+	-- Get the UI instance
+	local c :object = g_ButtonParameterManager:GetInstance();	
+
+	local parameterId = parameter.ParameterId;
+	local button = c.Button;
+	button:RegisterCallback( Mouse.eLClick, function()
+		LuaEvents.CityStatePicker_Initialize(o.Parameters[parameterId], g_GameParameters);
+		Controls.CityStatePicker:SetHide(false);
+	end);
+
+	-- Store the root control, NOT the instance table.
+	g_SortingMap[tostring(c.ButtonRoot)] = parameter;
+
+	c.ButtonRoot:ChangeParent(parent);
+	if c.StringName ~= nil then
+		c.StringName:SetText(parameter.Name);
+	end
+
+	local cache = {};
+
+	local kDriver :table = {
+		Control = c,
+		Cache = cache,
+		UpdateValue = function(value, p)
+			local valueText = value and value.Name or nil;
+			local valueAmount :number = 0;
+		
+			if(valueText == nil) then
+				if(value == nil) then
+					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
+						valueText = "LOC_SELECTION_EVERYTHING";
+					else
+						valueText = "LOC_SELECTION_NOTHING";
+					end
+				elseif(type(value) == "table") then
+					local count = #value;
+					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
+						if(count == 0) then
+							valueText = "LOC_SELECTION_EVERYTHING";
+						elseif(count == #p.Values) then
+							valueText = "LOC_SELECTION_NOTHING";
+						else
+							valueText = "LOC_SELECTION_CUSTOM";
+							valueAmount = #p.Values - count;
+						end
+					else
+						if(count == 0) then
+							valueText = "LOC_SELECTION_NOTHING";
+						elseif(count == #p.Values) then
+							valueText = "LOC_SELECTION_EVERYTHING";
+						else
+							valueText = "LOC_SELECTION_CUSTOM";
+							valueAmount = count;
+						end
+					end
+				end
+			end				
+
+			c.Button:SetToolTipString(parameter.Description);
 
 			if(cache.ValueText ~= valueText) or (cache.ValueAmount ~= valueAmount) then
 				local button = c.Button;			
@@ -142,7 +241,9 @@ function CreateMultiSelectWindowDriver(o, parameter, parent)
 end
 
 function GameParameters_UI_CreateParameterDriver(o, parameter, parent, ...)
-	if(parameter.Array) then
+	if(parameter.ParameterId == "CityStates") then
+		return CreateCityStatePickerDriver(o, parameter);
+	elseif(parameter.Array) then
 		return CreateMultiSelectWindowDriver(o, parameter);
 	else
 		return GameParameters_UI_DefaultCreateParameterDriver(o, parameter, parent, ...);
@@ -201,13 +302,15 @@ end
 
 -- ===========================================================================
 function Refresh()
+
 	if (GameConfiguration.GetValue("CPL_BAN_FORMAT") == nil) then
 		return
 	end
-	local banstack = Controls["BanParametersStack"]
-	local bangrid = Controls["BanHeader"]
+	--local banstack = Controls["BanParametersStack"]
+	--local bangrid = Controls["BanHeader"]
 	local banpoolstack = Controls["BanPoolParametersStack"]
 	local banpoolgrid = Controls["BanPoolHeader"]
+	--[[
 	if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 2 then
 		banstack:SetHide(true)
 		bangrid:SetHide(true)
@@ -215,6 +318,7 @@ function Refresh()
 		banstack:SetHide(false)
 		bangrid:SetHide(false)
 	end
+	--]]
 	if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 3 or GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
 		banpoolstack:SetHide(false)
 		banpoolgrid:SetHide(false)	
@@ -222,6 +326,8 @@ function Refresh()
 		banpoolstack:SetHide(true)
 		banpoolgrid:SetHide(true)		
 	end
+
+	
 end
 
 
@@ -239,7 +345,7 @@ function OnShow()
 	ShowDefaultButton();
 	ShowLoadConfigButton();
 	Controls.LoadButton:SetHide(not GameConfiguration.IsHotseat() or isInSession);
-
+	Controls.RefreshConfigButton:SetHide(not isInSession);
 	--[[
 	local sizeY:number = isInSession and SCROLL_SIZE_IN_SESSION or SCROLL_SIZE_DEFAULT;
 	Controls.DecoGrid:SetSizeY(sizeY);
@@ -329,9 +435,68 @@ function OnConfirmClick()
 	if(gameName == nil or #gameName == 0) then
 		GameConfiguration.SetToDefaultGameName();
 	end
-
-	Network.HostGame(serverType);	
+	
+	if AreNoCityStatesInGame() or AreAllCityStateSlotsUsed() then
+		HostGame(serverType);
+	else
+		m_pCityStateWarningPopup:ShowOkCancelDialog(Locale.Lookup("LOC_CITY_STATE_PICKER_TOO_FEW_WARNING"), function() HostGame(serverType); end);
+	end
 end
+
+-- ===========================================================================
+function HostGame(serverType:number)
+	Network.HostGame(serverType);
+end
+
+-- ===========================================================================
+function AreNoCityStatesInGame()
+	local kParameters:table = g_GameParameters["Parameters"];
+	return (kParameters["CityStates"] == nil);
+end
+
+-- ===========================================================================
+function AreAllCityStateSlotsUsed()
+	
+	local kParameters		:table = g_GameParameters["Parameters"];
+	local cityStateSlots	:number = kParameters["CityStateCount"].Value;
+	local totalCityStates	:number = #kParameters["CityStates"].AllValues;
+	local excludedCityStates:number = kParameters["CityStates"].Value ~= nil and #kParameters["CityStates"].Value or 0;
+
+	if (totalCityStates - excludedCityStates) < cityStateSlots then
+		return false;
+	end
+
+	return true;
+end
+
+-------------------------------------------------
+-- Refresh Game Seeds
+-------------------------------------------------
+function OnRefreshConfig()
+	local hostID = Network.GetGameHostPlayerID()
+	local localID = Network.GetLocalPlayerID()
+	if hostID == localID then
+		local map_seed = MapConfiguration.GetValue("RANDOM_SEED")
+		local game_seed = GameConfiguration.GetValue("GAME_SYNC_RANDOM_SEED")
+		local rng = math.random()*100000
+		rng = math.floor(rng)
+		if map_seed ~= nil and tonumber(map_seed) ~= nil then
+			map_seed = tonumber(map_seed)+rng
+			else
+			map_seed = rng
+		end
+		game_seed = map_seed - 1
+		GameConfiguration.SetValue("GAME_SYNC_RANDOM_SEED",game_seed)
+		MapConfiguration.SetValue("RANDOM_SEED",map_seed)
+		Network.BroadcastGameConfig();
+		Network.BroadcastPlayerInfo();
+		print("OnRefreshConfig(): Seeds refreshed",map_seed,game_seed)
+		else
+		print("OnRefreshConfig(): Not the Host")
+	end
+end
+
+
 
 -------------------------------------------------
 -- Load Configuration Button Handler
@@ -488,7 +653,8 @@ end
 function OnShutdown()
 	-- Cache values for hotloading...
 	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "isHidden", ContextPtr:IsHidden());
-	LuaEvents.MultiSelectWindow_SetParameterValues.Remove(OnSetParameterValues);																			 
+	LuaEvents.MultiSelectWindow_SetParameterValues.Remove(OnSetParameterValues);
+	LuaEvents.CityStatePicker_SetParameterValues.Remove(OnSetParameterValues);
 end
 
 -- ===========================================================================
@@ -560,6 +726,7 @@ function Initialize()
 	Controls.DefaultButton:RegisterCallback( Mouse.eLClick, OnDefaultButton);
 	Controls.LoadConfigButton:RegisterCallback( Mouse.eLClick, OnLoadConfig);
 	Controls.SaveConfigButton:RegisterCallback( Mouse.eLClick, OnSaveConfig);
+	Controls.RefreshConfigButton:RegisterCallback( Mouse.eLClick, OnRefreshConfig );
 	Controls.ConfirmButton:RegisterCallback( Mouse.eLClick, OnConfirmClick );
 	Controls.ModsButton:RegisterCallback( Mouse.eLClick, ModsButtonClick );
 
@@ -576,8 +743,10 @@ function Initialize()
 	LuaEvents.Mods_UpdateHostGameSettings.Add(GameSetup_RefreshParameters);		-- TODO: Remove when mods are managed by this screen
 
 	LuaEvents.MultiSelectWindow_SetParameterValues.Add(OnSetParameterValues);
+	LuaEvents.CityStatePicker_SetParameterValues.Add(OnSetParameterValues);																		
 	Controls.BackButton:RegisterCallback( Mouse.eLClick, OnExitGameAskAreYouSure);
 	Controls.LoadButton:RegisterCallback( Mouse.eLClick, LoadButtonClick );
+
 
 	ResizeButtonToText( Controls.DefaultButton );
 	ResizeButtonToText( Controls.BackButton );
