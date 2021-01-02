@@ -36,8 +36,9 @@ function GetControlStack(group)
 		["MapOptions"] = Controls.PrimaryParametersStack,
 		["GameModes"] = gameModeParametersStack;
 		["Victories"] = Controls.VictoryParameterStack,
-		["BanOptions"] = Controls.BanParametersStack,
-		["BanPoolOptions"] = Controls.BanPoolParametersStack,
+		--["BanOptions"] = Controls.BanParametersStack,
+		--["BanPoolOptions"] = Controls.BanPoolParametersStack,
+		["TournamentOptions"] = Controls.TournamentParametersStack,
 		["TradingOptions"] = Controls.TradingParametersStack,
 		["AdvancedOptions"] = Controls.SecondaryParametersStack,
 	};

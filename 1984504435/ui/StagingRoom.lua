@@ -12,7 +12,7 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.08"
+local g_version = "1.09"
 print("Staging Room For MPH ",g_version)						
 
 ----------------------------------------------------------------  
@@ -45,6 +45,7 @@ local g_PlayerRootToPlayerID = {};  -- maps the string name of a player entry's 
 local g_PlayerReady = {};			-- cached player ready status, indexed by playerID.
 local g_PlayerModStatus = {};		-- cached player localized mod status strings.
 local g_cachedTeams = {};				-- A cached mapping of PlayerID->TeamID.
+local g_refreshing = "Refreshing"
 -- MPH Variables
 local m_LeaderBan:table = {} 
 local g_banned_leader = nil
@@ -82,6 +83,9 @@ local PHASE_MAPBAN = 7
 local PHASE_LEADERBAN = 1
 local PHASE_LEADERPICK = 2
 local PHASE_READY = 3
+local PHASE_VOTE_BAN_MAP = 11
+local PHASE_VOTE_BAN_LEADER = 12
+
 
 local g_debug = false
 local b_has_voted = true
@@ -484,6 +488,19 @@ function OnTick()
 		ShowHideEditButton()
 		return
 	end
+	-- Define Settings
+	g_slot_draft = 0
+	if GameConfiguration.GetValue("DRAFT_SLOT_ORDER") ~= nil then
+		g_slot_draft = GameConfiguration.GetValue("DRAFT_SLOT_ORDER")
+	end
+	g_timer = 1
+	if GameConfiguration.GetValue("DRAFT_TIMER") ~= nil then
+		if GameConfiguration.GetValue("DRAFT_TIMER") == true then
+			g_timer = 1 
+			else
+			g_timer = 0
+		end
+	end	
 end
 
 function CheckStatusID(playerID)
@@ -878,11 +895,6 @@ function PhaseVisibility()
 				Controls.PhaseLabel_hint:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_0_HINT_TEXT"))
 				Controls.PhaseButton:SetHide(true)
 				Controls.ResetButton:SetHide(true)
-				Controls.ButtonDraft_Random:SetHide(true) 
-				Controls.ButtonDraft_Slot:SetHide(true)
-				Controls.ButtonDraft_Timer:SetHide(true)
-				Controls.ButtonDraft_CWC:SetHide(true) 
-				Controls.ButtonDraft_CWC_NEW:SetHide(true)
 				else
 				Controls.PhaseButton:SetHide(false)
 				local b_unable_to_launch = false
@@ -906,28 +918,6 @@ function PhaseVisibility()
 				Controls.PhaseButton:RegisterCallback(Mouse.eLClick,OnHostLaunch)
 				Controls.PhaseButton:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_0_PHASE_BUTTON_TEXT"))
 				Controls.ResetButton:RegisterCallback(Mouse.eLClick,OnHostReset)
-				Controls.ButtonDraft_Random:SetHide(false) 
-				Controls.ButtonDraft_Slot:SetHide(false) 
-				Controls.ButtonDraft_CWC:SetHide(false)
-				Controls.ButtonDraft_CWC:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_CWC_NEW:SetHide(false)
-				Controls.ButtonDraft_CWC_NEW:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_Random:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_Slot:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_Slot:SetDisabled(false)
-				Controls.ButtonDraft_Timer:SetHide(false)
-				Controls.ButtonDraft_Timer:SetDisabled(false)
-				if GameConfiguration.GetValue("CPL_CWC") == true then
-					Controls.ButtonDraft_Slot:SetDisabled(true)
-					Controls.ButtonDraft_Random:SetDisabled(true)
-					Controls.ButtonDraft_CWC:SetDisabled(true)
-					Controls.ButtonDraft_CWC_NEW:SetCheck(true)
-					Controls.ButtonDraft_Timer:SetCheck(true)
-					else
-					Controls.ButtonDraft_Slot:SetDisabled(false)
-					Controls.ButtonDraft_Random:SetDisabled(false)
-					Controls.ButtonDraft_CWC:SetDisabled(false)
-				end
 				Controls.StartLabel:SetText(Locale.Lookup("LOC_MPH_READY_LAUNCH_HOST_TEXT"))
 				Controls.PhaseLabel_hint:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_0_HOST_HINT_TEXT"))
 			end	
@@ -938,11 +928,6 @@ function PhaseVisibility()
 				Controls.PhaseLabel_hint:SetText(Locale.Lookup("LOC_MPH_VOTING_PHASE_0_HINT_TEXT"))
 				Controls.PhaseButton:SetHide(true)
 				Controls.ResetButton:SetHide(true)
-				Controls.ButtonDraft_Random:SetHide(true) 
-				Controls.ButtonDraft_Slot:SetHide(true)
-				Controls.ButtonDraft_Timer:SetHide(true)
-				Controls.ButtonDraft_CWC:SetHide(true) 
-				Controls.ButtonDraft_CWC_NEW:SetHide(true) 
 				else
 				Controls.PhaseButton:SetHide(false)
 				local b_unable_to_launch = false
@@ -957,24 +942,19 @@ function PhaseVisibility()
 				end
 				Controls.PhaseButton:SetDisabled(b_unable_to_launch)
 				if b_unable_to_launch == true then
-					Controls.PhaseButton:SetToolTipString(Locale.Lookup("LOC_MPH_PHASE_BUTTON_TOOLTIP_ERROR"))
+					Controls.PhaseButton:SetToolTipString(Locale.Lookup("LOC_MPH_PHASE_BUTTON_TOOLTIP_ERROR"));
+					Controls.PhaseButton:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_0_PHASE_BUTTON_NOT_READY_TEXT"));
+					Controls.RefreshLabel:SetHide(false)
+					Controls.RefreshLabel:SetText(g_refreshing)
 					else
-					Controls.PhaseButton:SetToolTipString(Locale.Lookup("LOC_MPH_PHASE_BUTTON_TOOLTIP"))
-					Controls.PhaseButton:SetText("LAUNCH")
+					Controls.RefreshLabel:SetHide(true)
+					Controls.PhaseButton:SetToolTipString(Locale.Lookup("LOC_MPH_PHASE_BUTTON_TOOLTIP"));
+					Controls.PhaseButton:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_0_PHASE_BUTTON_TEXT"));
 				end
 				Controls.ResetButton:SetHide(false)
 				Controls.PhaseButton:RegisterCallback(Mouse.eLClick,OnHostLaunch)
 				Controls.PhaseButton:SetText(Locale.Lookup("LOC_MPH_VOTING_PHASE_0_PHASE_BUTTON_TEXT"))
 				Controls.ResetButton:RegisterCallback(Mouse.eLClick,OnHostReset)
-				Controls.ButtonDraft_Random:SetHide(false) 
-				Controls.ButtonDraft_Slot:SetHide(false) 
-				Controls.ButtonDraft_CWC:SetHide(true)
-				Controls.ButtonDraft_CWC_NEW:SetHide(true)
-				Controls.ButtonDraft_Random:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_Slot:RegisterCallback(Mouse.eLClick,function() UI.PlaySound("Main_Menu_Mouse_Over"); end)
-				Controls.ButtonDraft_Slot:SetDisabled(false)
-				Controls.ButtonDraft_Timer:SetHide(false)
-				Controls.ButtonDraft_Timer:SetDisabled(false)
 				Controls.StartLabel:SetText(Locale.Lookup("LOC_MPH_READY_LAUNCH_HOST_TEXT"))
 				Controls.PhaseLabel_hint:SetText(Locale.Lookup("LOC_MPH_VOTING_PHASE_0_HOST_HINT_TEXT"))
 			end		
@@ -984,13 +964,9 @@ function PhaseVisibility()
 	
 	if g_phase == PHASE_MAPBAN then
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true)
-		Controls.ButtonDraft_CWC_NEW:SetHide(true)
-		Controls.ButtonDraft_Timer:SetHide(true)
 		g_disabled_civ = true
 		g_hide_map = false
+		g_hide_vote_map = true
 		MapBanVisibility()
 		g_disabled_slot_settings = true
 		g_hide_player = 1
@@ -1015,7 +991,16 @@ function PhaseVisibility()
 		Controls.BanMade_7:SetHide(true) 
 		Controls.BanMade_8:SetHide(true) 
 		Controls.BanMade_9:SetHide(true) 
-		Controls.BanMade_10:SetHide(true)
+		Controls.BanMade_10:SetHide(true)	
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)			
 		if b_teamer == true then
 			Controls.PhaseLabel:SetText(Locale.Lookup("LOC_MPH_TOURNAMENT_PHASE_7_TEAM_TEXT"))
 			if g_slot_draft == 0 then
@@ -1038,7 +1023,7 @@ function PhaseVisibility()
 		return
 	end
 	
-	if g_phase == 11 then
+	if g_phase == PHASE_VOTE_BAN_MAP then
 		if localID == hostID then
 			Controls.PhaseButton:SetHide(false)
 			Controls.ResetButton:SetHide(false)
@@ -1047,13 +1032,17 @@ function PhaseVisibility()
 			Controls.PhaseButton:SetHide(true)
 			Controls.ResetButton:SetHide(true)
 		end
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)	
 		Controls.ResetButton:RegisterCallback(Mouse.eLClick,OnHostReset)
 		Controls.PhaseButton:RegisterCallback(Mouse.eLClick,OnHostSkip)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true)
-		Controls.ButtonDraft_CWC_NEW:SetHide(true)
-		Controls.ButtonDraft_Timer:SetHide(true)
 		Controls.PhaseLabel:SetHide(false)
 		Controls.PhaseLabel_hint:SetHide(false)
 		Controls.MPH_ConfirmButton:SetHide(true)
@@ -1071,7 +1060,7 @@ function PhaseVisibility()
 		return
 	end
 
-	if g_phase == 12 then
+	if g_phase == PHASE_VOTE_BAN_LEADER then
 		Controls.BanMadeLabel:SetHide(false) 
 		Controls.BanMade_1:SetHide(false)
 		Controls.BanMade_2:SetHide(false)
@@ -1085,6 +1074,15 @@ function PhaseVisibility()
 			Controls.BanMade_9:SetHide(false) 
 			Controls.BanMade_10:SetHide(false)
 		end
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)	
 		Controls.PhaseLabel:SetHide(false)
 		Controls.PhaseLabel_hint:SetHide(false)
 		Controls.MPH_ConfirmButton:SetHide(true)
@@ -1106,16 +1104,12 @@ function PhaseVisibility()
 	if g_phase == PHASE_LEADERBAN then
 		g_disabled_slot_settings = true
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true)
-		Controls.ButtonDraft_CWC_NEW:SetHide(true)
-		Controls.ButtonDraft_Timer:SetHide(true)
 		g_disabled_civ = true
 		g_player_disabled = true
 		g_hide_player = 1
 		PlayerEntryVisibility()
 		g_hide_map = true
+		g_hide_vote_map = true
 		MapBanVisibility()
 		Controls.BanMapLabel:SetHide(true)
 		Controls.BanMapPullDown:SetHide(true)
@@ -1141,6 +1135,11 @@ function PhaseVisibility()
 			Controls.BanMade_8:SetHide(false) 
 			Controls.BanMade_9:SetHide(false) 
 			Controls.BanMade_10:SetHide(false)
+			Controls.PickMadeLabel:SetHide(false) 
+			Controls.PickMade_1:SetHide(false)
+			Controls.PickMade_2:SetHide(false)
+			Controls.PickMade_3:SetHide(false) 
+			Controls.PickMade_4:SetHide(false) 
 		end
 		if b_teamer == true then
 			Controls.PhaseLabel:SetText("Teamer Phase 1: "..g_ban_count.."/ 6 Leader Bans")
@@ -1181,11 +1180,6 @@ function PhaseVisibility()
 		g_disabled_slot_settings = true
 		Controls.MPH_Leader_ConfirmButton:SetHide(false)
 		Controls.MPH_VoteButton:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true)
-		Controls.ButtonDraft_CWC_NEW:SetHide(true)
-		Controls.ButtonDraft_Timer:SetHide(true)
 		Controls.MPH_ConfirmButton:SetHide(true)
 		Controls.PhaseLabel:SetHide(false)
 		Controls.BanMapLabel:SetHide(true)
@@ -1193,8 +1187,18 @@ function PhaseVisibility()
 		Controls.BanLabel:SetHide(true)
 		Controls.BanPullDown:SetHide(true)
 		Controls.MapPoolLabel:SetHide(true)
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)	
 		g_player_disabled = true
 		g_hide_player = 2
+		g_hide_vote_map = true
 		PlayerEntryVisibility()
 		g_hide_map = true
 		MapBanVisibility()
@@ -1227,12 +1231,17 @@ function PhaseVisibility()
 	
 	if g_phase == PHASE_READY then
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true)
-		Controls.ButtonDraft_CWC_NEW:SetHide(true)
-		Controls.ButtonDraft_Timer:SetHide(true)
 		Controls.MPH_ConfirmButton:SetHide(true)
+				Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)	
+		g_hide_vote_map = true
 		if localID == hostID then
 			Controls.PhaseButton:SetHide(false)
 			Controls.StartButton:SetHide(false)
@@ -1270,7 +1279,10 @@ end
 function QuickRefresh()
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
-
+	g_refreshing = g_refreshing.."."
+	if string.len(g_refreshing) > 30 then
+		g_refreshing = "Refreshing"
+	end
 	if (GameConfiguration.GetValue("CPL_BAN_FORMAT") == nil) then
 		g_phase = PHASE_DEFAULT
 		Controls.PhaseLabel:SetHide(true)
@@ -1278,11 +1290,6 @@ function QuickRefresh()
 		Controls.ResetButton:SetHide(true)
 		Controls.BanLabel:SetHide(true) 
 		Controls.BanPullDown:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true) 
-		Controls.ButtonDraft_CWC_NEW:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_Timer:SetHide(true)
 		Controls.VoteMapScriptPullDown:SetHide(true)
 		Controls.VoteMapAgePullDown:SetHide(true)
 		Controls.VoteMapTempPullDown:SetHide(true)
@@ -1303,11 +1310,6 @@ function QuickRefresh()
 		Controls.BanLabel:SetHide(true) 
 		Controls.BanPullDown:SetHide(true)
 		Controls.PhaseLabel_hint:SetHide(true) 
-		Controls.ButtonDraft_CWC:SetHide(true) 
-		Controls.ButtonDraft_CWC_NEW:SetHide(true) 
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_Timer:SetHide(true)
 		Controls.VoteMapScriptPullDown:SetHide(true)
 		Controls.VoteMapAgePullDown:SetHide(true)
 		Controls.VoteMapTempPullDown:SetHide(true)
@@ -1344,7 +1346,24 @@ function Refresh()
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
 	local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
-	
+	g_refreshing = g_refreshing.."."
+	if string.len(g_refreshing) > 30 then
+		g_refreshing = "Refreshing"
+	end	
+	-- Define Settings
+	g_slot_draft = 0
+	if GameConfiguration.GetValue("DRAFT_SLOT_ORDER") ~= nil then
+		g_slot_draft = GameConfiguration.GetValue("DRAFT_SLOT_ORDER")
+	end
+	g_timer = 1
+	if GameConfiguration.GetValue("DRAFT_TIMER") ~= nil then
+		if GameConfiguration.GetValue("DRAFT_TIMER") == true then
+			g_timer = 1 
+			else
+			g_timer = 0
+		end
+	end	
+		
 	-- Anonymous WIP
 	if GameConfiguration.GetValue("CPL_ANONYMOUS") == true then 
 		for i, iPlayer in ipairs(player_ids) do	
@@ -1417,11 +1436,6 @@ function Refresh()
 		Controls.VoteMapScriptLabel:SetHide(true)
 		Controls.VoteMapAgeLabel:SetHide(true)
 		Controls.VoteMapTempLabel:SetHide(true)
-		Controls.ButtonDraft_Random:SetHide(true) 
-		Controls.ButtonDraft_Slot:SetHide(true) 
-		Controls.ButtonDraft_Timer:SetHide(true)
-		Controls.ButtonDraft_CWC:SetHide(true) 
-		Controls.ButtonDraft_CWC_NEW:SetHide(true) 
 		Controls.PhaseLabel_hint:SetHide(true) 
 		for i =1, 16 do
 			local maplabel = Controls["MapPool_"..i.."Label"]
@@ -1441,6 +1455,15 @@ function Refresh()
 		Controls.BanMade_8:SetHide(true) 
 		Controls.BanMade_9:SetHide(true) 
 		Controls.BanMade_10:SetHide(true)
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)		
 		Controls.BanMade_1Label:SetHide(true)
 		Controls.BanMade_2Label:SetHide(true)
 		Controls.BanMade_3Label:SetHide(true)
@@ -1453,6 +1476,10 @@ function Refresh()
 		Controls.BanMade_10Label:SetHide(true)
 		Controls.PickedMapLabel:SetHide(true) 
 		Controls.PickedMap2Label:SetHide(true) 
+		Controls.PickMade_1:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_2:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_3:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_4:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_1:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_2:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_3:SetIcon("ICON_LEADER_DEFAULT")
@@ -1473,52 +1500,14 @@ function OnHostLaunch()
 	Network.SendChat(".forcecheck",-2,-1)
 	-- Tournament
 	if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 3 then
-		if 	Controls.ButtonDraft_Random:IsChecked() == true or Controls.ButtonDraft_Slot:IsChecked() == true or Controls.ButtonDraft_CWC:IsChecked() == true or Controls.ButtonDraft_CWC_NEW:IsChecked() == true then
-			if Controls.ButtonDraft_Random:IsChecked() == true then
-				Network.SendChat(".slot_0",-2,-1)
-			end
-			if Controls.ButtonDraft_Slot:IsChecked() == true then
-				Network.SendChat(".slot_1",-2,-1)
-			end
-			if Controls.ButtonDraft_CWC:IsChecked() == true then
-				Network.SendChat(".slot_2",-2,-1)
-			end
-			if Controls.ButtonDraft_CWC_NEW:IsChecked() == true then
-				Network.SendChat(".slot_3",-2,-1)
-			end
-			if Controls.ButtonDraft_Timer:IsChecked() == true then
-				Network.SendChat(".timer_1",-2,-1)
-				else
-				Network.SendChat(".timer_0",-2,-1)
-			end
-			Network.SendChat(".launch",-2,-1)
-			UI.PlaySound("Play_MP_Game_Launch_Timer_Beep")
-			else
-			Controls.ButtonDraft_Random:SetCheck(true)
-			Controls.ButtonDraft_Slot:SetCheck(false)
-			Controls.ButtonDraft_CWC:SetCheck(false)
-			Controls.ButtonDraft_CWC_NEW:SetCheck(false)
-		end
+
 	-- Vote Draft	
+		Network.SendChat(".launch",-2,-1)
+		UI.PlaySound("Play_MP_Game_Launch_Timer_Beep")
 		elseif GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
-		if 	Controls.ButtonDraft_Random:IsChecked() == true or Controls.ButtonDraft_Slot:IsChecked() == true then
-			if Controls.ButtonDraft_Random:IsChecked() == true then
-				Network.SendChat(".slot_0",-2,-1)
-			end
-			if Controls.ButtonDraft_Slot:IsChecked() == true then
-				Network.SendChat(".slot_1",-2,-1)
-			end
-			if Controls.ButtonDraft_Timer:IsChecked() == true then
-				Network.SendChat(".timer_1",-2,-1)
-				else
-				Network.SendChat(".timer_0",-2,-1)
-			end
-			Network.SendChat(".launch",-2,-1)
-			UI.PlaySound("Play_MP_Game_Launch_Timer_Beep")
-			else
-			Controls.ButtonDraft_Random:SetCheck(true)
-			Controls.ButtonDraft_Slot:SetCheck(false)
-		end
+
+					Network.SendChat(".launch",-2,-1)
+			UI.PlaySound("Play_MP_Game_Launch_Timer_Beep")			
 	end
 end
 
@@ -1656,7 +1645,44 @@ function OnValidReceived(text,teamer:boolean)
 		print("OnValidReceived - Valid Player ID",valid_playerID)
 	end
 	g_valid_count = g_valid_count + 1
-
+	if g_valid_count < 5 and tonumber(valid_playerID) ~= nil then
+		if g_valid_count == 1 then
+			local leader = PlayerConfigurations[tonumber(valid_playerID)]:GetLeaderTypeName()
+			if leader ~= nil then
+				Controls.PickMade_1:SetIcon("ICON_"..tostring(leader))
+				if b_teamer == true then
+					Controls.PickMade_1Label:SetText(tostring(PlayerConfigurations[tonumber(valid_playerID)]:GetTeam()+1))
+				end
+			end
+		end	
+		if g_valid_count == 2 then
+			local leader = PlayerConfigurations[tonumber(valid_playerID)]:GetLeaderTypeName()
+			if leader ~= nil then
+				Controls.PickMade_2:SetIcon("ICON_"..tostring(leader))
+				if b_teamer == true then
+					Controls.PickMade_2Label:SetText(tostring(PlayerConfigurations[tonumber(valid_playerID)]:GetTeam()+1))
+				end
+			end
+		end	
+		if g_valid_count == 3 then
+			local leader = PlayerConfigurations[tonumber(valid_playerID)]:GetLeaderTypeName()
+			if leader ~= nil then
+				Controls.PickMade_3:SetIcon("ICON_"..tostring(leader))
+				if b_teamer == true then
+					Controls.PickMade_3Label:SetText(tostring(PlayerConfigurations[tonumber(valid_playerID)]:GetTeam()+1))
+				end
+			end
+		end	
+		if g_valid_count == 4 then
+			local leader = PlayerConfigurations[tonumber(valid_playerID)]:GetLeaderTypeName()
+			if leader ~= nil then
+				Controls.PickMade_4:SetIcon("ICON_"..tostring(leader))
+				if b_teamer == true then
+					Controls.PickMade_4Label:SetText(tostring(PlayerConfigurations[tonumber(valid_playerID)]:GetTeam()+1))
+				end
+			end
+		end	
+	end
 	
 	for i = 1, g_all_players do
 		if g_cached_playerIDs[i] ~= nil then
@@ -1680,6 +1706,10 @@ function OnValidReceived(text,teamer:boolean)
 				Network.SendChat(".unlock",-2,-1)
 			end
 			g_next_ID = GetNextID()
+						if g_next_ID == nil then
+			 g_next_ID = 0
+			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID shouldn't be nil")
+			end
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 		elseif g_slot_draft == 3 and g_valid_count == 4 then -- Has to be 4 after testing
@@ -1687,12 +1717,20 @@ function OnValidReceived(text,teamer:boolean)
 			print("g_valid_count",g_valid_count,"g_total_players",g_total_players,"CWC NEW Second Ban Phase")
 			if localID == hostID then
 				g_next_ID = GetNextID()
+							if g_next_ID == nil then
+			 g_next_ID = 0
+			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID shouldn't be nil")
+			end
 				Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 			end			
 		else
 		
 		if localID == hostID then
 			g_next_ID = GetNextID()
+			if g_next_ID == nil then
+			 g_next_ID = 0
+			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID shouldn't be nil")
+			end
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 	
@@ -2107,7 +2145,7 @@ function HostSkip()
 			end
 			Network.SendChat(".ban_"..g_ban_count.."_"..g_next_ID.."_".."LEADER_NONE",-2,-1)
 		end
-	elseif g_phase == 11 then
+	elseif g_phase == PHASE_VOTE_BAN_MAP then
 		
 		for i, player in ipairs(g_cached_playerIDs) do	
 			if player.HasVotedMap == false then
@@ -2115,7 +2153,7 @@ function HostSkip()
 				break
 			end
 		end	
-	elseif g_phase == 12 then
+	elseif g_phase == PHASE_VOTE_BAN_LEADER then
 		
 		for i, player in ipairs(g_cached_playerIDs) do	
 			if player.HasVotedBan == false then
@@ -2139,12 +2177,68 @@ function HostSkip()
 	elseif g_phase == PHASE_LEADERPICK then
 		if localID == hostID then
 			print("HostSkip() g_valid_count",g_valid_count)
-			--if g_valid_count == 0 then
-			--	g_valid_count = 1
-			--	else
-			--	g_valid_count = g_valid_count + 1
-			--end
-		Network.SendChat(".valid_"..g_valid_count.."_"..g_next_ID.."_".."RANDOM",-2,-1)
+			
+			-- Select a Random Leader
+			m_LeaderBan = nil
+			local leader_rand = ""
+			if m_LeaderBan == nil then
+				m_LeaderBan = {}
+				local info_query = "SELECT * from Players where Domain = ?";
+				local domain = "Players:Expansion2_Players"
+				local info_results = DB.ConfigurationQuery(info_query, domain);
+				for k , v in pairs(info_results) do
+					local tmp = { LeaderType = v.LeaderType, LeaderName = v.LeaderName, LeaderIcon = v.LeaderIcon}
+					if tmp.LeaderType ~= "LEADER_SPECTATOR" and tmp.LeaderType ~= "RANDOM"  then
+						table.insert(m_LeaderBan, tmp)
+					end
+				end
+				local sort_func = function( a,b ) return Locale.Lookup(a.LeaderName) < Locale.Lookup(b.LeaderName) end
+				table.sort( m_LeaderBan, sort_func )
+				local tmp = { LeaderType = "LEADER_NONE", LeaderName = "None", LeaderIcon = "ICON_LEADER_DEFAULT"}
+				m_LeaderBan[0] = tmp
+			end
+			local num = 6
+			if g_slot_draft == 3 then
+				num = 10
+			end
+
+			for k, leader in pairs(m_LeaderBan) do
+				local b_add = true
+				for i = 1, num do
+					if GameConfiguration.GetValue("BAN_"..i) ~= nil then
+						if leader.LeaderType == GameConfiguration.GetValue("BAN_"..i) and leader.LeaderType ~= "LEADER_NONE" then
+							b_add = false
+						end
+					end
+				end
+				if g_slot_draft == 3 then
+					for i = 1, g_all_players do
+						if g_cached_playerIDs[i] ~= nil then
+							if g_cached_playerIDs[i].HasPicked == true then
+								if PlayerConfigurations[g_cached_playerIDs[i].ID] ~= nil then
+									if leader.LeaderType == PlayerConfigurations[g_cached_playerIDs[i].ID]:GetLeaderTypeName() and leader.LeaderType ~= "LEADER_NONE" then
+										b_add = false
+									end
+								end
+							end
+						end
+					end		
+				end
+				if b_add == true then
+					leader_rand = leader.LeaderType
+					break
+				end
+			end
+			print("Forced Picked:",g_next_ID,leader_rand)
+			if g_next_ID == nil then
+				print("HostSkip: g_next_ID",g_next_ID,"Shouldn't be nil")
+				g_next_ID = 0
+			end
+			PlayerConfigurations[g_next_ID]:SetLeaderTypeName(tostring(leader_rand))
+			Network.BroadcastPlayerInfo()
+			print("Debug:",PlayerConfigurations[g_next_ID]:GetValue("LEADER_TYPE_ID"))
+			print("Debug II:",PlayerConfigurations[g_next_ID]:GetLeaderTypeName())
+			Network.SendChat(".valid_"..g_valid_count.."_"..g_next_ID.."_"..tostring(leader_rand),-2,-1)
 		end
 	elseif g_phase == PHASE_READY then
 		if(Network.IsNetSessionHost()) then
@@ -2250,6 +2344,15 @@ function HostReset()
 		Controls.BanMade_8Label:SetHide(true)
 		Controls.BanMade_9Label:SetHide(true)
 		Controls.BanMade_10Label:SetHide(true)
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)	
 		Controls.BanMade_1:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_2:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_3:SetIcon("ICON_LEADER_DEFAULT")
@@ -2326,6 +2429,15 @@ function HostLaunch()
 	Controls.BanMade_8Label:SetHide(true)
 	Controls.BanMade_9Label:SetHide(true)
 	Controls.BanMade_10Label:SetHide(true)
+		Controls.PickMadeLabel:SetHide(true) 
+		Controls.PickMade_1:SetHide(true)
+		Controls.PickMade_2:SetHide(true)
+		Controls.PickMade_3:SetHide(true) 
+		Controls.PickMade_4:SetHide(true)
+		Controls.PickMade_1Label:SetHide(true)
+		Controls.PickMade_2Label:SetHide(true)
+		Controls.PickMade_3Label:SetHide(true)
+		Controls.PickMade_4Label:SetHide(true)
 	GameConfiguration.SetValue("BAN_1",nil)
 	GameConfiguration.SetValue("BAN_2",nil)
 	GameConfiguration.SetValue("BAN_3",nil)
@@ -2340,6 +2452,7 @@ function HostLaunch()
 		Network.BroadcastGameConfig();
 	end
 	if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 3 then
+		-- Tournament
 		g_phase = PHASE_MAPBAN
 		
 		local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
@@ -2370,7 +2483,8 @@ function HostLaunch()
 	end
 	
 	if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
-		g_phase = 11
+		-- Vote Draft
+		g_phase = PHASE_VOTE_BAN_MAP
 		
 		local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
 		for i, iPlayer in ipairs(player_ids) do	
@@ -2412,6 +2526,9 @@ function HostLaunch()
 	
 	-- Build the map pool
 	g_map_pool = {}
+	if GameConfiguration.GetValue("DRAFT_MAP") == true then
+	
+	
 	local pool_size = 0
 	for i = 1,14 do
 		if GameConfiguration.GetValue("BAN_POOL_"..i) ~= nil then
@@ -2469,7 +2586,26 @@ function HostLaunch()
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 		else
+		-- No map in the pool - skip
 		g_phase = PHASE_LEADERBAN
+		if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
+			-- Vote Draft
+			g_phase = PHASE_VOTE_BAN_LEADER
+		end
+		g_ban_count = 0
+		g_next_ID = nil
+		if localID == hostID then
+			g_next_ID = GetNextID()
+			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
+		end
+	end
+	
+	else
+		g_phase = PHASE_LEADERBAN
+		if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
+			-- Vote Draft
+			g_phase = PHASE_VOTE_BAN_LEADER
+		end
 		g_ban_count = 0
 		g_next_ID = nil
 		if localID == hostID then
@@ -2491,14 +2627,14 @@ function OnReceiveNextID(next_id:number)
 	if next_id ~= nil then
 		g_next_ID = next_id
 	end
-	if g_phase == 11 then
+	if g_phase == PHASE_VOTE_BAN_MAP then
 		OnVoteMap()
 		if g_timer == 1 then
 			StopCountdown();
 			StartCountdown("Draft_MapBan")	
 		end
 	end
-	if g_phase == 12 then
+	if g_phase == PHASE_VOTE_BAN_LEADER then
 		OnVoteBan()
 		if g_timer == 1 then
 			StopCountdown();
@@ -2571,10 +2707,10 @@ function OnReceiveNextID(next_id:number)
 				end
 			end
 		end
-		if g_phase == 11  then
+		if g_phase == PHASE_VOTE_BAN_MAP  then
 			playerEntry.PlayerAction:SetText("[COLOR_Civ6Green]Voting[ENDCOLOR]")
 		end	
-		if g_phase == 12  then
+		if g_phase == PHASE_VOTE_BAN_LEADER  then
 			playerEntry.PlayerAction:SetText("[COLOR_Civ6Red]Banning[ENDCOLOR]")
 		end	
 		if g_phase == PHASE_READY  then
@@ -3063,7 +3199,12 @@ function GetNextID()
 	end
 	
 	-- VoteMap Phase
-	if g_phase == 11 then
+	if g_phase == PHASE_VOTE_BAN_MAP then
+		return 11
+	end
+	
+	-- VoteMap Phase
+	if g_phase == PHASE_VOTE_BAN_LEADER then
 		return 11
 	end
 
@@ -3097,6 +3238,7 @@ function OnVoteBan()
 	local bannumber = g_ban_count
 	
 	PopulateBanList(bannumber,localID)
+	Controls.MPH_VoteButton:SetHide(false)
 	Controls.MPH_VoteButton:ClearCallback(Mouse.eLClick)
 	Controls.MPH_VoteButton:SetDisabled(false)
 	Controls.MPH_VoteButton:RegisterCallback(Mouse.eLClick,function() OnConfirmBanVote(localID,bannumber); end)
@@ -3267,6 +3409,7 @@ function OnSelectBan(num:number,playerID:number,leader:string)
 		Controls.MPH_ConfirmButton:ClearCallback(Mouse.eLClick)
 		Controls.MPH_ConfirmButton:RegisterCallback(Mouse.eLClick, function() OnConfirmBan(localID,bannumber); end )
 	end
+	--Controls.MPH_VoteButton:SetHide(false)
 	PhaseVisibility()
 end
 

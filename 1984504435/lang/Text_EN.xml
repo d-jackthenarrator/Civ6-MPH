@@ -153,7 +153,7 @@
 		<Text>Remove certains Leaders from the game (Default = No Random)</Text>
 	</Replace>
 	<Replace Tag="BAN_FORMAT_NOBAN_NAME" language="en">
-		<Text>No Restrictions</Text>
+		<Text>None</Text>
 	</Replace>
 	<Replace Tag="BAN_FORMAT_NOBAN_DESC" language="en">
 		<Text>No choice limitations like in the original game</Text>
@@ -523,7 +523,10 @@
 		<Text>PRESS LAUNCH TO START THE DRAFT</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_TOURNAMENT_PHASE_0_PHASE_BUTTON_TEXT" language="en">
-		<Text>LAUNCH</Text>
+		<Text>[COLOR_Civ6Green]LAUNCH[ENDCOLOR]</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_TOURNAMENT_PHASE_0_PHASE_BUTTON_NOT_READY_TEXT" language="en">
+		<Text>[COLOR_Civ6Red]LAUNCH[ENDCOLOR]</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_VOTING_PHASE_0_PHASE_BUTTON_TEXT" language="en">
 		<Text>LAUNCH</Text>
@@ -538,7 +541,7 @@
 		<Text>SKIP</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_TOURNAMENT_PHASE_3_PHASE_BUTTON_TEXT" language="en">
-		<Text>[COLOR_Civ6Red]UNLOCK[ENDCOLOR]</Text>
+		<Text>[COLOR_Civ6Green]UNLOCK[ENDCOLOR]</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_VOTE_BUTTON" language="en">
 		<Text>Send My Votes</Text>
@@ -778,7 +781,59 @@
 	<Replace Tag="LOC_GAME_MENU_UI_REFRESH_BUTTON" Language="en_US">
 		<Text>Reset</Text>
 	</Replace>
+	
 
+	<!--  Tournament Settings -->
+	<Replace Tag="LOC_MPH_TOURNAMENT_PARAMETERS_OPTIONS" Language="en_US">
+		<Text>Tournament & Drafting Options</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_SLOT_ORDER_NAME" Language="en_US">
+		<Text>Draft Type</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_TIMER_NAME" Language="en_US">
+		<Text>Draft Timer</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_MAP_NAME" Language="en_US">
+		<Text>Restricted Map Pool</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_SLOT_ORDER_DESC" Language="en_US">
+		<Text>Draft Type</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_TIMER_DESC" Language="en_US">
+		<Text>Untick to disabled the timer during drafting</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_DRAFT_MAP_DESC" Language="en_US">
+		<Text>When selected the Drafting will first begin by a map selection stage with the maps included in the map pool</Text>
+	</Replace>
+	
+	<Replace Tag="DRAFT_NONE_NAME" Language="en_US">
+		<Text>Random</Text>
+	</Replace>
+	<Replace Tag="DRAFT_SLOT_NAME" Language="en_US">
+		<Text>Slot Order</Text>
+	</Replace>
+	<Replace Tag="DRAFT_4V4T_NAME" Language="en_US">
+		<Text>Teamers 4v4 with 6 bans</Text>
+	</Replace>
+	<Replace Tag="DRAFT_CWCT_NAME" Language="en_US">
+		<Text>Civilization World Cup</Text>
+	</Replace>
+	
+	<Replace Tag="DRAFT_NONE_DESC" Language="en_US">
+		<Text>Player drafting order would be randomly selected</Text>
+	</Replace>
+	<Replace Tag="DRAFT_SLOT_DESC" Language="en_US">
+		<Text>Player drafting order would follow the slot order</Text>
+	</Replace>
+	<Replace Tag="DRAFT_4V4T_DESC" Language="en_US">
+		<Text>Teamer Drafting in two phases with 6 leader bans</Text>
+	</Replace>
+	<Replace Tag="DRAFT_CWCT_DESC" Language="en_US">
+		<Text>Esport Compliant Drafting in phases: 1) 6 Bans 2) 4 Picks 3) 4 Bans 4) Remaining Picks</Text>
+	</Replace>
+	
+	
+	<!--  Trading Settings -->
 	<Replace Tag="LOC_MPH_TRADING_PARAMETERS_OPTIONS" Language="en_US">
 		<Text>Trading and Diplomacy Options</Text>
 	</Replace>

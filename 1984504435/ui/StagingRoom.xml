@@ -57,11 +57,13 @@
 			<Label ID="PhaseLabel" Style="ShellButtonText" Align="Center" Anchor="C,T"  Offset="0,99" String="." Hidden="1" />
 			<Label ID="PhaseLabel_hint" Style="FontNormal12" Align="Center" Anchor="C,T"  Offset="0,124" String="Would put more information here" Hidden="1" />
 			<!-- Tournament / Draft Style  -->	
+			<!-- 
 			<RadioButton RadioGroup="DraftStyle" ID="ButtonDraft_Random" Style="MainMenuCheck" Anchor="L,T"  Offset="10,65" TextOffset="-5,0"  String="Random Order"  ToolTip="LOC_MPH_DRAFT_RANDOM_TOOLTIP" AllowClickOff="1" BoxOnLeft="1" Hidden="1" />
 			<RadioButton RadioGroup="DraftStyle" ID="ButtonDraft_CWC" Style="MainMenuCheck" Anchor="L,T"  Offset="150,65" TextOffset="-5,0"  String="4v4 / 6 Bans"  ToolTip="LOC_MPH_DRAFT_CWC_TOOLTIP" AllowClickOff="1" BoxOnLeft="1" Hidden="1" />
 			<RadioButton RadioGroup="DraftStyle" ID="ButtonDraft_CWC_NEW" Style="MainMenuCheck" Anchor="L,T"  Offset="150,85" TextOffset="-5,0"  String="CWC Format"  ToolTip="LOC_MPH_DRAFT_CWC_NEW_TOOLTIP" AllowClickOff="1" BoxOnLeft="1" Hidden="1" />
 			<RadioButton RadioGroup="DraftStyle" ID="ButtonDraft_Slot" Style="MainMenuCheck" Anchor="L,T"  Offset="10,85" TextOffset="-5,0"  String="Slot Order"  ToolTip="LOC_MPH_DRAFT_SLOT_TOOLTIP" AllowClickOff="1" BoxOnLeft="1" Hidden="1" />
 			<RadioButton RadioGroup="TimerStyle" ID="ButtonDraft_Timer" Style="MainMenuCheck" Anchor="L,T"  Offset="10,105" TextOffset="-5,0"  String="Draft Timer"  ToolTip="LOC_MPH_DRAFT_TIMER_TOOLTIP" AllowClickOff="1" BoxOnLeft="1" Hidden="1" />
+			 -->	
 			<!-- Clock -->
 			<Label ID="clockLabel" Style="FontNormal14" Anchor="L,T"  Offset="10,124" String="00:00" Hidden="1" />
 			<Label ID="PhaseLabel_Version" Style="FontNormal10" Anchor="L,T"  Offset="7,150" String="vx.xx" Hidden="0" />
@@ -105,6 +107,16 @@
 			<Label ID="BanMade_9Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="93,108" String="0" Hidden="1" />
 			<Image ID="BanMade_10" Icon="ICON_LEADER_DEFAULT" Size="37,37" Offset="52,108" Hidden="1" Anchor="R,T"/>
 			<Label ID="BanMade_10Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="52,108" String="0" Hidden="1" />
+			<!-- Current Pick Display During Ban -->
+			<Label ID="PickMadeLabel" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="775,150" String="Active Picks:" Hidden="1" />
+			<Image ID="PickMade_1" Icon="ICON_LEADER_DEFAULT" Size="37,37" Offset="195,165" Hidden="1" Anchor="R,T"/>
+			<Label ID="PickMade_1Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="195,165" String="0" Hidden="1" />
+			<Image ID="PickMade_2" Icon="ICON_LEADER_DEFAULT" Size="37,37" Offset="156,165" Hidden="1" Anchor="R,T"/>
+			<Label ID="PickMade_2Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="156,165" String="0" Hidden="1" />
+			<Image ID="PickMade_3" Icon="ICON_LEADER_DEFAULT" Size="37,37" Offset="117,165" Hidden="1" Anchor="R,T"/>
+			<Label ID="PickMade_3Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="117,165" String="0" Hidden="1" />
+			<Image ID="PickMade_4" Icon="ICON_LEADER_DEFAULT" Size="37,37" Offset="78,165" Hidden="1" Anchor="R,T"/>
+			<Label ID="PickMade_4Label" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="R,T"  Offset="78,165" String="0" Hidden="1" />			
 
 			<!-- Ban Civ PullDown -->
 			<Label ID="BanMapLabel" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="400,175" String="Ban a map:" Hidden="1" />
@@ -112,7 +124,8 @@
 			</PullDown>	
 
 			
-			<!-- Existing Ban Display -->			
+			<!-- Existing Ban Display -->	
+			<Label ID="RefreshLabel" Style="FontNormal12" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="5,55" String="Refreshing" Hidden="1" />	
 			<Label ID="MapPoolLabel" Style="FontNormal14" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="775,55" String="Map Pool:" Hidden="1" />
 			<Label ID="MapPool_1Label" Style="FontNormal12" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="775,72" String="Archip." Hidden="1" />
 			<Label ID="MapPool_2Label" Style="FontNormal12" FontStyle="Shadow" ColorSet="ServerColumnHeader" Anchor="L,T"  Offset="775,84" String="Contin." Hidden="1" />

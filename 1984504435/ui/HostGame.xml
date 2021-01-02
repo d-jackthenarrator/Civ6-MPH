@@ -32,20 +32,35 @@
 					<ScrollBar Style="Slider_Blue" Length="420" Offset="2,0" Anchor="R,T"/>
 					<Stack ID="ParametersStack" Anchor="C,T" Offset="0,0" Padding="10" StackGrowth="Bottom" >
 
+						<!-- Primary Parameters Stack -->
+
 						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_MPH_GAME_OPTIONS"/>
 						</Grid>
 
-						<!-- Primary Parameters Stack -->
 						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="PrimaryParametersStack"/>
+
+						<!-- Tournament Parameters Stack -->
+						<Grid ID="TournamentParametersHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" >
+							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
+							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_MPH_TOURNAMENT_PARAMETERS_OPTIONS"/>
+						</Grid>
+
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="TournamentParametersStack"/>
+						
+						<!-- Game Mode Parameters Stack -->
 
 						<Grid ID="GameModeParametersHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_SETUP_GAME_MODES"/>
 						</Grid>
-
+						
 						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="GameModeParameterStack" />
+						
+						<!-- Victory Parameters Stack -->
+						
+						
 						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_SETUP_VICTORY_CONDITIONS"/>
@@ -53,29 +68,29 @@
 
 						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="VictoryParameterStack" />
 
-
-						<!-- Ban Parameters Stack -->
+						<!-- Ban Parameters Stack
 						<Grid ID="BanHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" Hidden="1">
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_OPTIONS"/>
 						</Grid>
 
 						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanParametersStack"/>
-						<!-- Ban Parameters Stack -->
+						 -->
+						<!-- Ban Parameters Stack 
 						<Grid ID="BanPoolHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" >
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_BAN_POOL_OPTIONS"/>
 						</Grid>
 
 						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="BanPoolParametersStack"/>
-						
+						-->
 						<!-- Trading Parameters Stack -->
 						<Grid ID="TradingParametersHeader" Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8" >
 							<Image Texture="Controls_Gradient_HalfRadial" Color="20,144,140,100" FlipY="1" Anchor="C,T" Size="225,94"/>
 							<Label Anchor="C,C" Style="ShellOptionText" WrapWidth="320" String="LOC_MPH_TRADING_PARAMETERS_OPTIONS"/>
 						</Grid>
 
-						<Stack Anchor="L,T" Offset="50,0" Padding="2" StackGrowth="Bottom" Size="parent-60,auto" ID="TradingParametersStack"/>
+						<Stack Anchor="L,T" Offset="50,0" Padding="3" StackGrowth="Bottom" Size="parent-60,auto" ID="TradingParametersStack"/>
 
 						<!-- Secondary Parameters Stack -->
 						<Grid Size="parent,21" Texture="Shell_SectionHeader" SliceCorner="154,10" SliceTextureSize="308,21" Color="20,144,140,100" Offset="0,8">

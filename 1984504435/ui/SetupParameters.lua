@@ -634,6 +634,7 @@ function SetupParameters:Config_Write(group, id, value)
 		--print("Map", id,value)
 	elseif(group == "Player" and self.PlayerId ~= nil) then
 		--print("Player", id,value)
+		SetupParameters_Log("Config_Write- Player" .. tostring(id) .. " = " .. tostring(value));
 		PlayerConfigurations[self.PlayerId]:SetValue(id, value);
 	else
 		return false;

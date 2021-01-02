@@ -302,31 +302,6 @@ end
 
 -- ===========================================================================
 function Refresh()
-
-	if (GameConfiguration.GetValue("CPL_BAN_FORMAT") == nil) then
-		return
-	end
-	--local banstack = Controls["BanParametersStack"]
-	--local bangrid = Controls["BanHeader"]
-	local banpoolstack = Controls["BanPoolParametersStack"]
-	local banpoolgrid = Controls["BanPoolHeader"]
-	--[[
-	if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 2 then
-		banstack:SetHide(true)
-		bangrid:SetHide(true)
-		else
-		banstack:SetHide(false)
-		bangrid:SetHide(false)
-	end
-	--]]
-	if GameConfiguration.GetValue("CPL_BAN_FORMAT") == 3 or GameConfiguration.GetValue("CPL_BAN_FORMAT") == 4 then
-		banpoolstack:SetHide(false)
-		banpoolgrid:SetHide(false)	
-		else
-		banpoolstack:SetHide(true)
-		banpoolgrid:SetHide(true)		
-	end
-
 	
 end
 
