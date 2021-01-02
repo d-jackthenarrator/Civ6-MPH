@@ -65,6 +65,9 @@
 -- v1.08 	Added Casual timer
 --		CWC new format
 --		Bug fixes
+-- v1.09
+--		Alliance and Trading restrictions
+--		Improved Front End
 
 
 
@@ -72,7 +75,7 @@
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.08"
+local g_version = "v1.09"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0

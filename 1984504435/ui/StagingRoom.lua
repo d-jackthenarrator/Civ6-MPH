@@ -2112,7 +2112,7 @@ function OnBanReceived(text,teamer:boolean)
 	g_ban_count = ban_number
 	if ban_number == 6 or (ban_number > 6 and g_slot_draft ~= 3) or ((ban_number > 10 or ban_number == 10) and g_slot_draft == 3) then
 		g_phase = PHASE_LEADERPICK
-		g_next_ID = nil
+		--g_next_ID = nil
 	end
 	
 	if localID == hostID then
@@ -2121,6 +2121,8 @@ function OnBanReceived(text,teamer:boolean)
 			g_next_ID = hostID
 		end
 		Network.SendChat(".idnext_"..g_next_ID,-2,-1)
+		else
+		OnReceiveNextID(g_next_ID)
 	end
 	
 	if g_debug == true then
@@ -2352,7 +2354,11 @@ function HostReset()
 		Controls.PickMade_1Label:SetHide(true)
 		Controls.PickMade_2Label:SetHide(true)
 		Controls.PickMade_3Label:SetHide(true)
-		Controls.PickMade_4Label:SetHide(true)	
+		Controls.PickMade_4Label:SetHide(true)
+		Controls.PickMade_1:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_2:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_3:SetIcon("ICON_LEADER_DEFAULT")
+		Controls.PickMade_4:SetIcon("ICON_LEADER_DEFAULT")		
 		Controls.BanMade_1:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_2:SetIcon("ICON_LEADER_DEFAULT")
 		Controls.BanMade_3:SetIcon("ICON_LEADER_DEFAULT")
