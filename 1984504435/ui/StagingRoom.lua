@@ -2112,7 +2112,7 @@ function OnBanReceived(text,teamer:boolean)
 	g_ban_count = ban_number
 	if ban_number == 6 or (ban_number > 6 and g_slot_draft ~= 3) or ((ban_number > 10 or ban_number == 10) and g_slot_draft == 3) then
 		g_phase = PHASE_LEADERPICK
-		--g_next_ID = nil
+		g_next_ID = nil
 	end
 	
 	if localID == hostID then
@@ -2730,6 +2730,7 @@ function OnReceiveNextID(next_id:number)
 end
 
 function GetNextID()
+	print("GetNextID() g_phase",g_phase,"g_next_ID",g_next_ID,"g_slot_draft",g_slot_draft,"b_teamer",b_teamer)
 	-- first let's check our cached data from HostLaunch() exist
 	if g_cached_playerIDs == nil then
 		print("Error: g_cached_playerIDs is nil")
@@ -3091,6 +3092,7 @@ function GetNextID()
 				local next_in_line = nil
 			
 				for i, player in ipairs(g_cached_playerIDs) do
+					print("GetNextID()",i,player.ID,player.Observer,player.HasPicked)
 					if found_previous == true and player.Observer == false and player.HasPicked == false then
 						next_in_line = player.ID 
 						return player.ID 
@@ -6715,6 +6717,9 @@ function BuildAdditionalContent()
 		-- Color unofficial mods to call them out.
 		if curMod.Id == "6e52c135-00e7-44b5-a7de-6588a4f38797" then
 			isCivPlayerName = true
+			modTitleStr =  "[COLOR_RED]".. modTitleStr .. "[ENDCOLOR]";
+		end
+		if curMod.Id == "4e835bfa-de8b-4093-86e7-25ac44fa9fc6" then
 			modTitleStr =  "[COLOR_RED]".. modTitleStr .. "[ENDCOLOR]";
 		end
 		if curMod.Id == "619ac86e-d99d-4bf3-b8f0-8c5b8c402176" then
