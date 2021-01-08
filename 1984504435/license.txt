@@ -1,4 +1,4 @@
-Multiplayer Helper (M.P.H) - A mod for Civilization 6 by D. / Jack The Narrator
+Better Balanced Starts (B.B.S) - A mod for Civilization 6 by D. / Jack The Narrator
 
    	Copyright 2020-2021 Damien Regnier
 
@@ -15,9 +15,9 @@ Multiplayer Helper (M.P.H) - A mod for Civilization 6 by D. / Jack The Narrator
    	limitations under the License.
 
 	For any inquiry please reach out on:
-	https://steamcommunity.com/sharedfiles/filedetails/?id=1984504435
+	https://steamcommunity.com/sharedfiles/filedetails/?id=1958135962
 	or
-	https://github.com/d-jackthenarrator/Civ6-MPH
+	https://github.com/d-jackthenarrator/Civ6-BBS
 
   
 

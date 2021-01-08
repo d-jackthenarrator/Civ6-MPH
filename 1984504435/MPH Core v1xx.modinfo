@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="109">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="1091">
+
   <Properties>
     <Name>Multiplayer Helper 1.0.9</Name>
     <Description>Help multiplayer Games being more than lobby simulators</Description>
+	<Created>1</Created>
     <Teaser>Allow eSport drafting, in-game remap etc...</Teaser>
     <Authors>D. / Jack The Narrator</Authors>
 	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, TC_, Sailor Cat, coloo</SpecialThanks>
     <CompatibleVersions>1.2,2.0</CompatibleVersions>
   </Properties>
-  <Dependencies>
-    <Mod id="4873eb62-8ccc-4574-b784-dda455e74e68" title="Expansion: Gathering Storm" />
-  </Dependencies>
+  
 
    <ActionCriteria>
 		<Criteria id="Expansion2">
@@ -19,8 +19,17 @@
 		<Criteria id="Expansion1">
 			<GameCoreInUse>Expansion1</GameCoreInUse>
 		</Criteria>
-   		 <Criteria id="MOD: Spectator">
+   		 <Criteria id="MOD:_Spectator">
       			<ModInUse>c6e5ad32-0600-4a98-a7cd-5854a1abcaaf</ModInUse>
+   		 </Criteria>
+		 <Criteria id="MOD:_BBS">
+      			<ModInUse>c88cba8b-8311-4d35-90c3-51a4a5d6654f</ModInUse>
+   		 </Criteria>
+		<Criteria id="MOD:_BBG">
+      			<ModInUse>cb84074d-5007-4207-b662-c35a5f7be240</ModInUse>
+   		 </Criteria>
+		 <Criteria id="MOD:_BBGBeta">
+      			<ModInUse>cb84074d-5007-4207-b662-c35a5f7be230</ModInUse>
    		 </Criteria>
 		<Criteria id="OneCityChallenge_Mode_Expansion2">
 			<ConfigurationValueMatches>
@@ -114,7 +123,7 @@
         <UpdateText id="MPH_TEXTS">
             <File>lang/Text_EN.xml</File>
         </UpdateText>
-
+	
 	
 	<UpdateIcons id="MPHIcons FrontEnd">
      	<File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
@@ -380,6 +389,13 @@
 		<File>ui/StatusMessagePanel.xml</File>
 	</ImportFiles>
 
+	<ReplaceUIScript id="MPH_DiplomacyActionView" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>DiplomacyActionView</LuaContext>
+			<LuaReplace>ui/DiplomacyActionView_MPH.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
 	
 	<ImportFiles id="AN_Import">
       <Items>
@@ -473,6 +489,8 @@
     <File>data/MP_helper.lua</File>
 	<File>data/Victories.xml</File>
 	<File>lang/Text_EN.xml</File>
+	<File>license.txt</File>
+	<File>notice.txt</File>
 	
 	<File>sql/mph_diplomacy_no_deals.sql</File>
 	<File>sql/mph_alliance_no_military.sql</File>
@@ -486,39 +504,40 @@
 	<File>sql/mph_alliance_no_economic.sql</File>
 	<File>sql/mph_alliance_no_economic_xp1.sql</File>	
 
-	<File>ui/CPL_helper_ChatPanel.lua</File>
-	<File>ui/EndGameMenu.lua</File>
-	<File>ui/EndGameMenu.xml</File>
 	<File>ui/CPL_helper_ActionPanel.lua</File>
-	<File>ui/InGameTopOptionsMenu.xml</File>
+	<File>ui/CPL_helper_ChatPanel.lua</File>
 	<File>ui/CPL_helper_InGameTopOptionsMenu.lua</File>
-	<File>ui/MPHOptions.xml</File>
-	<File>ui/MPHOptions.lua</File>
+	<File>ui/DiplomacyActionView_MPH.lua</File>
 	<File>ui/DiplomacyDealView_MPH.lua</File>
-	<File>ui/InGame.xml</File>
-	<File>ui/InGame.lua</File>
-	<File>ui/VotePanel.xml</File>
-	<File>ui/VotePanel.lua</File>	
 	<File>ui/DropControl.xml</File>
 	<File>ui/DropControl.lua</File>
-	<File>ui/SuddenDeathPanel.lua</File>
-	<File>ui/SuddenDeathPanel.xml</File>
-   	<File>ui/MainMenu.lua</File>
+	<File>ui/EndGameMenu.lua</File>
+	<File>ui/EndGameMenu.xml</File>
+	<File>ui/GameSetupLogic.lua</File>
+	<File>ui/HostGame.lua</File>
+	<File>ui/HostGame.xml</File>
+	<File>ui/InGame.xml</File>
+	<File>ui/InGame.lua</File>
+	<File>ui/InGameTopOptionsMenu.xml</File>
+	<File>ui/MainMenu.lua</File>
 	<File>ui/MainMenu.xml</File>
+	<File>ui/MPHOptions.xml</File>
+	<File>ui/MPHOptions.lua</File>
 	<File>ui/PausePanel.lua</File>
 	<File>ui/PausePanel.xml</File>
-	<File>ui/UnitFlagManager.lua</File>
-
+	<File>ui/PlayerTargetLogic.lua</File>
+	<File>ui/SetupParameters.lua</File>
+	<File>ui/StagingRoom.lua</File>
+	<File>ui/StagingRoom.xml</File>
 	<File>ui/StatusMessagePanel_Spectator.lua</File>
 	<File>ui/StatusMessagePanel.xml</File>
+	<File>ui/SuddenDeathPanel.lua</File>
+	<File>ui/SuddenDeathPanel.xml</File>
+	<File>ui/UnitFlagManager.lua</File>
+	<File>ui/VotePanel.xml</File>
+	<File>ui/VotePanel.lua</File>	
 
-   	<File>ui/StagingRoom.lua</File>
-	<File>ui/StagingRoom.xml</File>
-   	<File>ui/HostGame.lua</File>
-	<File>ui/HostGame.xml</File>
-	<File>ui/SetupParameters.lua</File>
-	<File>ui/GameSetupLogic.lua</File>
-	<File>ui/PlayerTargetLogic.lua</File>
+
 
 	<File>configuration/Config.xml</File>
       	<File>configuration/NONE_CoreColors.xml</File>
@@ -527,7 +546,7 @@
       	<File>configuration/NONE_Civilization.xml</File>
       	<File>configuration/NONE_LeaderAnimations.xml</File>
       	<File>configuration/NONE_Config.xml</File>
-	
+
 
 	<File>mode/watchtower/Artdefs/Improvements.artdef</File>
     <File>mode/watchtower/Artdefs/Landmarks.artdef</File>
@@ -767,18 +786,23 @@
 
     <File>mode/watchtower/expansionist/Expansionist_Units.dep</File>
     <File>mode/watchtower/expansionist/ArtDefs/Units.artdef</File>
+	
 	<File>mode/sudden_death/Sudden_Death_Portrait.dds</File>
 	<File>mode/sudden_death/Sudden_Death_Background.dds</File>
-	<File>mode/onecity/OneCity_Portrait.dds</File>
-	<File>mode/onecity/OneCity_Background.dds</File>
-	<File>icons/Anonymous_Icons.xml</File>
-	<File>icons/Anonymous_44.dds</File>
+	
 	<File>mode/anonymous/Anonymous_Portrait.dds</File>
 	<File>mode/anonymous/Anonymous_Background.dds</File>
 	<File>mode/anonymous/text_anon.xml</File>
+	
+	<File>mode/onecity/OneCity_Portrait.dds</File>
+	<File>mode/onecity/OneCity_Background.dds</File>
+	
+	<File>icons/Anonymous_Icons.xml</File>
+	<File>icons/Anonymous_44.dds</File>
     <File>icons/Sudden_Death_Icons.xml</File>
 	<File>icons/Sudden_Death_44.dds</File>
     <File>icons/OneCity_Icons.xml</File>
+	<File>icons/OneCityChallenge_38.dds</File>
 	<File>icons/OneCityChallenge_44.dds</File>
     <File>icons/ExpansionistUnit_22.dds</File>
     <File>icons/ExpansionistUnit_32.dds</File>
@@ -786,6 +810,8 @@
     <File>icons/ExpansionistUnit_50.dds</File>
     <File>icons/ExpansionistUnit_80.dds</File>
     <File>icons/ExpansionistUnit_256.dds</File>
+	<File>icons/LastMove_44.dds</File>
+	<File>icons/LastMove_Icons.xml</File>
 	
 	<File>mode/lastmove/lastmove.lua</File>
 	<File>mode/lastmove/lastmove_UI.lua</File>
@@ -793,8 +819,6 @@
 	<File>mode/lastmove/lastmove_text.xml</File>
 	<File>mode/lastmove/lastmove_unitabilities.xml</File>
 	<File>mode/lastmove/LastMove_Portrait.dds</File>
-	<File>mode/lastmove/LastMove_Background.dds</File>
-	<File>icons/LastMove_44.dds</File>
-	<File>icons/LastMove_Icons.xml</File>
+	<File>mode/lastmove/LastMove_Background.dds</File> 
   </Files>
 </Mod>

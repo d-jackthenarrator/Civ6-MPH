@@ -925,5 +925,18 @@
 		<Text>Untick to remove the ability to form a Research Alliance from the game.</Text>
 	</Replace>
 
+	<!--  OCC Settings -->
+		<Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_NAME" Language="en_US">
+			<Text>Watchtower</Text>
+		</Row>
+		<Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_DESCRIPTION" Language="en_US">
+			<Text>Allows to claim land outside of your capital</Text>
+		</Row>
+		<Row Tag="LOC_EXPANSIONIST_NAME" Language="en_US">
+			<Text>Expansionist</Text>
+		</Row>
+		<Row Tag="LOC_EXPANSIONIST_DESC" Language="en_US">
+			<Text>Can build watchtower improvement to claim lands outside of your borders</Text>
+		</Row>
   </LocalizedText>
 </GameData>
