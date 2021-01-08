@@ -1,0 +1,824 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="1091">
+
+  <Properties>
+    <Name>Multiplayer Helper 1.0.9</Name>
+    <Description>Help multiplayer Games being more than lobby simulators</Description>
+	<Created>1</Created>
+    <Teaser>Allow eSport drafting, in-game remap etc...</Teaser>
+    <Authors>D. / Jack The Narrator</Authors>
+	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, TC_, Sailor Cat, coloo</SpecialThanks>
+    <CompatibleVersions>1.2,2.0</CompatibleVersions>
+  </Properties>
+  
+
+   <ActionCriteria>
+		<Criteria id="Expansion2">
+			<GameCoreInUse>Expansion2</GameCoreInUse>
+		</Criteria>
+		<Criteria id="Expansion1">
+			<GameCoreInUse>Expansion1</GameCoreInUse>
+		</Criteria>
+   		 <Criteria id="MOD:_Spectator">
+      			<ModInUse>c6e5ad32-0600-4a98-a7cd-5854a1abcaaf</ModInUse>
+   		 </Criteria>
+		 <Criteria id="MOD:_BBS">
+      			<ModInUse>c88cba8b-8311-4d35-90c3-51a4a5d6654f</ModInUse>
+   		 </Criteria>
+		<Criteria id="MOD:_BBG">
+      			<ModInUse>cb84074d-5007-4207-b662-c35a5f7be240</ModInUse>
+   		 </Criteria>
+		 <Criteria id="MOD:_BBGBeta">
+      			<ModInUse>cb84074d-5007-4207-b662-c35a5f7be230</ModInUse>
+   		 </Criteria>
+		<Criteria id="OneCityChallenge_Mode_Expansion2">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>GAMEMODE_ONECITY</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Anonymous_Mode_Expansion2">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>GAMEMODE_ANONYMOUS</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="LastMove_Mode_Expansion2">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>GAMEMODE_LASTMOVE</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Alliance_Military_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>ALLIANCE_MILITARY</ConfigurationId>
+				<Value>0</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+				<Criteria id="Alliance_Cultural_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>ALLIANCE_CULTURAL</ConfigurationId>
+				<Value>0</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Alliance_Religious_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>ALLIANCE_RELIGIOUS</ConfigurationId>
+				<Value>0</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Alliance_Research_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>ALLIANCE_RESEARCH</ConfigurationId>
+				<Value>0</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Alliance_Economic_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>ALLIANCE_ECONOMIC</ConfigurationId>
+				<Value>0</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Diplomatic_Deals_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>DIPLOMATIC_DEAL</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+  </ActionCriteria>
+
+  <FrontEndActions>
+    <ImportFiles id="StagingRoom and Option">
+      <Properties>
+        <LoadOrder>9999</LoadOrder>
+      </Properties>
+	  
+		<File>ui/MainMenu.lua</File>
+		<File>ui/MainMenu.xml</File>
+		<File>ui/StagingRoom.lua</File>
+		<File>ui/StagingRoom.xml</File>
+		<File>ui/HostGame.lua</File>
+		<File>ui/SetupParameters.lua</File>
+		<File>ui/GameSetupLogic.lua</File>
+		<File>ui/PlayerTargetLogic.lua</File>
+		<File>ui/HostGame.xml</File>
+		
+    </ImportFiles>
+
+    <UpdateDatabase id="None_Placeholder">
+      <File>configuration/NONE_Config.xml</File>
+    </UpdateDatabase>
+        <UpdateDatabase id="CPL_SETTINGS">
+            	<File>configuration/Config.xml</File>
+        </UpdateDatabase>
+        <UpdateText id="MPH_TEXTS">
+            <File>lang/Text_EN.xml</File>
+        </UpdateText>
+	
+	
+	<UpdateIcons id="MPHIcons FrontEnd">
+     	<File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
+		<File>icons/Anonymous_Icons.xml</File>
+		<File>icons/LastMove_Icons.xml</File>
+		<File>icons/OneCity_Icons.xml</File>
+		<File>icons/Sudden_Death_Icons.xml</File>
+	</UpdateIcons>
+	
+
+	<ImportFiles id="FrontEnd_Arts_Icons_Import">
+     	 <Items>
+			<File>icons/Sudden_Death_44.dds</File>
+			<File>mode/sudden_death/Sudden_Death_Portrait.dds</File>
+			<File>mode/sudden_death/Sudden_Death_Background.dds</File>
+			<File>icons/Anonymous_44.dds</File>
+			<File>mode/anonymous/Anonymous_Portrait.dds</File>
+			<File>mode/anonymous/Anonymous_Background.dds</File>
+			<File>icons/ExpansionistUnit_22.dds</File>
+			<File>icons/ExpansionistUnit_32.dds</File>
+			<File>icons/ExpansionistUnit_38.dds</File>
+			<File>icons/ExpansionistUnit_50.dds</File>
+			<File>icons/ExpansionistUnit_80.dds</File>
+			<File>icons/ExpansionistUnit_256.dds</File>
+			<File>icons/OneCityChallenge_44.dds</File>
+			<File>mode/onecity/OneCity_Portrait.dds</File>
+			<File>mode/onecity/OneCity_Background.dds</File>
+			<File>icons/LastMove_44.dds</File>
+			<File>mode/lastmove/LastMove_Portrait.dds</File>
+			<File>mode/lastmove/LastMove_Background.dds</File>
+      </Items>
+    </ImportFiles>
+
+  </FrontEndActions>
+   <InGameActions>
+    	<UpdateColors id="GameplayColors">
+      		<File>configuration/NONE_CoreColors.xml</File>
+      		<File>configuration/NONE_PlayerColors.xml</File>
+    	</UpdateColors>
+
+    	<UpdateDatabase id="Spectator_Gameplay">
+      		<Properties>
+        		<LoadOrder>9999</LoadOrder>
+      		</Properties>
+      		<File>configuration/NONE_Leaders.xml</File>
+      		<File>configuration/NONE_Civilization.xml</File>
+      		<File>configuration/NONE_LeaderAnimations.xml</File>
+    	</UpdateDatabase>
+		
+    	<AddGameplayScripts id="CPL_Helper">
+        	<File>data/MP_helper.lua</File>
+    	</AddGameplayScripts>
+
+        <UpdateDatabase id="CPL_XML">
+		<File>data/Victories.xml</File>
+        </UpdateDatabase>
+
+		<UpdateDatabase id="MPH_Control_Military_Alliance_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Military_Off</Criteria>
+			<File>sql/mph_alliance_no_military.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Military_Alliance_Off_XP1">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Military_Off</Criteria>
+			<Criteria>Expansion1</Criteria>
+			<File>sql/mph_alliance_no_military_xp1.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Military_Alliance_Off_XP2">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Military_Off</Criteria>
+			<Criteria>Expansion2</Criteria>
+			<File>sql/mph_alliance_no_military_xp1.sql</File>
+        </UpdateDatabase>			
+	
+			<UpdateDatabase id="MPH_Control_Cultural_Alliance_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Cultural_Off</Criteria>
+			<File>sql/mph_alliance_no_cultural.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Cultural_Alliance_Off_XP1">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Cultural_Off</Criteria>
+			<Criteria>Expansion1</Criteria>
+			<File>sql/mph_alliance_no_cultural_xp1.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Cultural_Alliance_Off_XP2">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Cultural_Off</Criteria>
+			<Criteria>Expansion2</Criteria>
+			<File>sql/mph_alliance_no_cultural_xp1.sql</File>
+        </UpdateDatabase>	
+	
+			<UpdateDatabase id="MPH_Control_Economic_Alliance_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Economic_Off</Criteria>
+			<File>sql/mph_alliance_no_economic.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Economic_Alliance_Off_XP1">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Economic_Off</Criteria>
+			<Criteria>Expansion1</Criteria>
+			<File>sql/mph_alliance_no_economic_xp1.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Economic_Alliance_Off_XP2">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Economic_Off</Criteria>
+			<Criteria>Expansion2</Criteria>
+			<File>sql/mph_alliance_no_economic_xp1.sql</File>
+        </UpdateDatabase>	
+
+
+		<UpdateDatabase id="MPH_Control_Religious_Alliance_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Religious_Off</Criteria>
+			<File>sql/mph_alliance_no_religious.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Religious_Alliance_Off_XP1">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Religious_Off</Criteria>
+			<Criteria>Expansion1</Criteria>
+			<File>sql/mph_alliance_no_religious_xp1.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Religious_Alliance_Off_XP2">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Religious_Off</Criteria>
+			<Criteria>Expansion2</Criteria>
+			<File>sql/mph_alliance_no_religious_xp1.sql</File>
+        </UpdateDatabase>	
+
+			<UpdateDatabase id="MPH_Control_Research_Alliance_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Research_Off</Criteria>
+			<File>sql/mph_alliance_no_research.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Research_Alliance_Off_XP1">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Research_Off</Criteria>
+			<Criteria>Expansion1</Criteria>
+			<File>sql/mph_alliance_no_research_xp1.sql</File>
+        </UpdateDatabase>	
+		<UpdateDatabase id="MPH_Control_Research_Alliance_Off_XP2">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Alliance_Research_Off</Criteria>
+			<Criteria>Expansion2</Criteria>
+			<File>sql/mph_alliance_no_research_xp1.sql</File>
+        </UpdateDatabase>	
+			<UpdateDatabase id="MPH_Control_Diplomatic_Deals_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Diplomatic_Deals_Off</Criteria>
+			<File>sql/mph_diplomacy_no_deals.sql</File>
+        </UpdateDatabase>			
+
+	
+        <UpdateText id="MPH_INGAME_TEXTS">
+            <File>lang/Text_EN.xml</File>
+        </UpdateText>
+
+	<ReplaceUIScript id="MPH_DiplomacyDealView">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+			<LuaContext>DiplomacyDealView</LuaContext>
+			<LuaReplace>ui/DiplomacyDealView_MPH.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+	<ReplaceUIScript id="MPH_InGameTopOptionsMenu">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+			<LuaContext>InGameTopOptionsMenu</LuaContext>
+			<LuaReplace>ui/CPL_helper_InGameTopOptionsMenu.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+	<ImportFiles id="MPH_InGameTopOptionsMenu">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/InGameTopOptionsMenu.xml</File>
+	</ImportFiles>
+	<ImportFiles id="cpl_MPHOption">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/MPHOptions.xml</File>
+		<File>ui/MPHOptions.lua</File>
+		<File>ui/VotePanel.xml</File>
+		<File>ui/VotePanel.lua</File>
+		<File>ui/DropControl.xml</File>
+		<File>ui/DropControl.lua</File>
+		<File>ui/EndGameMenu.lua</File>
+		<File>ui/EndGameMenu.xml</File>
+		<File>ui/PausePanel.lua</File>
+		<File>ui/PausePanel.xml</File>
+		<File>ui/SuddenDeathPanel.lua</File>
+		<File>ui/SuddenDeathPanel.xml</File>
+	</ImportFiles>
+	<ImportFiles id="cpl_InGame">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/InGame.xml</File>
+		<File>ui/InGame.lua</File>
+	</ImportFiles>
+
+	<ReplaceUIScript id="CPL_ChatPanel">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>ChatPanel</LuaContext>
+			<LuaReplace>ui/CPL_helper_ChatPanel.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+
+	<ReplaceUIScript id="CPL_ActionPanel">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>ActionPanel</LuaContext>
+			<LuaReplace>ui/CPL_helper_ActionPanel.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+
+	<ReplaceUIScript id="Spectator_StatusMessagePanel" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>StatusMessagePanel</LuaContext>
+			<LuaReplace>ui/StatusMessagePanel_Spectator.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+	<ImportFiles id="Spectator_StatusMessagePanel" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+		 </Properties>
+		<File>ui/StatusMessagePanel.xml</File>
+	</ImportFiles>
+
+	<ReplaceUIScript id="MPH_DiplomacyActionView" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>DiplomacyActionView</LuaContext>
+			<LuaReplace>ui/DiplomacyActionView_MPH.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+	
+	<ImportFiles id="AN_Import">
+      <Items>
+		<File>icons/Anonymous_44.dds</File>
+      </Items>
+    </ImportFiles>
+    <UpdateIcons id="Anonymous_Icon">
+	 <File>icons/Anonymous_Icons.xml</File>
+    </UpdateIcons>
+	
+	<ImportFiles id="SF_Import" >
+      <Items>
+	<File>icons/Sudden_Death_44.dds</File>
+      </Items>
+    </ImportFiles>
+    <UpdateIcons id="Sudden_Death_Icon">
+	 <File>icons/Sudden_Death_Icons.xml</File>
+    </UpdateIcons>
+
+	<ImportFiles id="SF_Import" >
+      <Items>
+    <File>icons/ExpansionistUnit_22.dds</File>
+    <File>icons/ExpansionistUnit_32.dds</File>
+    <File>icons/ExpansionistUnit_38.dds</File>
+    <File>icons/ExpansionistUnit_50.dds</File>
+    <File>icons/ExpansionistUnit_80.dds</File>
+    <File>icons/ExpansionistUnit_256.dds</File>
+	<File>icons/OneCityChallenge_44.dds</File>
+      </Items>
+    </ImportFiles>
+    <UpdateIcons id="OneCity_Challenge_Icon" >
+	 <File>icons/OneCity_Icons.xml</File>
+    </UpdateIcons>
+    <UpdateDatabase id="WatchtowerDB" criteria="OneCityChallenge_Mode_Expansion2">
+      <Properties>
+        <LoadOrder>1777</LoadOrder>
+      </Properties>
+      <File>mode/watchtower/Core/Defines.sql</File>
+    </UpdateDatabase>
+    <UpdateArt id="UnitArtdefs" >
+      <Properties>
+        <LoadOrder>1777</LoadOrder>
+      </Properties>
+		<File>mode/watchtower/Watchtower Improvement.dep</File>
+		<File>mode/watchtower/expansionist/Expansionist_Units.dep</File>
+    </UpdateArt>
+    <UpdateText id="AnonText" criteria="Anonymous_Mode_Expansion2">
+      <Properties>
+        <LoadOrder>9999</LoadOrder>
+      </Properties>
+      <File>mode/anonymous/text_anon.xml</File>
+    </UpdateText>
+        <AddUserInterfaces id="lastmove_ui_update" criteria="LastMove_Mode_Expansion2">
+		<Properties>
+			<Context>InGame</Context>
+		</Properties>
+		<File>mode/lastmove/lastmove_UI.xml</File>
+	</AddUserInterfaces>
+	 <UpdateDatabase id="lastmove_database_update" criteria="LastMove_Mode_Expansion2">
+      		<Properties>
+        		<LoadOrder>9999</LoadOrder>
+      		</Properties>
+      		<File>mode/lastmove/lastmove_unitabilities.xml</File>
+    </UpdateDatabase>
+	 <AddGameplayScripts id="lastmove_gamescript_update" criteria="LastMove_Mode_Expansion2">
+        	<File>mode/lastmove/lastmove.lua</File>
+    </AddGameplayScripts>
+	 <UpdateText id="lastmove_text_update" criteria="LastMove_Mode_Expansion2">
+      <Properties>
+        <LoadOrder>9999</LoadOrder>
+      </Properties>
+      <File>mode/lastmove/lastmove_text.xml</File>
+    </UpdateText>
+    <UpdateText id="OCCText" criteria="OneCityChallenge_Mode_Expansion2">
+      <Properties>
+        <LoadOrder>9999</LoadOrder>
+      </Properties>
+      <File>mode/watchtower/Core/Text.xml</File>
+    </UpdateText>
+    <UpdateIcons id="Watchtower Icons" >
+      <File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
+    </UpdateIcons>
+	<ImportFiles id="Spectator_UnitFlagManager">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+		</Properties>
+		<File>ui/UnitFlagManager.lua</File>
+	</ImportFiles>
+ </InGameActions>
+  <Files>
+    <File>data/MP_helper.lua</File>
+	<File>data/Victories.xml</File>
+	<File>lang/Text_EN.xml</File>
+	<File>license.txt</File>
+	<File>notice.txt</File>
+	
+	<File>sql/mph_diplomacy_no_deals.sql</File>
+	<File>sql/mph_alliance_no_military.sql</File>
+	<File>sql/mph_alliance_no_military_xp1.sql</File>
+	<File>sql/mph_alliance_no_cultural.sql</File>
+	<File>sql/mph_alliance_no_cultural_xp1.sql</File>
+	<File>sql/mph_alliance_no_religious.sql</File>
+	<File>sql/mph_alliance_no_religious_xp1.sql</File>
+	<File>sql/mph_alliance_no_research.sql</File>
+	<File>sql/mph_alliance_no_research_xp1.sql</File>
+	<File>sql/mph_alliance_no_economic.sql</File>
+	<File>sql/mph_alliance_no_economic_xp1.sql</File>	
+
+	<File>ui/CPL_helper_ActionPanel.lua</File>
+	<File>ui/CPL_helper_ChatPanel.lua</File>
+	<File>ui/CPL_helper_InGameTopOptionsMenu.lua</File>
+	<File>ui/DiplomacyActionView_MPH.lua</File>
+	<File>ui/DiplomacyDealView_MPH.lua</File>
+	<File>ui/DropControl.xml</File>
+	<File>ui/DropControl.lua</File>
+	<File>ui/EndGameMenu.lua</File>
+	<File>ui/EndGameMenu.xml</File>
+	<File>ui/GameSetupLogic.lua</File>
+	<File>ui/HostGame.lua</File>
+	<File>ui/HostGame.xml</File>
+	<File>ui/InGame.xml</File>
+	<File>ui/InGame.lua</File>
+	<File>ui/InGameTopOptionsMenu.xml</File>
+	<File>ui/MainMenu.lua</File>
+	<File>ui/MainMenu.xml</File>
+	<File>ui/MPHOptions.xml</File>
+	<File>ui/MPHOptions.lua</File>
+	<File>ui/PausePanel.lua</File>
+	<File>ui/PausePanel.xml</File>
+	<File>ui/PlayerTargetLogic.lua</File>
+	<File>ui/SetupParameters.lua</File>
+	<File>ui/StagingRoom.lua</File>
+	<File>ui/StagingRoom.xml</File>
+	<File>ui/StatusMessagePanel_Spectator.lua</File>
+	<File>ui/StatusMessagePanel.xml</File>
+	<File>ui/SuddenDeathPanel.lua</File>
+	<File>ui/SuddenDeathPanel.xml</File>
+	<File>ui/UnitFlagManager.lua</File>
+	<File>ui/VotePanel.xml</File>
+	<File>ui/VotePanel.lua</File>	
+
+
+
+	<File>configuration/Config.xml</File>
+      	<File>configuration/NONE_CoreColors.xml</File>
+      	<File>configuration/NONE_PlayerColors.xml</File>
+      	<File>configuration/NONE_Leaders.xml</File>
+      	<File>configuration/NONE_Civilization.xml</File>
+      	<File>configuration/NONE_LeaderAnimations.xml</File>
+      	<File>configuration/NONE_Config.xml</File>
+
+
+	<File>mode/watchtower/Artdefs/Improvements.artdef</File>
+    <File>mode/watchtower/Artdefs/Landmarks.artdef</File>
+    <File>mode/watchtower/Artdefs/StrategicView.artdef</File>
+    <File>mode/watchtower/Artdefs/Units.artdef</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_ALT.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_ALT_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_DESERT.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_DESERT_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_FOREST.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_FOREST_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_FOREST_SNOW.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_FOREST_SNOW_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_JUNGLE.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_JUNGLE_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_MARSH.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_MARSH_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_OASIS.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_OASIS_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_SNOW.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_SNOW_MODERN.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_SV.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_TUNDRA.ast</File>
+    <File>mode/watchtower/Assets/IMP_SAILOR_WATCHTOWER_TUNDRA_MODERN.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Marsh_Decal_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Marsh_Decal_005.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Marsh_Decal_007.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Marsh_Decal_008.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Alt.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Desert.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Forest.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Jungle.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Marsh.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Tower_Classical_Tundra.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Boulder01.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Boulder_Clump.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Crate.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Dirt_Decal.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Dirt_Decal_Red.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Floodplains_Log_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Floodplains_Log_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Floodplains_Log_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Decal_01.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Decal_02.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Grass_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Grass_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Grass_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Grass_004.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Palm_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Palm_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Palm_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Plant_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Jungle_Plant_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Alt.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Base_Decal.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Desert.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Desert_Wall.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Forest.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Jungle.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Marsh.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Modern_Snow.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Clump_1.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Clump_2.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Clump_Snow_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Clump_Snow_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Snow_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Snow_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pine_Snow_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Pot.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Rice_Clutter_001.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Rice_Clutter_002.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Rice_Clutter_003.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Rice_Clutter_004.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Snowball.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Snow_Bank.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Alt.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Desert.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Forest.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Jungle.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Marsh.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_test.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Standard_Tundra.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Default.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Default_Alt.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Marsh.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Sm.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Sm_Alt.ast</File>
+    <File>mode/watchtower/Assets/SAILOR_Watchtower_Tent_Tundra.ast</File>
+    <File>mode/watchtower/Core/Defines.sql</File>
+    <File>mode/watchtower/Core/Text.xml</File>
+    <File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
+    <File>mode/watchtower/Materials/SAILOR_Ancient_Filler_Mat.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Rice_Tuft_Material.mtl</File>
+    <File>mode/watchtower/Materials/SAILOR_Tower_Enc.mtl</File>
+    <File>mode/watchtower/Materials/SAILOR_Tower_Enc_Alt.mtl</File>
+    <File>mode/watchtower/Materials/SAILOR_Tower_Enc_Desert.mtl</File>
+    <File>mode/watchtower/Materials/SAILOR_Tower_Enc_Forest.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Tower_Enc_Jungle.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Watchtower_Crate_Mat.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Watchtower_Marsh.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Watchtower_Snowball_mat.mtl</File>
+    <File>mode/watchtower/Materials/Sailor_Watchtower_Snow_Mat.mtl</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/landmarks/tilebases.blp</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Burn_BaseColor</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Burn_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Completely_Metallic</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Ancient_01_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Ancient_01_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Ancient_01_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Industrial_01_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Industrial_01_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Decals_Parts_Industrial_01_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Decals_Parts_Ancient_01_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Decals_Parts_Industrial_01_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_DIS_Ancient_Filler_B_DIS_Ancient_Filler_T</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_DIS_COM_Base_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_DIS_ENC_Base_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Foliage_Bld_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Foundation_Brick_Warm_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Jungle_Leaves_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Pillaged_Foliage_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Pillage_Construction_01_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_RES_Stone_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Default_Alt_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Des_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Forest2_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Marsh_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Snowball_test3_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_B_Snow_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Crate_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Dirt_Decal_Red_B5_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Enc_B94_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Jungle_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Alt_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_B2_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Desert_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Forest_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Jungle_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Marsh_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Modern_Snow_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_SAILOR_Watchtower_Rice_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_TER_Flood_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_TER_Flood_Tree_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_TER_Marsh_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_TER_Mountain_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Trees_Pine_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Trees_Pine_Snow_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Tree_Dirt_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Tree_Dirt_Snow_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Tree_Jungle_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DiffuseTint_Tree_PIL_Decal_B_null</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Ancient_Filler_A</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Ancient_Filler_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Ancient_Filler_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Ancient_Filler_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Ancient_Filler_O</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_A</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_E</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_M</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_COM_Base_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_A</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_E</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_M</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_ENC_Base_O</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Watchtower_N30</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_DIS_Watchtower_N31</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foliage_Bld_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foliage_Bld_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foliage_Bld_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foundation_Brick_Gray_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foundation_Brick_Gray_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Foundation_Brick_Gray_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_FOW_Tree_PIL_Decal</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_A</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_E</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_M</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_IMP_NationalForest_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Jungle_Leaves_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Jungle_Leaves_Decal_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Jungle_Leaves_Decal_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Pillaged_Foliage_O</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Pillage_Construction_01_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Pillage_Construction_01_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Pillage_Construction_01_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Pillage_Construction_01_O</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Rice_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Rice_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Rice_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Rice_O</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Stone_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Stone_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_RES_Stone_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_SAILOR_Watchtower_Dirt_Decal_Red_B5</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Decal_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Decal_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Decal_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Tree_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Tree_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Flood_Tree_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Grass_Decal_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Marsh_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Marsh_Decal_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Marsh_Decal_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Marsh_Decal_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Mountain_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_TER_Mountain_Decal_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Trees_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Trees_Pine_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Trees_Pine_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Dirt_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Dirt_Decal_FOW</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Dirt_Decal_H</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Dirt_Snow_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Jungle_G</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Jungle_N0</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_Jungle_N1</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/SHARED_DATA/TEXTURE_Tree_PIL_Decal_B</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/strategicview/strategicview_improvements.blp</File>
+    <File>mode/watchtower/Platforms/Windows/BLPs/ui/Icons.blp</File>
+    <File>mode/watchtower/Watchtower Improvement.dep</File>
+    <File>mode/watchtower/XLPs/Atlas.xlp</File>
+    <File>mode/watchtower/XLPs/StrategicView_Improvements.xlp</File>
+    <File>mode/watchtower/XLPs/tilebases.xlp</File>
+
+    <File>mode/watchtower/expansionist/Expansionist_Units.dep</File>
+    <File>mode/watchtower/expansionist/ArtDefs/Units.artdef</File>
+	
+	<File>mode/sudden_death/Sudden_Death_Portrait.dds</File>
+	<File>mode/sudden_death/Sudden_Death_Background.dds</File>
+	
+	<File>mode/anonymous/Anonymous_Portrait.dds</File>
+	<File>mode/anonymous/Anonymous_Background.dds</File>
+	<File>mode/anonymous/text_anon.xml</File>
+	
+	<File>mode/onecity/OneCity_Portrait.dds</File>
+	<File>mode/onecity/OneCity_Background.dds</File>
+	
+	<File>icons/Anonymous_Icons.xml</File>
+	<File>icons/Anonymous_44.dds</File>
+    <File>icons/Sudden_Death_Icons.xml</File>
+	<File>icons/Sudden_Death_44.dds</File>
+    <File>icons/OneCity_Icons.xml</File>
+	<File>icons/OneCityChallenge_38.dds</File>
+	<File>icons/OneCityChallenge_44.dds</File>
+    <File>icons/ExpansionistUnit_22.dds</File>
+    <File>icons/ExpansionistUnit_32.dds</File>
+    <File>icons/ExpansionistUnit_38.dds</File>
+    <File>icons/ExpansionistUnit_50.dds</File>
+    <File>icons/ExpansionistUnit_80.dds</File>
+    <File>icons/ExpansionistUnit_256.dds</File>
+	<File>icons/LastMove_44.dds</File>
+	<File>icons/LastMove_Icons.xml</File>
+	
+	<File>mode/lastmove/lastmove.lua</File>
+	<File>mode/lastmove/lastmove_UI.lua</File>
+	<File>mode/lastmove/lastmove_UI.xml</File>
+	<File>mode/lastmove/lastmove_text.xml</File>
+	<File>mode/lastmove/lastmove_unitabilities.xml</File>
+	<File>mode/lastmove/LastMove_Portrait.dds</File>
+	<File>mode/lastmove/LastMove_Background.dds</File> 
+  </Files>
+</Mod>

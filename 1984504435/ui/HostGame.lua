@@ -9,6 +9,7 @@ include("PopupDialog");
 include("Civ6Common");
 
 
+
 -- ===========================================================================
 --	CONSTANTS
 -- ===========================================================================
@@ -329,6 +330,10 @@ function OnShow()
 	--]]
 
 	RealizeShellTabs();
+	
+	if isInSession == false then
+		Default_Natural_Wonders()
+	end
 end
 
 -- ===========================================================================
@@ -674,6 +679,37 @@ function OnExitGame()
 end
 
 -- ===========================================================================
+function Default_Natural_Wonders()
+	local default = {}
+	default = {
+				"FEATURE_BARRINGER_CRATER",
+				"FEATURE_BIOLUMINESCENT_BAY",
+				"FEATURE_CERRO_DE_POTOSI",
+				"FEATURE_DALLOL",
+				"FEATURE_GRAND_MESA",
+				"FEATURE_KRAKATOA",
+				"FEATURE_LAKE_VICTORIA",
+				"FEATURE_LENCOIS_MARANHENSES",
+				"FEATURE_OUNIANGA",
+				"FEATURE_MOSI_OA_TUNYA",
+				"FEATURE_MOTLATSE_CANYON",
+				"FEATURE_KAILASH",
+				"FEATURE_NAMIB",
+				"FEATURE_OLD_FAITHFUL",			
+				"FEATURE_SINAI",
+				"FEATURE_SALAR_DE_UYUNI",
+				"FEATURE_WULINGYUAN",	
+				"FEATURE_SALAR_DE_UYUNI",
+				"FEATURE_SRI_PADA",
+				"FEATURE_GIBRALTAR",					
+				"FEATURE_VREDEFORT_DOME"
+				}
+	GameConfiguration.SetValue("EXCLUDE_NATURAL_WONDERS",default)
+end
+
+
+
+-- ===========================================================================
 function OnExitGameAskAreYouSure()
 	if Network.IsInSession() then
 		if (not m_kPopupDialog:IsOpen()) then
@@ -690,6 +726,7 @@ end
 -- ===========================================================================
 function Initialize()
 	
+	Default_Natural_Wonders()
 	Events.SystemUpdateUI.Add(OnUpdateUI);
 
 	ContextPtr:SetInitHandler(OnInit);

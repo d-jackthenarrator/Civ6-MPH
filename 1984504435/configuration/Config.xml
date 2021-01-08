@@ -1,5 +1,11 @@
 <GameInfo>
 	<Parameters>
+		<!--  Signature -->
+		<Row ParameterId="MPH_MOD_ID" Name="MPH" Description="MPH" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="MOD_MPH_ID" GroupId="AdvancedOptions" SortIndex="0" Visible="0"  />
+		<Row ParameterId="BBG_MOD_ID" Name="BBG" Description="BBG" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="MOD_BBG_ID" GroupId="AdvancedOptions" SortIndex="0" Visible="0"  />
+		<Row ParameterId="BBS_MOD_ID" Name="BBS" Description="BBS" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="MOD_BBS_ID" GroupId="AdvancedOptions" SortIndex="0" Visible="0"  />
+		<Row ParameterId="BSM_MOD_ID" Name="BSM" Description="BSM" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="MOD_BSM_ID" GroupId="AdvancedOptions" SortIndex="0" Visible="0"  />
+	
 		<!--  CPL Settings -->
 		<Row ParameterId="CPL_FS" Name="CPL_FS_NAME" Description="CPL_FS_DESC" Domain="FSCountRange" DefaultValue="2" ConfigurationGroup="Game" ConfigurationId="CPL_FS" GroupId="AdvancedOptions" SortIndex="2991" Visible="0"  />
 		<Row ParameterId="CPL_CS" Name="CPL_CS_NAME" Description="CPL_CS_DESC" Domain="CSCountRange" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="CPL_CS" GroupId="AdvancedOptions" SortIndex="2992" Visible="0"  />
@@ -156,7 +162,7 @@
 		<Row ParameterId="Trading_Strategics" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
 		<Row ParameterId="Trading_Luxuries" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />		
 		<!--  Block the Gamespeeds to Online with Smart Timer -->
-		<Row ParameterId="GameSpeeds" 							ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" 	Operator="NotEquals" ConfigurationValue="1" />	
+		<Row ParameterId="GameSpeeds" 							ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" 	Operator="Equals" ConfigurationValue="1" />	
 	</ParameterCriteria>
 
 	<ParameterDependencies>
