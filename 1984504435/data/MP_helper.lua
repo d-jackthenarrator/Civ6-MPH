@@ -611,7 +611,6 @@ function OnPlayerTurnActivated_OneCity(playerID:number)
 end
 
 function OnCityConquered_OneCity(capturerID,  ownerID, cityID , cityX, cityY)
-	print(" OnCityConquered_OneCity",capturerID,  ownerID, cityID , cityX, cityY,b_onecity )
 	local pPlayer = Players[capturerID];
 	local pPlayerCities:table = pPlayer:GetCities();
 	local pTreasury = pPlayer:GetTreasury()

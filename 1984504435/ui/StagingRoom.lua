@@ -1350,28 +1350,6 @@ function Refresh()
 	if string.len(g_refreshing) > 30 then
 		g_refreshing = "Refreshing"
 	end	
-	GameConfiguration.SetValue("MOD_BSM_ID",false)
-	GameConfiguration.SetValue("MOD_BBS_ID",false)
-	GameConfiguration.SetValue("MOD_BBG_ID",false)
-	GameConfiguration.SetValue("MOD_MPH_ID",false)
-	local enabledMods = GameConfiguration.GetEnabledMods();
-	for _, curMod in ipairs(enabledMods) do
-		-- Color unofficial mods to call them out.
-		if curMod.Id == "3291a787-4a93-445c-998d-e22034ab15b3" or curMod.Id == "c6e5ad32-0600-4a98-a7cd-5854a1abcaaf" then
-			GameConfiguration.SetValue("MOD_BSM_ID",true)
-		end			
-		if curMod.Id == "c88cba8b-8311-4d35-90c3-51a4a5d6654f" then
-			GameConfiguration.SetValue("MOD_BBS_ID",true)
-		end		
-		if curMod.Id == "cb84074d-5007-4207-b662-c35a5f7be240" or curMod.Id == "cb84074d-5007-4207-b662-c35a5f7be230" then
-			GameConfiguration.SetValue("MOD_BBG_ID",true)
-		end				
-		if curMod.Id == "619ac86e-d99d-4bf3-b8f0-8c5b8c402176" then
-			GameConfiguration.SetValue("MOD_MPH_ID",true)
-		end			
-														 	 
-	end	
-	
 	-- Define Settings
 	g_slot_draft = 0
 	if GameConfiguration.GetValue("DRAFT_SLOT_ORDER") ~= nil then
@@ -6727,18 +6705,21 @@ end
 -- ===========================================================================
 function BuildAdditionalContent()
 	m_modsIM:ResetInstances();
+
 	local enabledMods = GameConfiguration.GetEnabledMods();
 	b_mph_game = false
 	b_spec_game = false
 	isCivPlayerName = false
-	local count = 0
 	for _, curMod in ipairs(enabledMods) do
-		count = count + 1
 		local modControl = m_modsIM:GetInstance();
 		local modTitleStr : string = curMod.Title;
+		
 		-- Color unofficial mods to call them out.
 		if curMod.Id == "6e52c135-00e7-44b5-a7de-6588a4f38797" then
 			isCivPlayerName = true
+			modTitleStr =  "[COLOR_RED]".. modTitleStr .. "[ENDCOLOR]";
+		end
+		if curMod.Id == "4e835bfa-de8b-4093-86e7-25ac44fa9fc6" then
 			modTitleStr =  "[COLOR_RED]".. modTitleStr .. "[ENDCOLOR]";
 		end
 		if curMod.Id == "619ac86e-d99d-4bf3-b8f0-8c5b8c402176" then
@@ -6754,8 +6735,6 @@ function BuildAdditionalContent()
 		end
 		modControl.ModTitle:SetText(modTitleStr);
 	end
-
-
 
 	Controls.AdditionalContentStack:CalculateSize();
 	Controls.ParametersScrollPanel:CalculateSize();
