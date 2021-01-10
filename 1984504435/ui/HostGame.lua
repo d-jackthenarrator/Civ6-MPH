@@ -30,6 +30,7 @@ local m_lobbyModeName:string = MPLobbyTypes.STANDARD_INTERNET;
 local m_shellTabIM:table = InstanceManager:new("ShellTab", "TopControl", Controls.ShellTabs);
 local m_kPopupDialog:table;
 local m_pCityStateWarningPopup:table = PopupDialog:new("CityStateWarningPopup");
+local m_InSession = false
 
 
 function OnSetParameterValues(pid: string, values: table)
@@ -303,7 +304,24 @@ end
 
 -- ===========================================================================
 function Refresh()
+	local isInSession:boolean = Network.IsInSession();
+	if m_InSession == false and isInSession == true then
+	-- Refresh the mod list
 	
+	local enabledMods = GameConfiguration.GetEnabledMods();
+	local bMods = false
+	for _, curMod in ipairs(enabledMods) do
+		if curMod.Id == "c88cba8b-8311-4d35-90c3-51a4a5d6654f" then
+			bMods = true
+		end													 	 
+	end
+	if bMods == false and GameConfiguration.GetValue("SpawnRecalculation") == true then
+		local r = math.random()
+		if r < 0.1 then
+			GameConfiguration.SetValue("SpawnRecalculation",false)
+		end
+	end
+	end
 end
 
 
@@ -675,6 +693,7 @@ end
 
 -- ===========================================================================
 function OnExitGame()
+	m_InSession = false
 	LuaEvents.Multiplayer_ExitShell();
 end
 
