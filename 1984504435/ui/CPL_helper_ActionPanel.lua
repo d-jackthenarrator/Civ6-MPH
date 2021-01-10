@@ -42,10 +42,12 @@ function OnLocalPlayerTurnBegin()
 	local turnSegment = Game.GetCurrentTurnSegment();
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 then
 		if turnSegment == WORLD_CONGRESS_STAGE_1 then
-				GameConfiguration.SetTurnTimerType("TURNTIMER_NONE")
+				GameConfiguration.SetTurnTimerType("TURNTIMER_STANDARD")
+				GameConfiguration.SetValue("TURN_TIMER_TIME", 150)
 				Network.BroadcastGameConfig()	
 			elseif turnSegment == WORLD_CONGRESS_STAGE_2 then			
-				GameConfiguration.SetTurnTimerType("TURNTIMER_NONE")
+				GameConfiguration.SetTurnTimerType("TURNTIMER_STANDARD")
+				GameConfiguration.SetValue("TURN_TIMER_TIME", 240)
 				Network.BroadcastGameConfig()		
 		end
 	end

@@ -6,7 +6,7 @@ local g_fCountdownTimer = 10
 local g_fCountdownTickSoundTime = 5
 local g_fCountdownInitialTime = 10
 local g_fCountdownReadyButtonTime = 10
-local g_timer = -1
+local g_timer = -1;
 
 
 -- ===========================================================================

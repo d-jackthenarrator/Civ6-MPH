@@ -68,6 +68,9 @@
 -- v1.09
 --		Alliance and Trading restrictions
 --		Improved Front End
+-- v1.10
+--		World Congress timer no longer infinite
+--		Added No Frienship, no surprise wars option
 
 
 
@@ -75,7 +78,7 @@
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.09"
+local g_version = "v1.1.0"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0
@@ -140,7 +143,6 @@ function SmartTimer()
 	local tot_units = 0
 	local tot_humans = 0
 	local b_war = false
-	local b_pantheon = false
 	local currentTurn = Game.GetCurrentGameTurn()
 	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
 		if Players[i]:IsAlive() == true then
@@ -148,9 +150,6 @@ function SmartTimer()
 				tot_humans = tot_humans + 1
 				tot_cities = tot_cities + Players[i]:GetCities():GetCount()
 				tot_units = tot_units + Players[i]:GetUnits():GetCount()
-				if Players[i]:GetReligion():CanCreatePantheon() == true then
-					b_pantheon = true
-				end
 				if Players[i]:GetDiplomacy():IsAtWarWithHumans() == true then
 					b_war = true
 				end
@@ -201,10 +200,6 @@ function SmartTimer()
 			print("More time: War!")
 			timer = math.floor(timer * 1.05)			
 		end
-	end
-	if b_pantheon == true then
-		print("More time: Pantheon!")
-		timer = timer + 15
 	end
 	end
 

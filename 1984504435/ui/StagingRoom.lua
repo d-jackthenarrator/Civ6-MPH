@@ -12,7 +12,7 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.09"
+local g_version = "1.1.0"
 print("Staging Room For MPH ",g_version)						
 
 ----------------------------------------------------------------  

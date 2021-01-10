@@ -706,12 +706,6 @@
 	<Replace Tag="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Language="en_US">
 		<Text>Players are all anonymous![NEWLINE]No more side-arrangement.</Text>
 	</Replace>
-		<Replace Tag="LOC_EXPANSIONIST_NAME" Language="en_US">
-			<Text>Expansionist</Text>
-		</Replace>
-		<Replace Tag="LOC_EXPANSIONIST_DESC" Language="en_US">
-			<Text>Can build watchtower improvement to claim lands outside of your borders</Text>
-		</Replace>
 	<Replace Tag="LOC_GAMEMODE_ONECITY_NAME" Language="en_US">
 		<Text>One City Challenge Mode</Text>
 	</Replace>
@@ -838,6 +832,18 @@
 		<Text>Trading and Diplomacy Options</Text>
 	</Replace>
 	
+	<Replace Tag="LOC_MPH_FRIENDSHIP_NAME" Language="en_US">
+		<Text>No Friendship Declaration</Text>
+	</Replace>	
+	<Replace Tag="LOC_MPH_FRIENDSHIP_DESC" Language="en_US">
+		<Text>Tick to remove the ability to declare a Friendship with another Civilization.</Text>
+	</Replace>	
+	<Replace Tag="LOC_MPH_SURPRISE_WAR_NAME" Language="en_US">
+		<Text>No Surprise War</Text>
+	</Replace>	
+	<Replace Tag="LOC_MPH_SURPRISE_WAR_DESC" Language="en_US">
+		<Text>When ticked players would have to first denounce or use Casus Belli to declare war.</Text>
+	</Replace>	
 	<Replace Tag="LOC_MPH_NO_TRADING_FAVOR_NAME" Language="en_US">
 		<Text>No Favor Trading</Text>
 	</Replace>	

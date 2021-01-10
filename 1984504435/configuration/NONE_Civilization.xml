@@ -1,37 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GameData>
 	<Types>
-		<Row Type="CIVILIZATION_NONE"        Kind="KIND_CIVILIZATION" />
-		<Row Type="TRAIT_CIVILIZATION_NONE"  Kind="KIND_TRAIT"/>
+		<Row Type="CIVILIZATION_NONE"        Kind="KIND_CIVILIZATION" /> 
 	</Types>
 	<Civilizations>
 		<Row>
 			<CivilizationType>CIVILIZATION_NONE</CivilizationType>
-			<Name>LOC_CIVILIZATION_NONE_NAME</Name>
-			<Description>LOC_CIVILIZATION_NONE_DESCRIPTION</Description>
-			<Adjective>LOC_CIVILIZATION_NONE_ADJECTIVE</Adjective>
 			<StartingCivilizationLevelType>CIVILIZATION_LEVEL_FULL_CIV</StartingCivilizationLevelType>
-			<RandomCityNameDepth>15</RandomCityNameDepth>
 		</Row>
 	</Civilizations>
 
 	<CivilizationLeaders>
-		<Row CivilizationType="CIVILIZATION_NONE" LeaderType="LEADER_NONE" CapitalName="LOC_CIVLIZATION_NONE_CITY_1" />
+		<Row CivilizationType="CIVILIZATION_NONE" LeaderType="LEADER_NONE"  />
 	</CivilizationLeaders>
-
-	<CivilizationCitizenNames>
-		<Row CivilizationType="CIVILIZATION_NONE" CitizenName="LOC_CITIZEN_NONE_MALE_1" Female="0"/>
-		<Row CivilizationType="CIVILIZATION_NONE" CitizenName="LOC_CITIZEN_NONE_FEMALE_1" Female="1"/>
-	</CivilizationCitizenNames>
-
-	<CivilizationTraits>
-		<Row CivilizationType="CIVILIZATION_NONE" TraitType="TRAIT_CIVILIZATION_NONE"/>
-	</CivilizationTraits>
-	<Traits>
-		<Row TraitType="TRAIT_CIVILIZATION_NONE"  Name="LOC_TRAIT_CIVILIZATION_NONE_NAME" Description="LOC_TRAIT_CIVILIZATION_NONE_DESCRIPTION"/>
-	</Traits>
-
-	<CityNames>
-		<Row CivilizationType="CIVILIZATION_NONE" CityName="LOC_CIVLIZATION_NONE_CITY_1" />
-	</CityNames>
 </GameData>

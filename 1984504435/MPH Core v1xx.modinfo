@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="1091">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="101">
 
   <Properties>
-    <Name>Multiplayer Helper 1.0.9</Name>
+    <Name>Multiplayer Helper 1.1.0</Name>
     <Description>Help multiplayer Games being more than lobby simulators</Description>
 	<Created>1</Created>
     <Teaser>Allow eSport drafting, in-game remap etc...</Teaser>
@@ -91,6 +91,20 @@
 			<ConfigurationValueMatches>
 				<Group>Game</Group>
 				<ConfigurationId>DIPLOMATIC_DEAL</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Diplomatic_FS_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>NO_FRIENDSHIP</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Diplomatic_SW_Off">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>NO_SURPRISE_WAR</ConfigurationId>
 				<Value>1</Value>
 			</ConfigurationValueMatches>
 		</Criteria>
@@ -307,6 +321,20 @@
             </Properties>
 			<Criteria>Diplomatic_Deals_Off</Criteria>
 			<File>sql/mph_diplomacy_no_deals.sql</File>
+        </UpdateDatabase>	
+			<UpdateDatabase id="MPH_Control_Diplomatic_Frienship_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Diplomatic_FS_Off</Criteria>
+			<File>sql/mph_diplomacy_no_fs.sql</File>
+        </UpdateDatabase>
+			<UpdateDatabase id="MPH_Control_Diplomatic_Surprise_War_Off">
+            <Properties>
+                <LoadOrder>20000</LoadOrder>
+            </Properties>
+			<Criteria>Diplomatic_SW_Off</Criteria>
+			<File>sql/mph_diplomacy_no_sw.sql</File>
         </UpdateDatabase>			
 
 	
@@ -502,7 +530,9 @@
 	<File>sql/mph_alliance_no_research.sql</File>
 	<File>sql/mph_alliance_no_research_xp1.sql</File>
 	<File>sql/mph_alliance_no_economic.sql</File>
-	<File>sql/mph_alliance_no_economic_xp1.sql</File>	
+	<File>sql/mph_alliance_no_economic_xp1.sql</File>
+	<File>sql/mph_diplomacy_no_fs.sql</File>
+	<File>sql/mph_diplomacy_no_sw.sql</File>
 
 	<File>ui/CPL_helper_ActionPanel.lua</File>
 	<File>ui/CPL_helper_ChatPanel.lua</File>
