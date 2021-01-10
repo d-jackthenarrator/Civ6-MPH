@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Edward Beach (Firaxis Games) -->
+<GameInfo>
+	<Types>
+		<Row Type="DEFEAT_CONCEDE" Kind="KIND_DEFEAT"/>
+		<Row Type="VICTORY_CONCEDE" Kind="KIND_VICTORY"/>
+	</Types>
+	<Defeats>
+		<Row DefeatType="DEFEAT_CONCEDE" Name="LOC_DEFEAT_CONCEDE_NAME" Blurb="LOC_DEFEAT_CONCEDE_TEXT" RequirementSetId="DEFAULT_DEFEAT_REQUIREMENTS" EnabledByDefault="0" OneMoreTurn="1"/>
+	</Defeats>
+	<Victories>
+		<Row VictoryType="VICTORY_CONCEDE" Name="LOC_VICTORY_CONCEDE_NAME" Blurb="LOC_VICTORY_CONCEDE_TEXT" RequirementSetId="REQUIREMENTS_DEFAULT_VICTORY" CriticalPercentage="110" EnabledByDefault="0" OneMoreTurn="1"/>
+	</Victories>
+</GameInfo>

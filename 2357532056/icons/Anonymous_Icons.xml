@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameInfo>
+  <IconTextureAtlases>
+	<Row Name="ICON_ATLAS_GAMEMODE_ANONYMOUS" IconSize="44" IconsPerRow="1" IconsPerColumn="1" Filename="Anonymous_44.dds"/>
+  </IconTextureAtlases>
+  
+	<IconDefinitions>
+		<Row Name="ICON_GAMEMODE_ANONYMOUS" Atlas="ICON_ATLAS_GAMEMODE_ANONYMOUS" Index="0"/>
+	</IconDefinitions>
+
+</GameInfo>

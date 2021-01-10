@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Name="DropControl" ColorSet="Beige_Black" FontStyle="Shadow">
+	
+	<AlphaAnim ID="CountdownTimerAnim" Size="1,1" AlphaStart="0" AlphaEnd="0" />	<!-- Animations always tick, even when hidden; use to update countdown timer -->
+	
+	<Include File="PopupDialog"/>
+	
+	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
+		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
+			<Grid																	   Size="auto,auto"			Anchor="C,T" Offset="0,250" Style="DropShadow2"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+				<Grid																	 Size="600,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameTitle" AutoSizePadding="0,10">
+					<Container													 Size="parent,38"                         Offset="0,4">
+						<Label			ID="DropTitle"				Style="WindowHeader"	Anchor="C,C" String="DropTitle" />
+					</Container>
+					<Container			ID="DropContainer"											 Size="parent,auto"                        Hidden="0">
+					<Stack				ID="DropStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,50" StackGrowth="Bottom" StackPadding="30">
+						<Label			ID="DropLabel"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="DropLabel" Offset="15,0"  />
+						<Label			ID="DropPlayerList"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="DropPlayerList" Offset="15,0"  />
+						<Label			ID="HostLabel"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="" Offset="15,0"  />
+						<Grid Size="600,auto"	Anchor="C,C" Offset="0,0">
+							<GridButton ID="Button_Resume" Style="ButtonRed" Align="Center" Anchor="C,C" String="Button_Resume" Size="200,41" Offset="0,0" />
+						</Grid>
+					</Stack>
+					</Container>
+				</Grid>
+			</Grid>
+		</SlideAnim>
+	</AlphaAnim>
+	
+	<!-- Dialog Support -->
+	<MakeInstance Name="PopupDialog" />
+	
+</Context>

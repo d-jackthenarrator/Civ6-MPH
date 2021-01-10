@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Ed Beach (Firaxis Games) -->
+<GameInfo>
+	<Types>
+		<Row Type="ABILITY_LAST_MOVED" Kind="KIND_ABILITY"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Kind="KIND_ABILITY"/>
+	</Types>
+	<TypeTags>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_NAVAL_MELEE"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_NAVAL_RANGED"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_NAVAL_RAIDER"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_NAVAL_CARRIER"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_RECON"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_MELEE"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_RANGED"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_SIEGE"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_HEAVY_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_LIGHT_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_RANGED_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_ANTI_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_HEAVY_CHARIOT"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_LIGHT_CHARIOT"/>
+		<Row Type="ABILITY_LAST_MOVED" Tag="CLASS_WARRIOR_MONK"/>
+
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_NAVAL_MELEE"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_NAVAL_RANGED"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_NAVAL_RAIDER"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_NAVAL_CARRIER"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_RECON"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_MELEE"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_RANGED"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_SIEGE"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_HEAVY_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_LIGHT_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_RANGED_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_ANTI_CAVALRY"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_HEAVY_CHARIOT"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_LIGHT_CHARIOT"/>
+		<Row Type="ABILITY_LAST_MOVED_READY" Tag="CLASS_WARRIOR_MONK"/>
+	</TypeTags>
+	<UnitAbilities>
+		<Row UnitAbilityType="ABILITY_LAST_MOVED" Name="LOC_ABILITY_LAST_MOVED_NAME" Description="LOC_ABILITY_LAST_MOVED_DESCRIPTION" Inactive="true" ShowFloatTextWhenEarned="true"/>
+		<Row UnitAbilityType="ABILITY_LAST_MOVED_READY" Name="LOC_ABILITY_LAST_MOVED_READY_NAME" Description="LOC_ABILITY_LAST_MOVED_READY_DESCRIPTION" Inactive="true" ShowFloatTextWhenEarned="true"/>
+	</UnitAbilities>
+	<!--  -->
+	<UnitAbilityModifiers>
+		<Row>
+			<UnitAbilityType>ABILITY_LAST_MOVED</UnitAbilityType>
+			<ModifierId>MOD_LAST_MOVED</ModifierId>
+		</Row>
+	</UnitAbilityModifiers>
+	<Modifiers>
+		<Row>
+			<ModifierId>MOD_LAST_MOVED</ModifierId>
+			<ModifierType>MODIFIER_UNIT_ADJUST_COMBAT_STRENGTH</ModifierType>
+			<SubjectRequirementSetId>UNIT_STRONG_WHEN_ATTACKING_REQUIREMENTS</SubjectRequirementSetId>
+		</Row>
+	</Modifiers>
+	<ModifierArguments>
+		<Row>
+			<ModifierId>MOD_LAST_MOVED</ModifierId>
+			<Name>Amount</Name>
+			<Value>-20</Value>
+		</Row>
+	</ModifierArguments>
+	<ModifierStrings>
+		<Row ModifierId="MOD_LAST_MOVED" Context="Preview" Text="LOC_MOD_LAST_MOVED_DESCRIPTION"/>
+	</ModifierStrings>
+</GameInfo>

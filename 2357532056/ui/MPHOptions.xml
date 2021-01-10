@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Name="MPHOptions">
+
+<Include File="PopupDialog"/>
+
+ <Include File="CivilizationIcon"/>
+
+  <AlphaAnim        ID="PauseWindowClose"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once" Stopped="1"/>
+
+  <AlphaAnim        ID="AlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="9" Function="Root" Cycle="Once">
+		<Box																	Color="21,46,75,150" Size="parent,parent" ConsumeMouse="1">
+			<Image															Texture="Controls_Vignette" Size="500,500"   Color="0,0,0,255" Anchor="R,B"/>
+			<Image															Texture="Controls_Vignette" Size="500,500"   Color="0,0,0,255" Anchor="R,T" FlipY="1"/>
+			<Image															Texture="Controls_Vignette" Size="500,500"   Color="0,0,0,255" Anchor="L,T" FlipY="1" FlipX="1"/>
+			<Image															Texture="Controls_Vignette" Size="500,500"   Color="0,0,0,255" Anchor="L,B" FlipX="1"/>
+			<Image															Texture="Controls_Gradient" Size="150,parent"  Color="0,0,0,255" Anchor="L,T" Rotate="90"/>
+			<Image															Texture="Controls_Gradient" Size="150,parent"  Color="0,0,0,255" Anchor="R,T" Rotate="270"/>
+			<Image															Texture="Controls_Gradient" Size="parent,150"  Color="0,0,0,255" Anchor="L,T" FlipY="1"/>
+			<Image															Texture="Controls_Gradient" Size="parent,150"  Color="0,0,0,255" Anchor="L,B"/>
+		</Box>
+
+		<SlideAnim      ID="SlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="9" Function="Root" Cycle="Once">
+      <Grid         ID="PauseWindow"  Size="auto,auto"              Anchor="C,C" Offset="0,0" Style="DropShadow2"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+        <Box Color="21,46,75,200" Size="290,auto" Anchor="C,C" AutoSizePadding="10,-5">
+          <Grid Size="300,auto" Anchor="C,C" Style="WindowFrameAlpha" AutoSizePadding="0,58">
+            <Container  Anchor="C,T" Size="parent,50">
+              <Label	ID="WindowTitle" Style="ShellHeader" Anchor="C,C" Offset="0,1" String="WindowTitle"/>
+              <Grid Style="Divider3Grid" Size="parent-9,8" Anchor="C,B" Offset="-2,0"/>
+            </Container>
+
+            <Grid Style="SubContainer4" Size="parent-20,auto" Offset="-1,55" Anchor="C,T" Color="41,74,108,255" AutoSizePadding="0,0">
+
+              <Image        ID="CompassDeco" Size="193,122" Texture="Controls_Compass" Color="41,74,108,100" Anchor="C,B"/>
+              <Stack				ID="MainStack"						Anchor="C,T" Offset="-1,5" Padding="0" StackGrowth="Bottom"  >
+                <Container Size="20,20"/>
+                <GridButton ID="ReturnButton"		      Anchor="C,T" Style="PauseMenuButton" String="{LOC_GAME_MENU_RETURN_TO_GAME:upper}" ToolTip="LOC_GAME_MENU_RETURN_TO_GAME_TOOLTIP" />
+                <Container Size="20,20"/>
+
+				<GridButton ID="RemapVoteButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_REMAP_VOTE_TEXT" ToolTip="LOC_MPH_REMAP_VOTE_TOOLTIP"/>
+                <GridButton ID="IrrVoteButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_IRR_VOTE_TEXT" ToolTip="LOC_MPH_IRR_VOTE_TOOLTIP" />
+
+                <Container Size="20,20"/>
+				
+				<GridButton ID="RemapButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_REMAP_ADMIN_TEXT" ToolTip="LOC_MPH_REMAP_ADMIN_TOOLTIP" Hidden="1"/>
+				<GridButton ID="ResyncButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_RESYNC_ADMIN_TEXT" ToolTip="LOC_MPH_RESYNC_ADMIN_TOOLTIP" Hidden="1"/>
+				<GridButton ID="ForceEndButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_FORCEEND_ADMIN_TEXT" ToolTip="LOC_MPH_FORCEEND_ADMIN_TOOLTIP" Hidden="1"/>
+				<GridButton ID="RetimeButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_RETIME_ADMIN_TEXT" ToolTip="LOC_MPH_RETIME_ADMIN_TOOLTIP" Hidden="1"/>
+				
+                <Container Size="20,20"/>
+				
+				<GridButton ID="UIRefreshButton"				Anchor="C,T" Style="PauseMenuButton" Size="250,36" String="LOC_MPH_UI_REFRESH_TEXT" ToolTip="LOC_MPH_UI_REFRESH_TOOLTIP" />
+				
+				<Container Size="20,20"/>
+              </Stack>
+            </Grid>
+
+           
+          </Grid>
+        </Box>
+      </Grid>
+    </SlideAnim>
+  </AlphaAnim>
+
+	<!-- Dialog Support -->
+	<MakeInstance Name="PopupDialog" />
+
+</Context>

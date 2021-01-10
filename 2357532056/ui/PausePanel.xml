@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context  ColorSet="Beige_Black" FontStyle="Shadow">
+
+	<AlphaAnim ID="CountdownTimerAnim" Size="1,1" AlphaStart="0" AlphaEnd="0" />	<!-- Animations always tick, even when hidden; use to update countdown timer -->
+	
+	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
+		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
+			<Grid																	   Size="auto,auto"			Anchor="C,T" Offset="0,100" Style="DropShadow2"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+				<Grid																	 Size="500,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameTitle" AutoSizePadding="0,10">
+					<Container													 Size="parent,38"                         Offset="0,4">
+						<Label			ID="PauseTitle"				Style="WindowHeader"	Anchor="C,C" String="{LOC_GAME_PAUSED_TITLE}" />
+					</Container>
+					<Stack				ID="PauseStack"  			Size="parent,100"			Anchor="C,T" Offset="0,50" StackGrowth="Bottom" StackPadding="30">
+						<Label			ID="WaitingLabel"       Anchor="C,T" Style="BodyTextDark18" Align="Center" WrapWidth="430"/>
+						<GridButton ID="Button_Confirm" Style="ButtonConfirm" Align="Center" Anchor="C,C" String="OK" Size="150,41" Offset="0,0" />
+						<Container  ID="TimerContainer" Size="300,130"  Anchor="C,C" Offset="0,0" Hidden="0">
+								<Image ID="TurnTimerBG"						Anchor="C,C" Offset="0,-17"	Size="109,110"	Texture="Shell_CountdownTimerBacking"/>
+								<Meter ID="TurnTimerMeter" Anchor="C,C" Offset="0,-19"	Size="93,94" Texture="Shell_CountdownTimerFill" Speed="0"/>
+								<GridButton	ID="TimerButton"				SliceCorner="40,40" SliceTextureSize="80,80" Anchor="C,C" Offset="0,-18"	Size="80,80"	Texture="Shell_BeginButton" StateOffsetIncrement="0,80" String="##" FontSize="40"/>
+						</Container>
+						<Label			ID="CountdownLabel"       Anchor="C,T" Style="BodyTextDark18" Align="Center" WrapWidth="430" String="OK" Hidden="1"/>
+					</Stack>
+					
+				</Grid>
+			</Grid>
+		</SlideAnim>
+	</AlphaAnim>
+</Context>
