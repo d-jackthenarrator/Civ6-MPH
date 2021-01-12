@@ -176,9 +176,9 @@ local g_CountdownData = {
 	[CountdownTypes.WaitForPlayers]		= { CountdownTime = 180,	TimerType = TimerTypes.NetworkManager,		TickStartTime = 10},
 	[CountdownTypes.Ready_PlayByCloud]	= { CountdownTime = 600,	TimerType = TimerTypes.Script,				TickStartTime = 10},
 	[CountdownTypes.Ready_MatchMaking]	= { CountdownTime = 60,		TimerType = TimerTypes.Script,				TickStartTime = 10},
-	[CountdownTypes.Draft_MapBan]		= { CountdownTime = 30,		TimerType = TimerTypes.Script,				TickStartTime = 10},
-	[CountdownTypes.Draft_LeaderBan]	= { CountdownTime = 40,		TimerType = TimerTypes.Script,				TickStartTime = 10},
-	[CountdownTypes.Draft_LeaderPick]	= { CountdownTime = 60,		TimerType = TimerTypes.Script,				TickStartTime = 10},
+	[CountdownTypes.Draft_MapBan]		= { CountdownTime = 32,		TimerType = TimerTypes.Script,				TickStartTime = 12},
+	[CountdownTypes.Draft_LeaderBan]	= { CountdownTime = 52,		TimerType = TimerTypes.Script,				TickStartTime = 12},
+	[CountdownTypes.Draft_LeaderPick]	= { CountdownTime = 62,		TimerType = TimerTypes.Script,				TickStartTime = 12},
 	[CountdownTypes.Draft_ReadyStart]	= { CountdownTime = 300,		TimerType = TimerTypes.Script,				TickStartTime = 10},
 };
 
@@ -563,12 +563,16 @@ function RefreshStatusID(playerID,version)
 			
 			if fresh_id == true then
 				if Network.IsPlayerConnected(playerID) then
-					if playerID == hostID then
-						local tmp = { ID = playerID, Status = 99, Version = g_version, Name = PlayerConfigurations[playerID]:GetPlayerName()}
-						table.insert(g_player_status, tmp)
+					if PlayerConfigurations[playerID] ~= nil then
+						if playerID == hostID then
+							local tmp = { ID = playerID, Status = 99, Version = g_version, Name = PlayerConfigurations[playerID]:GetPlayerName()}
+							table.insert(g_player_status, tmp)
+							else
+							local tmp = { ID = playerID, Status = 0, Version = 0, Name = PlayerConfigurations[playerID]:GetPlayerName()}
+							table.insert(g_player_status, tmp)
+						end
 						else
-						local tmp = { ID = playerID, Status = 0, Version = 0, Name = PlayerConfigurations[playerID]:GetPlayerName()}
-						table.insert(g_player_status, tmp)
+						print("Error:",playerID,"has no valid PlayerConfigurations[playerID]",Network.IsPlayerConnected(playerID))
 					end
 					else
 					local tmp = { ID = playerID, Status = -1, Version = 0, Name = "AI"}
@@ -5835,6 +5839,12 @@ function UpdateReadyButton()
 
 		local timeRemaining :number = GetCountdownTimeRemaining();
 		local intTime :number = math.floor(timeRemaining);
+		if IsDraftCountdownActive() then
+			intTime = intTime-2
+			if intTime < 0 or intTime == 0 then
+				intTime = math.max(intTime,0)
+			end
+		end
 		Controls.StartLabel:SetText( startLabel );
 		Controls.ReadyButton:LocalizeAndSetText(  intTime );
 		Controls.ReadyButton:LocalizeAndSetToolTip( toolTip );
@@ -6110,7 +6120,11 @@ function OnUpdateTimers( uiControl:table, fProgress:number )
 	else
 		UpdateCountdownTimeRemaining();
 		local timeRemaining :number = GetCountdownTimeRemaining();
-		Controls.TurnTimerMeter:SetPercent(timeRemaining / g_fCountdownInitialTime);
+		if IsDraftCountdownActive() then
+			Controls.TurnTimerMeter:SetPercent((timeRemaining-2) / g_fCountdownInitialTime);
+			else
+			Controls.TurnTimerMeter:SetPercent(timeRemaining / g_fCountdownInitialTime);
+		end
 		if( IsLaunchCountdownActive() and not Network.IsEveryoneConnected() ) then
 			-- not all players are connected anymore.  This is probably due to a player join in progress.
 			StopCountdown();
