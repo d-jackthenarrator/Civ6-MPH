@@ -12,7 +12,7 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.1.0"
+local g_version = "1.1"
 print("Staging Room For MPH ",g_version)						
 
 ----------------------------------------------------------------  
@@ -531,6 +531,7 @@ function CheckStatusID(playerID)
 end
 
 function RefreshStatusID(playerID,version)
+	print("RefreshStatusID",playerID,version)
 	if GameConfiguration.GetGameState() ~= -901772834 then
 		return
 	end
@@ -4931,9 +4932,10 @@ function GetPlayerEntry(playerID)
 
 		-- Remember starting ready status.
 		local pPlayerConfig = PlayerConfigurations[playerID];
-		g_PlayerReady[playerID] = pPlayerConfig:GetReady();
-
-		UpdatePlayerEntry(playerID);
+		if pPlayerConfig ~= nil then
+			g_PlayerReady[playerID] = pPlayerConfig:GetReady();
+			UpdatePlayerEntry(playerID);
+		end
 
 		Controls.PlayerListStack:SortChildren(SortPlayerListStack);
 	end
