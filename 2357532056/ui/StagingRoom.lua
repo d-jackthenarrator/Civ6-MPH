@@ -179,7 +179,7 @@ local g_CountdownData = {
 	[CountdownTypes.Draft_MapBan]		= { CountdownTime = 32,		TimerType = TimerTypes.Script,				TickStartTime = 12},
 	[CountdownTypes.Draft_LeaderBan]	= { CountdownTime = 52,		TimerType = TimerTypes.Script,				TickStartTime = 12},
 	[CountdownTypes.Draft_LeaderPick]	= { CountdownTime = 62,		TimerType = TimerTypes.Script,				TickStartTime = 12},
-	[CountdownTypes.Draft_ReadyStart]	= { CountdownTime = 300,		TimerType = TimerTypes.Script,				TickStartTime = 10},
+	[CountdownTypes.Draft_ReadyStart]	= { CountdownTime = 300,	TimerType = TimerTypes.Script,				TickStartTime = 10},
 };
 
 -- hotseatOnly - Only available in hotseat mode.
