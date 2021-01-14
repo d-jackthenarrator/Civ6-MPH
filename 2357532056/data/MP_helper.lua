@@ -169,13 +169,16 @@ function SmartTimer()
 	
 
 	if currentTurn > 5 and currentTurn < 11 then
-		timer = timer 
+		timer = timer + 5
 	end	
 	if currentTurn > 10 and currentTurn < 21 then
-		timer = timer + 10
+		timer = timer + 15
 	end	
-	if currentTurn > 20 and currentTurn < 51 then
+	if currentTurn > 20 and currentTurn < 31 then
 		timer = timer + 30
+	end
+	if currentTurn > 30 and currentTurn < 51 then
+		timer = timer + 35
 	end
 	if currentTurn > 50 and currentTurn < 76 then
 		timer = timer + 40

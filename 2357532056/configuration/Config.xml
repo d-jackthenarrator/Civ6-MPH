@@ -18,7 +18,7 @@
 		<Row ParameterId="CPL_NO_PINS" Name="CPL_NO_PINS_NAME" Description="CPL_NO_PINS_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_NO_PINS" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" SortIndex="2902" />
 		<Row ParameterId="CPL_FREECITY_STRONGER" Name="CPL_FREECITY_STRONGER_NAME" Description="CPL_FREECITY_STRONGER_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_FREECITY_STRONGER" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" Visible="0"  SortIndex="2902" />
 		<Row ParameterId="CPL_FREECITY_OPT" Name="CPL_FREECITY_OPT_NAME" Description="CPL_FREECITY_OPT_DESC" Domain="FreeLimits" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_FREECITY_OPT" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" Visible="0"  SortIndex="2903" />
-
+		
 		<!--  Tournament Settings -->
 		<Row ParameterId="CPL_BAN_FORMAT" Name="CPL_BAN_FORMAT_NAME" Description="CPL_BAN_FORMAT_DESC" Domain="BanLimits" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_BAN_FORMAT" GroupId="TournamentOptions" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="10" />
 		<Row ParameterId="Draft_Slot_Order" 	Name="LOC_MPH_DRAFT_SLOT_ORDER_NAME" 	Description="LOC_MPH_DRAFT_SLOT_ORDER_DESC" Domain="DraftSlotDomain" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="DRAFT_SLOT_ORDER" GroupId="TournamentOptions" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="10" />
@@ -167,8 +167,6 @@
 		<Row ParameterId="Trading_Luxuries" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />		
 		<Row ParameterId="Friendship" 							ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
 		<Row ParameterId="SurpriseWar" 							ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
-		<!--  Block the Gamespeeds to Online with Smart Timer -->
-		<Row ParameterId="GameSpeeds" 							ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" 	Operator="Equals" ConfigurationValue="1" />	
 	</ParameterCriteria>
 
 	<ParameterDependencies>
