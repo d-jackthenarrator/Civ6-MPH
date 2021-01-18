@@ -5761,6 +5761,14 @@ function SortPlayerListStack(a, b)
 		local playerConfigA = PlayerConfigurations[playerIDA];
 		local playerConfigB = PlayerConfigurations[playerIDB];
 
+		if playerConfigA == nil then
+			return false
+		end
+		
+		if playerConfigB == nil then
+			return true
+		end
+		
 		-- push closed slots to the bottom
 		if(playerConfigA:GetSlotStatus() == SlotStatus.SS_CLOSED) then
 			return false;

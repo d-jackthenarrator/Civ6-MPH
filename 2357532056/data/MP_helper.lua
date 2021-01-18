@@ -175,19 +175,19 @@ function SmartTimer()
 		timer = timer + 15
 	end	
 	if currentTurn > 20 and currentTurn < 31 then
-		timer = timer + 30
-	end
-	if currentTurn > 30 and currentTurn < 51 then
 		timer = timer + 35
 	end
-	if currentTurn > 50 and currentTurn < 76 then
+	if currentTurn > 30 and currentTurn < 51 then
 		timer = timer + 40
+	end
+	if currentTurn > 50 and currentTurn < 76 then
+		timer = timer + 45
 	end
 	if currentTurn > 75 and currentTurn < 101 then
 		timer = timer + 50
 	end
 	if currentTurn > 100 then
-		timer = timer + 60
+		timer = timer + 55
 	end
 	if b_teamer == true then
 		if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
