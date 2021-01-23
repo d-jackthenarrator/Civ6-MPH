@@ -2696,7 +2696,9 @@ function OnReceiveNextID(next_id:number)
 		end
 	end
 	if g_phase == PHASE_LEADERPICK then
-		PlayerConfigurationValuesToUI(next_id)
+		if next_id ~= nil then
+			PlayerConfigurationValuesToUI(next_id)
+		end
 		OnNextValid()
 		if g_timer == 1 then
 			StopCountdown();
