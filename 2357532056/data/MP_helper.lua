@@ -164,102 +164,99 @@ function SmartTimer()
 	end
 
 	local timer = 0
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 0 then
-		timer = 30 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
 
-	if currentTurn > 5 and currentTurn < 11 then
-		timer = timer + 5
-	end	
-	if currentTurn > 10 and currentTurn < 21 then
-		timer = timer + 15
-	end	
-	if currentTurn > 20 and currentTurn < 31 then
-		timer = timer + 35
-	end
-	if currentTurn > 30 and currentTurn < 51 then
-		timer = timer + 40
-	end
-	if currentTurn > 50 and currentTurn < 76 then
-		timer = timer + 45
-	end
-	if currentTurn > 75 and currentTurn < 101 then
-		timer = timer + 50
-	end
-	if currentTurn > 100 then
-		timer = timer + 55
-	end
-	if b_teamer == true then
-		if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
-			print("More time: Teamer!")
-			timer = math.floor(timer * 1.1)
+	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 0 then
+
+		timer = 30 + avg_cities * 4 + avg_units * 1  + g_timeshift
+
+		if currentTurn > 5 and currentTurn < 11 then
+			timer = timer + 5
 		end
-	end
-	if b_war == true then
-		if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
-			print("More time: War!")
-			timer = math.floor(timer * 1.15)
-			else
-			print("More time: War!")
-			timer = math.floor(timer * 1.05)			
+		if currentTurn > 10 and currentTurn < 21 then
+			timer = timer + 15
 		end
-	end
+		if currentTurn > 20 and currentTurn < 31 then
+			timer = timer + 35
+		end
+		if currentTurn > 30 and currentTurn < 51 then
+			timer = timer + 40
+		end
+		if currentTurn > 50 and currentTurn < 76 then
+			timer = timer + 45
+		end
+		if currentTurn > 75 and currentTurn < 101 then
+			timer = timer + 50
+		end
+		if currentTurn > 100 then
+			timer = timer + 55
+		end
+		if b_teamer == true then
+			if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
+				print("More time: Teamer!")
+				timer = math.floor(timer * 1.1)
+			end
+		end
+		if b_war == true then
+			if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
+				print("More time: War!")
+				timer = math.floor(timer * 1.15)
+				else
+				print("More time: War!")
+				timer = math.floor(timer * 1.05)
+			end
+		end
+
 	end
 
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 2 then
 
-	if currentTurn < 16 then
-		timer = 15 + g_timeshift
-	end	
-	if currentTurn > 15 and currentTurn < 71 then
-		timer = 45 + g_timeshift
-	end	
-	if currentTurn > 70 then
-		timer = 75 + g_timeshift
-	end
+		if currentTurn < 16 then
+			timer = 15 + g_timeshift
+		end
+		if currentTurn > 15 and currentTurn < 71 then
+			timer = 45 + g_timeshift
+		end
+		if currentTurn > 70 then
+			timer = 75 + g_timeshift
+		end
 
 	end
 
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 3 then
 
+		timer = 65 + avg_cities * 4 + avg_units * 1  + g_timeshift
 
-	timer = 65 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
-	if currentTurn > -1 and currentTurn < 10 then
-		timer = timer - 15
-	end	
-	if currentTurn > 44 and currentTurn < 90 then
-		timer = timer + 15
-	end	
-	if currentTurn > 89 then
-		timer = timer + 30
-	end	
-	
+		if currentTurn > -1 and currentTurn < 10 then
+			timer = timer - 15
+		end
+		if currentTurn > 44 and currentTurn < 90 then
+			timer = timer + 15
+		end
+		if currentTurn > 89 then
+			timer = timer + 30
+		end
+
 	end
-	
+
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 5 then
 
+		timer = 95 + avg_cities * 4 + avg_units * 1  + g_timeshift
 
-	timer = 95 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
-	if currentTurn > -1 and currentTurn < 10 then
-		timer = timer - 25
-	end	
-	if currentTurn > 44 and currentTurn < 90 then
-		timer = timer + 30
-	end	
-	if currentTurn > 89 then
-		timer = timer + 20
-	end	
-	
+		if currentTurn > -1 and currentTurn < 10 then
+			timer = timer - 25
+		end
+		if currentTurn > 44 and currentTurn < 90 then
+			timer = timer + 30
+		end
+		if currentTurn > 89 then
+			timer = timer + 20
+		end
+
 	end
-
 
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 4 then
 
-
-	timer = 30 + currentTurn + g_timeshift
-	
+		timer = 30 + currentTurn + g_timeshift
 
 	end
 
