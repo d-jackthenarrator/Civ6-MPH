@@ -345,7 +345,7 @@
 	<ReplaceUIScript id="MPH_DiplomacyDealView">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
-			<LuaContext>DiplomacyDealView</LuaContext>
+			<LuaContext>DiplomacyDealView_Expansion2</LuaContext>
 			<LuaReplace>ui/DiplomacyDealView_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
