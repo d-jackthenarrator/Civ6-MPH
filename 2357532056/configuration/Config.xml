@@ -54,6 +54,7 @@
 		<Row ParameterId="BAN_POOL_12" Name="LOC_MAP_SPLINTERED_FRACTAL_NAME" Description="LOC_MAP_SPLINTERED_FRACTAL_DESCRIPTION" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_12" GroupId="TournamentOptions" Visible="1" SortIndex="2810"/>
 		<Row ParameterId="BAN_POOL_13" Name="LOC_MAP_TERRA" Description="LOC_MAP_TERRA_DESCRIPTION" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_13" GroupId="TournamentOptions" Visible="1" SortIndex="2810"/>	
 		<Row ParameterId="BAN_POOL_14" Name="LOC_MAP_TILTED_AXIS_NAME" Description="LOC_MAP_TILTED_AXIS_DESCRIPTION" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_14" GroupId="TournamentOptions" Visible="1" SortIndex="2810"/>	
+		<Row ParameterId="BAN_POOL_15" Name="LOC_MAP_HIGHLANDS_NAME" Description="LOC_MAP_HIGHLANDS_DESCRIPTION" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_15" GroupId="TournamentOptions" Visible="1" SortIndex="2810"/>	
 
 		<Row ParameterId="Archipelago_XP2_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Archipelago_XP2.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_1_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>
 		<Row ParameterId="Continents_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Continents.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_2_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>
@@ -69,6 +70,7 @@
 		<Row ParameterId="Splintered_Fractal_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Splintered_Fractal.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_12_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>
 		<Row ParameterId="Terra_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Terra.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_13_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>	
 		<Row ParameterId="Tilted_Axis_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Tilted_Axis.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_14_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>	
+		<Row ParameterId="Highlands_XP2_Ban_Name" Name="LOC_Archipelago_XP2" Description="LOC_Archipelago_XP2_DESC" Domain="text" DefaultValue="Highlands_XP2.lua" ConfigurationGroup="Game" ConfigurationId="BAN_POOL_15_NAME" GroupId="TournamentOptions" Visible="0" SortIndex="2810"/>	
 
 		<!--  Trading & Alliance Restriction -->
 		<Row ParameterId="Diplomatic_Deal" 		Name="LOC_MPH_DIPLOMATIC_DEAL_NAME" 		Description="LOC_MPH_DIPLOMATIC_DEAL_DESC" 			Domain="bool" DefaultValue="0" ConfigurationGroup="Game" 	ConfigurationId="DIPLOMATIC_DEAL" 		GroupId="TradingOptions"  Visible="1" SortIndex="0" SupportsSinglePlayer="0" />
@@ -184,7 +186,8 @@
 		<Row ParameterId="BAN_POOL_11" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />	
 		<Row ParameterId="BAN_POOL_12" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />		
 		<Row ParameterId="BAN_POOL_13" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />	
-		<Row ParameterId="BAN_POOL_14" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />				
+		<Row ParameterId="BAN_POOL_14" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />
+		<Row ParameterId="BAN_POOL_15" 							ConfigurationGroup="Game" ConfigurationId="DRAFT_MAP" Operator="Equals" ConfigurationValue="1" />		
 		<!--  Alliance Cannot be toogled without Gathering Storm -->
 		<Row ParameterId="Alliance_Military" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
 		<Row ParameterId="Alliance_Cultural" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	

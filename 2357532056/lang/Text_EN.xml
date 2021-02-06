@@ -505,7 +505,7 @@
 		<Text>Steps: Ban Maps - Ban 6 Leaders - Pick Leaders 1 by 1 - Start Game/Change Slots</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_TOURNAMENT_PHASE_0_HOST_HINT_TEXT" language="en">
-		<Text>Select your drafting option on the top left, then press Launch to initiate the draft.[NEWLINE] You can press Reset at any time to reinitialize the draft and Skip to skip a step.[NEWLINE] This mod requires evryone to have subscribed on the Steam workshop to use the advanced Setup features. Downloading from the Host isn't sufficient.</Text>
+		<Text>Select your drafting option in Game Setup, then press Launch to initiate the draft.[NEWLINE] You can press Reset at any time to reinitialize the draft and Skip to skip a step.[NEWLINE] This mod requires everyone to have subscribed on the Steam workshop to use the advanced Setup features. Downloading from the Host isn't sufficient.</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_VOTING_PHASE_0_TEXT" language="en">
 		<Text>Vote Draft: Please select your Teams / Slots / Observers</Text>
@@ -514,7 +514,7 @@
 		<Text>Steps: Vote Map Settings - Vote Ban 6 Leaders - Pick Leaders 1 by 1 - Start Game/Change Slots</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_VOTING_PHASE_0_HOST_HINT_TEXT" language="en">
-		<Text>Select your drafting option on the top left, then press Launch to initiate the draft.[NEWLINE] You can press Reset at any time to reinitialize the draft and Skip to skip a step.[NEWLINE] This mod requires every player to have subscribed on the Steam workshop. Downloading from the Host isn't sufficient.</Text>
+		<Text>Select your drafting option in Game Setup, then press Launch to initiate the draft.[NEWLINE] You can press Reset at any time to reinitialize the draft and Skip to skip a step.[NEWLINE] This mod requires every player to have subscribed on the Steam workshop. Downloading from the Host isn't sufficient.</Text>
 	</Replace>
 	<Replace Tag="LOC_MPH_READY_WAITING_HOST_TEXT" language="en">
 		<Text>WAITING FOR THE HOST</Text>

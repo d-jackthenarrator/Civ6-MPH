@@ -27,7 +27,7 @@ local m_matchMakeButton:table = nil;	--Cache CivRoyale matchmaking button so it 
 local m_howToRoyaleControl:table = nil;	--Cache CivRoyale how-to button so that it can be updated later.
 local m_isQuitting :boolean = false;	-- Is the application shutting down (after user approval.)
 
-local g_version = " - [COLOR_LIGHTBLUE]MPH / 1.1.0[ENDCOLOR]"
+local g_version = " - [COLOR_LIGHTBLUE]MPH / 1.2.0[ENDCOLOR]"
 
 g_LogoTexture = nil;	-- Custom Logo texture override.
 g_LogoMovie = nil;		-- Custom Logo movie override.

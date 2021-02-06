@@ -12,7 +12,7 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.1"
+local g_version = "1.2"
 print("Staging Room For MPH ",g_version)						
 
 ----------------------------------------------------------------  
@@ -1408,6 +1408,37 @@ function Refresh()
 			end
 		end
 	end
+	
+	-- From Russia with Love
+
+	for i, iPlayer in ipairs(player_ids) do	
+		local playerEntry = g_PlayerEntries[iPlayer]
+		local pPlayerConfig = PlayerConfigurations[iPlayer]
+		if playerEntry ~= nil and pPlayerConfig ~= nil then
+			if tostring(pPlayerConfig:GetSlotName()) ~= nil then
+				local str = tostring(pPlayerConfig:GetSlotName())
+				if string.lower(string.sub(str,1,7)) == "codenau" then
+					if localID == hostID then
+						pPlayerConfig:SetValue("NICK_NAME","Dick"..string.sub(str,5))
+						Network.BroadcastPlayerInfo(iPlayer)
+					end
+				end
+			end
+			if pPlayerConfig:GetValue("NICK_NAME") ~= nil then
+				local str = tostring(pPlayerConfig:GetValue("NICK_NAME"))
+				if string.lower(string.sub(str,1,7)) == "codenau" then
+					if localID == hostID then
+						pPlayerConfig:SetValue("NICK_NAME","Dick"..string.sub(str,5))
+						Network.BroadcastPlayerInfo(iPlayer)
+					end
+				end
+			end
+			--if string.sub(tostring(pPlayerConfig:GetSlotName()),1,7) == "Codenau" or string.sub(tostring(pPlayerConfig:GetValue("NICK_NAME")),1,7) == "Codenau" then
+
+			--end
+		end
+	end
+
 
 	Controls.PhaseLabel_Version:SetHide(false) 
 	Controls.PhaseLabel_Version:SetText("v"..g_version) 
@@ -1710,7 +1741,6 @@ function OnValidReceived(text,teamer:boolean)
 			end
 		end	
 	end
-	
 	for i = 1, g_all_players do
 		if g_cached_playerIDs[i] ~= nil then
 			if g_cached_playerIDs[i].ID == valid_playerID then
@@ -1729,11 +1759,13 @@ function OnValidReceived(text,teamer:boolean)
 		g_phase = PHASE_READY
 		print("g_valid_count",g_valid_count,"g_total_players",g_total_players)
 		if localID == hostID then
+			Network.SendChat(".chgphase_"..g_phase,-2,-1)
 			if g_slot_draft == 3 then
 				Network.SendChat(".unlock",-2,-1)
 			end
 			g_next_ID = GetNextID()
-						if g_next_ID == nil then
+			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID",g_next_ID )
+			if g_next_ID == nil then
 			 g_next_ID = 0
 			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID shouldn't be nil")
 			end
@@ -1743,6 +1775,7 @@ function OnValidReceived(text,teamer:boolean)
 			g_phase = PHASE_LEADERBAN
 			print("g_valid_count",g_valid_count,"g_total_players",g_total_players,"CWC NEW Second Ban Phase")
 			if localID == hostID then
+				Network.SendChat(".chgphase_"..g_phase,-2,-1)
 				g_next_ID = GetNextID()
 							if g_next_ID == nil then
 			 g_next_ID = 0
@@ -1753,7 +1786,9 @@ function OnValidReceived(text,teamer:boolean)
 		else
 		
 		if localID == hostID then
+			Network.SendChat(".chgphase_"..g_phase,-2,-1)
 			g_next_ID = GetNextID()
+			print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID is",GetNextID())
 			if g_next_ID == nil then
 			 g_next_ID = 0
 			 print("OnValidReceived g_valid_count",g_valid_count,"g_phase",g_phase,"g_next_ID shouldn't be nil")
@@ -1833,7 +1868,9 @@ function OnBanMapReceived(text,teamer:boolean)
 	end
 	
 	if localID == hostID then
+		Network.SendChat(".chgphase_"..g_phase,-2,-1)
 		g_next_ID = GetNextID()
+		print("OnBanMapReceived g_valid_count",g_valid_count,"map_left",map_left,"g_phase",g_phase,"g_next_ID is",GetNextID())
 		Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 	end
 	
@@ -1842,6 +1879,18 @@ function OnBanMapReceived(text,teamer:boolean)
 	end
 	
 end
+
+function OnPhaseChanged(text)
+	local localID = Network.GetLocalPlayerID()
+	local hostID = Network.GetGameHostPlayerID()
+	local phase_number = string.sub(text,11)
+	if tonumber(phase_number) ~= nil then
+		print("OnPhaseChanged - old g_phase",g_phase,"to new phase",phase_number)	
+		g_phase = tonumber(phase_number)
+		PhaseVisibility()
+	end
+end
+
 
 function OnReceiveBanVote(text:string) -- .mapvote_0_2_LEADER_PERICLES
 	local localID = Network.GetLocalPlayerID()
@@ -2143,7 +2192,9 @@ function OnBanReceived(text,teamer:boolean)
 	end
 	
 	if localID == hostID then
+		Network.SendChat(".chgphase_"..g_phase,-2,-1)
 		g_next_ID = GetNextID()
+		print("OnBanReceived - g_ban_count",g_ban_count,"g_phase",g_phase,"Set g_next_ID",g_next_ID)
 		if g_next_ID == nil then
 			g_next_ID = hostID
 		end
@@ -2193,7 +2244,7 @@ function HostSkip()
 		
 	elseif g_phase == PHASE_MAPBAN then
 		if localID == hostID then
-			for i = 1,14 do
+			for i = 1,15 do
 				if g_map_pool[i] ~= nil then
 					if g_map_pool[i].Allowed == true then
 							map_left = map_left + 1
@@ -2264,10 +2315,10 @@ function HostSkip()
 				g_next_ID = 0
 			end
 			PlayerConfigurations[g_next_ID]:SetLeaderTypeName(tostring(leader_rand))
-			Network.BroadcastPlayerInfo()
 			print("Debug:",PlayerConfigurations[g_next_ID]:GetValue("LEADER_TYPE_ID"))
 			print("Debug II:",PlayerConfigurations[g_next_ID]:GetLeaderTypeName())
 			Network.SendChat(".valid_"..g_valid_count.."_"..g_next_ID.."_"..tostring(leader_rand),-2,-1)
+			Network.BroadcastPlayerInfo()
 		end
 	elseif g_phase == PHASE_READY then
 		if(Network.IsNetSessionHost()) then
@@ -2563,7 +2614,7 @@ function HostLaunch()
 	
 	
 	local pool_size = 0
-	for i = 1,14 do
+	for i = 1,15 do
 		if GameConfiguration.GetValue("BAN_POOL_"..i) ~= nil then
 			local tmp = {}
 			tmp = { Map = GameConfiguration.GetValue("BAN_POOL_"..i.."_NAME") , Allowed = GameConfiguration.GetValue("BAN_POOL_"..i), ID = i}
@@ -2615,7 +2666,9 @@ function HostLaunch()
 		-- Send the first player Action
 		g_next_ID = nil
 		if localID == hostID then
+			Network.SendChat(".chgphase_"..g_phase,-2,-1)
 			g_next_ID = GetNextID()
+			print("HostLaunch() - map_left",map_left,"g_phase",g_phase,"next ID",g_next_ID)
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 		else
@@ -2628,7 +2681,9 @@ function HostLaunch()
 		g_ban_count = 0
 		g_next_ID = nil
 		if localID == hostID then
+			Network.SendChat(".chgphase_"..g_phase,-2,-1)
 			g_next_ID = GetNextID()
+			print("HostLaunch() - map_left",map_left,"g_phase",g_phase,"next ID",g_next_ID)
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 	end
@@ -2642,7 +2697,9 @@ function HostLaunch()
 		g_ban_count = 0
 		g_next_ID = nil
 		if localID == hostID then
+			Network.SendChat(".chgphase_"..g_phase,-2,-1)
 			g_next_ID = GetNextID()
+			print("HostLaunch() - map_left",map_left,"g_phase",g_phase,"next ID",g_next_ID)
 			Network.SendChat(".idnext_"..g_next_ID,-2,-1)
 		end
 	end
@@ -2760,6 +2817,7 @@ end
 
 function GetNextID()
 	print("GetNextID() g_phase",g_phase,"g_next_ID",g_next_ID,"g_slot_draft",g_slot_draft,"b_teamer",b_teamer)
+	-- 0: RANDOM 1: Slot	2: CWC		3: NEW CWC
 	-- first let's check our cached data from HostLaunch() exist
 	if g_cached_playerIDs == nil then
 		print("Error: g_cached_playerIDs is nil")
@@ -2767,13 +2825,20 @@ function GetNextID()
 	end
 
 	local last_ID = g_next_ID
+	if last_ID ~= nil then
+		Network.BroadcastPlayerInfo(last_ID)
+	end
 	print("Last ID was:",g_next_ID)
+	----------------------------------------------------------------------------
 	-- Map Ban
+	----------------------------------------------------------------------------
 	if g_phase == PHASE_MAPBAN then
 	
+	----------------------------------------------------------------------------
 	-- initialise (first time)
+	----------------------------------------------------------------------------
 		if last_ID == nil then
-			-- Slot order? Pick the first non spec player
+			-- Slot order or CWC ? Pick the first non spec player
 			if g_slot_draft == 1 or g_slot_draft == 2 or g_slot_draft == 3 then
 				for i, player in ipairs(g_cached_playerIDs) do
 					if player.Observer == false then
@@ -2804,8 +2869,10 @@ function GetNextID()
 				end					
 					
 			end
-			
-			else -- Subsequent Ban
+	-----------------------------------------------------------------------------
+	-- Subsequent Map Ban
+	-----------------------------------------------------------------------------
+			else 
 			
 			-- Slot Order 
 			if g_slot_draft == 1 then
@@ -2921,11 +2988,16 @@ function GetNextID()
 		end
 	
 	end
-	
+	-----------------------------------------------------------------------------------
 	-- Leader Ban
+	-----------------------------------------------------------------------------------
 	if g_phase == PHASE_LEADERBAN then
-	
+	-----------------------------------------------------------------------------------
 	-- initialise (first time)
+	-- If HostLaunch() with no Map Ban then we start with nil
+	-- If HostLaunch() with Map Ban, the id is also reset to nil while entering the leader ban
+	-- => The first player in slot will always have the first ban for both map and leader
+	-----------------------------------------------------------------------------------
 		if last_ID == nil then
 			-- Slot order? Pick the first non spec player
 			if g_slot_draft == 1 or g_slot_draft == 2 or g_slot_draft == 3 then
@@ -2958,10 +3030,14 @@ function GetNextID()
 				end					
 					
 			end
+		--------------------------------------------------------------------------------
+		 -- Subsequent Leader Ban
+		--------------------------------------------------------------------------------	
+			else
 			
-			else -- Subsequent Ban
-			
+			----------------------------------------------------------------------------
 			-- Slot Order 
+			----------------------------------------------------------------------------
 			if g_slot_draft == 1 then
 				local found_previous = false
 				local next_in_line = nil
@@ -2985,7 +3061,11 @@ function GetNextID()
 					end					
 				end
 				
-				elseif g_slot_draft == 0 or g_slot_draft == 2 or g_slot_draft == 3 then -- Random Subsequent Ban
+			-------------------------------------------------------------------------------
+			-- Non Slot: Alternate between team, CWC would alternate
+			-------------------------------------------------------------------------------		
+				
+				elseif g_slot_draft == 0 or g_slot_draft == 2 or g_slot_draft == 3 then 
 				
 				if b_teamer == true then
 					-- How many unique Teams ?
@@ -3075,11 +3155,14 @@ function GetNextID()
 		end
 	
 	end
-	
+	--------------------------------------------------------------------------------------
 	-- Pick Phase
+	--------------------------------------------------------------------------------------
 	if g_phase == PHASE_LEADERPICK then
 		print("Phase is: PHASE_LEADERPICK")
+	--------------------------------------------------------------------------------------	
 	-- initialise (first time)
+	--------------------------------------------------------------------------------------
 		if last_ID == nil then
 			-- Slot order? Pick the first non spec player
 			if g_slot_draft == 1 or g_slot_draft == 2 or g_slot_draft == 3 then
@@ -3294,7 +3377,7 @@ function OnNextMap()
 	local tmp_id = -1
 	local id = -1
 	local bannumber = g_ban_count 
-	for i = 1,14 do
+	for i = 1,15 do
 		if g_map_pool[i] ~= nil then
 			if g_map_pool[i].Allowed == true then
 				map_left = map_left + 1
@@ -4024,7 +4107,14 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 	if b_ishost == true and text == ".phase" then
 		text = g_phase
 	end
-	
+
+	if (b_ishost == true) and string.sub(text,1,9) == ".chgphase" then
+		OnPhaseChanged(text)
+		if g_debug == false then
+			return
+		end
+	end
+
 	if (b_isnext == true or b_ishost == true) and string.sub(text,1,4) == ".ban" then
 		OnBanReceived(text)
 		if g_debug == false then
@@ -5273,7 +5363,11 @@ function UpdatePlayerEntry(playerID)
 				for i, player in pairs(g_player_status) do
 					if player.ID == playerID then
 						if player.Status == 0 or player.Status == 1 or player.Status == 2 then
-							playerEntry.PlayerVersion:SetText("[COLOR_LIGHTBLUE]Request...[ENDCOLOR]")
+							if hostID == localPlayerID and player.ID == hostID  then
+								playerEntry.PlayerVersion:SetText("[COLOR_GREEN]"..g_version.."[ENDCOLOR]")	
+								else
+								playerEntry.PlayerVersion:SetText("[COLOR_LIGHTBLUE]Request...[ENDCOLOR]")
+							end
 							elseif player.Status == 66 then
 							playerEntry.PlayerVersion:SetText("[COLOR_RED]Error[ENDCOLOR]")
 							elseif player.Status == 3 then
