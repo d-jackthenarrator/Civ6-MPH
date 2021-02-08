@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="120">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="121">
 
   <Properties>
     <Name>LOC_MPH_TITLE</Name>
@@ -13,8 +13,8 @@
   
 	<LocalizedText>
 		<Text id="LOC_MPH_TITLE">
-			<en_US>Multiplayer Helper 1.2.0</en_US>
-			<fr_FR>Multiplayer Helper 1.2.0</fr_FR>
+			<en_US>Multiplayer Helper 1.2.1</en_US>
+			<fr_FR>Multiplayer Helper 1.2.1</fr_FR>
 		</Text>
 		<Text id="LOC_MPH_TEASER">
 			<en_US>Esport oriented mod to help tournament and game statibility.</en_US>

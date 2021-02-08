@@ -216,20 +216,22 @@
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Map" TargetId="MAP_SIZE" TargetValue="MAPSIZE_STANDARD" Hash="1"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="GAME_NO_BARBARIANS" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="DRAFT_MAP" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_1" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_2" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_5" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_6" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_7" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_7" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_8" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_9" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_9" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_10" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_11" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_12" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_13" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_15" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="3" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="DRAFT_TIMER" TargetValue="1" />
 		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="DRAFT_SLOT_ORDER" TargetValue="3" />
