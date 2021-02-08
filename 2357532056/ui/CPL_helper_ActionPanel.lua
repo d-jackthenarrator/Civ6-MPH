@@ -99,7 +99,13 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 	
 	if maxTurnTime ~= nil then
 		maxTurnTime = math.max(maxTurnTime - i_lag,0)
+		if elapsedTime ~= nil then
+			if elapsedTime > maxTurnTime or elapsedTime == maxTurnTime then
+				UI.RequestAction(ActionTypes.ACTION_ENDTURN, { REASON = "UserForced" } );
+			end
+		end
 	end
+		
 	BASE_OnTurnTimerUpdated(elapsedTime,maxTurnTime)
 
 end
