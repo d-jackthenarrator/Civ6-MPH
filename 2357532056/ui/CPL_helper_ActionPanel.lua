@@ -97,11 +97,18 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 		end
 	end
 	
+
+	
+	
 	if maxTurnTime ~= nil then
 		maxTurnTime = math.max(maxTurnTime - i_lag,0)
 		if elapsedTime ~= nil then
-			if elapsedTime > maxTurnTime or elapsedTime == maxTurnTime then
-				UI.RequestAction(ActionTypes.ACTION_ENDTURN, { REASON = "UserForced" } );
+			if (elapsedTime > maxTurnTime + 1)  then
+				local pCongressMeetingData = Game.GetWorldCongress():GetMeetingStatus();
+				local turnsToNextCongress = pCongressMeetingData.TurnsLeft;
+				if turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 and localID ~= hostID then
+					UI.RequestAction(ActionTypes.ACTION_ENDTURN, { REASON = "UserForced" } );
+				end
 			end
 		end
 	end
