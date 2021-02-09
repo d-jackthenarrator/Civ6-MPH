@@ -72,12 +72,14 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
 	local player_ids = GameConfiguration.GetMultiplayerPlayerIDs()
+	local pCongressMeetingData = Game.GetWorldCongress():GetMeetingStatus();
+	local turnsToNextCongress = pCongressMeetingData.TurnsLeft;
 	local remaining_time = 0
 	if maxTurnTime ~= nil and elapsedTime ~= nil then
 		remaining_time = maxTurnTime - elapsedTime
 	end
 	if maxTurnTime > 40 and localID == hostID then
-		if remaining_time < 30 and b_fired == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 then
+		if remaining_time < 30 and b_fired == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 then
 			print("Timer Adjusted",elapsedTime,maxTurnTime)
 			for i, iPlayer in ipairs(player_ids) do
 				if Network.IsPlayerConnected(iPlayer) == true and iPlayer ~= hostID then
@@ -88,7 +90,8 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 			b_received = true
 		end
 	end
-	if b_received == true and b_adjusted == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and localID ~= hostID then
+
+	if b_received == true and b_adjusted == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and localID ~= hostID and turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 then
 		if maxTurnTime ~= nil and elapsedTime ~= nil then
 			local lag = math.max((maxTurnTime - elapsedTime) - 30,0)
 			i_lag = lag
@@ -104,8 +107,6 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 		maxTurnTime = math.max(maxTurnTime - i_lag,0)
 		if elapsedTime ~= nil then
 			if (elapsedTime > maxTurnTime + 1)  then
-				local pCongressMeetingData = Game.GetWorldCongress():GetMeetingStatus();
-				local turnsToNextCongress = pCongressMeetingData.TurnsLeft;
 				if turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 and localID ~= hostID then
 					UI.RequestAction(ActionTypes.ACTION_ENDTURN, { REASON = "UserForced" } );
 				end
