@@ -71,6 +71,9 @@
 -- v1.10
 --		World Congress timer no longer infinite
 --		Added No Frienship, no surprise wars option
+-- v1.2.3
+--		Updated version number
+--		Congress no longer can be skipped on lag
 
 
 
@@ -78,7 +81,7 @@
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.1.0"
+local g_version = "v1.2.3"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0

@@ -17,6 +17,7 @@ local WORLD_CONGRESS_STAGE_2:number = DB.MakeHash("TURNSEG_WORLDCONGRESS_2");
 local b_fired = false
 local b_received = false
 local b_adjusted = false
+local b_congress = false
 local i_lag = 0
 local b_pulse = false
 local b_pulse_2 = false
@@ -32,11 +33,19 @@ local b_pulse_4 = false
 function OnLocalPlayerTurnBegin_MPH()
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
+	local pCongressMeetingData = Game.GetWorldCongress():GetMeetingStatus();
+	local turnsToNextCongress = pCongressMeetingData.TurnsLeft;
 	
+	b_congress = false
 	b_fired = false
 	b_received = false
 	b_adjusted = false
 	i_lag = 0
+	
+	if turnsToNextCongress == 0 or turnsToNextCongress == 1 then
+		b_congress = true
+	end
+	
 	if localID == hostID then
 	
 	if GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 then
@@ -74,12 +83,17 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 	local player_ids = GameConfiguration.GetMultiplayerPlayerIDs()
 	local pCongressMeetingData = Game.GetWorldCongress():GetMeetingStatus();
 	local turnsToNextCongress = pCongressMeetingData.TurnsLeft;
+
+	if turnsToNextCongress == 0 or turnsToNextCongress == 1 then
+		b_congress = true
+	end
+
 	local remaining_time = 0
 	if maxTurnTime ~= nil and elapsedTime ~= nil then
 		remaining_time = maxTurnTime - elapsedTime
 	end
 	if maxTurnTime > 40 and localID == hostID then
-		if remaining_time < 30 and b_fired == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 then
+		if remaining_time < 30 and b_fired == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and b_congress == false then
 			print("Timer Adjusted",elapsedTime,maxTurnTime)
 			for i, iPlayer in ipairs(player_ids) do
 				if Network.IsPlayerConnected(iPlayer) == true and iPlayer ~= hostID then
@@ -91,7 +105,7 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 		end
 	end
 
-	if b_received == true and b_adjusted == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and localID ~= hostID and turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 then
+	if b_received == true and b_adjusted == false and GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 and localID ~= hostID and b_congress == false then
 		if maxTurnTime ~= nil and elapsedTime ~= nil then
 			local lag = math.max((maxTurnTime - elapsedTime) - 30,0)
 			i_lag = lag
@@ -100,14 +114,15 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 		end
 	end
 	
-
-	
-	
 	if maxTurnTime ~= nil then
 		maxTurnTime = math.max(maxTurnTime - i_lag,0)
 		if elapsedTime ~= nil then
 			if (elapsedTime > maxTurnTime + 1)  then
-				if turnsToNextCongress ~= 0 and turnsToNextCongress ~= 1 and localID ~= hostID then
+				if HasEmergencyProposals() == true then
+					b_congress = true
+				end		
+				if b_congress == false  and localID ~= hostID then
+					print("Turned Actively Halted")
 					UI.RequestAction(ActionTypes.ACTION_ENDTURN, { REASON = "UserForced" } );
 				end
 			end
@@ -118,7 +133,49 @@ function OnTurnTimerUpdated(elapsedTime :number, maxTurnTime :number)
 
 end
 
+function OnEmergencyEvent_MPH()
+	print("OnEmergencyEvent()")
+	b_congress = true
+end
 
+function OnSpecialSessionNotificationAdded_MPH()
+	print("OnSpecialSessionNotificationAdded()")
+	b_congress = true
+end
+
+function GetSortedProposalCategories(kProposals:table)
+	local kSortedCategories:table = {};
+	if kProposals ~= nil then
+		for proposalType, kProposalCategory in pairs(kProposals) do
+			local kProposalDef = GameInfo.ProposalTypes[proposalType];
+			if kProposalDef and table.count(kProposalCategory.ProposalsOfType) > 0 then
+
+				local kSorted:table = {
+					type = proposalType,
+					kData = kProposalDef,
+					kCategory = kProposalCategory
+				};
+				table.insert(kSortedCategories, kSorted);
+
+			elseif kProposalDef == nil then
+				UI.DataError("Undefined Proposal Category: " .. proposalType .. " in World Congress Step 2!");
+			end
+		end
+
+		table.sort(kSortedCategories, function(a, b) return a.kData.Sort < b.kData.Sort; end);
+	end
+	return kSortedCategories;
+end
+
+function HasEmergencyProposals()
+	local kSortedCategories:table = GetSortedProposalCategories(Game.GetWorldCongress():GetEmergencies(Game.GetLocalPlayer()).Proposals);
+	for _, kSorted in ipairs(kSortedCategories) do
+		if kSorted.kCategory.ProposalsOfType and table.count(kSorted.kCategory.ProposalsOfType) > 0 then
+			return true;
+		end
+	end
+	return false;
+end
 
 -- ===========================================================================
 --	Listening function
@@ -141,6 +198,7 @@ function OnMultiplayerChat_MPH( fromPlayer, toPlayer, text, eTargetType )
 end
 
 
-	
+LuaEvents.WorldCongressPopup_OnSpecialSessionNotificationAdded.Add(OnSpecialSessionNotificationAdded_MPH);	
 Events.LocalPlayerTurnBegin.Add( OnLocalPlayerTurnBegin_MPH );
 Events.MultiplayerChat.Add( OnMultiplayerChat_MPH );
+Events.EmergencyAvailable.Add( OnEmergencyEvent_MPH );
