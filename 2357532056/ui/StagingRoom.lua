@@ -12,7 +12,7 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.3"
+local g_version = "1.2"
 print("Staging Room For MPH ",g_version)						
 
 ----------------------------------------------------------------  
@@ -177,7 +177,7 @@ local g_CountdownData = {
 	[CountdownTypes.Ready_PlayByCloud]	= { CountdownTime = 600,	TimerType = TimerTypes.Script,				TickStartTime = 10},
 	[CountdownTypes.Ready_MatchMaking]	= { CountdownTime = 60,		TimerType = TimerTypes.Script,				TickStartTime = 10},
 	[CountdownTypes.Draft_MapBan]		= { CountdownTime = 32,		TimerType = TimerTypes.Script,				TickStartTime = 12},
-	[CountdownTypes.Draft_LeaderBan]	= { CountdownTime = 62,		TimerType = TimerTypes.Script,				TickStartTime = 12},
+	[CountdownTypes.Draft_LeaderBan]	= { CountdownTime = 52,		TimerType = TimerTypes.Script,				TickStartTime = 12},
 	[CountdownTypes.Draft_LeaderPick]	= { CountdownTime = 62,		TimerType = TimerTypes.Script,				TickStartTime = 12},
 	[CountdownTypes.Draft_ReadyStart]	= { CountdownTime = 300,	TimerType = TimerTypes.Script,				TickStartTime = 10},
 };
@@ -4946,7 +4946,6 @@ function CheckLeaveGame()
 									-- and should not trigger a game exit.
 		and Network.IsInSession()	-- Still in a network session.
 		and not Network.IsInGameStartedState() then -- Don't trigger leave game if we're being used as an ingame screen. Worldview is handling this instead.
-		print("StagingRoom::CheckLeaveGame() leaving the network session.");															  
 		Network.LeaveGame();
 	end
 end
@@ -5568,7 +5567,7 @@ function UpdatePlayerEntry(playerID)
 
 				civIconBG:SetHide(true);
                 civIcon:SetHide(true);
-                if (parameter.Value.Value ~= "RANDOM" and parameter.Value.Value ~= "RANDOM_POOL1" and parameter.Value.Value ~= "RANDOM_POOL2") then
+                if (parameter.Value.Value ~= "RANDOM") then
                     local colorAlternate = parameters.Parameters["PlayerColorAlternate"] or 0;
         			local backColor, frontColor = UI.GetPlayerColorValues(playerColor, colorAlternate.Value);
 					
@@ -6493,7 +6492,6 @@ function SetupSplitLeaderPulldown(playerId:number, instance:table, pulldownContr
 	local civIcon = instance["CivIcon"];
 	local civIconBG = instance["IconBG"];
 	local civWarnIcon = instance["WarnIcon"];
-	local scrollText = instance["ScrollText"];										  
 	local instanceManager = control["InstanceManager"];
 	if not instanceManager then
 		instanceManager = PullDownInstanceManager:new( "InstanceOne", "Button", control );
@@ -6541,11 +6539,8 @@ function SetupSplitLeaderPulldown(playerId:number, instance:table, pulldownContr
 					caption = caption .. "[NEWLINE][COLOR_RED](" .. Locale.Lookup(err) .. ")[ENDCOLOR]";
 				end
 
-				if(scrollText ~= nil) then
-					scrollText:SetText(caption);
-				else
-					button:SetText(caption);
-				end
+				button:SetText(caption);
+				
 				local icons = GetPlayerIcons(v.Domain, v.Value);
 				local playerColor = icons.PlayerColor or "";
 				if(leaderIcon) then
@@ -6569,7 +6564,7 @@ function SetupSplitLeaderPulldown(playerId:number, instance:table, pulldownContr
 				end
 
 				local primaryColor, secondaryColor = UI.GetPlayerColorValues(playerColor, 0);
-				if v.Value == "RANDOM" or v.Value == "RANDOM_POOL1" or v.Value == "RANDOM_POOL2" or primaryColor == nil then
+				if v.Value == "RANDOM" or primaryColor == nil then
 					civIconBG:SetHide(true);
 					civIcon:SetHide(true);
 					civWarnIcon:SetHide(true);
@@ -6629,11 +6624,7 @@ function SetupSplitLeaderPulldown(playerId:number, instance:table, pulldownContr
 					caption = caption .. "[NEWLINE][COLOR_RED](" .. Locale.Lookup(err) .. ")[ENDCOLOR]";
 				end
 
-				if(entry.ScrollText ~= nil) then
-					entry.ScrollText:SetText(caption);
-				else
-					entry.Button:SetText(caption);
-				end
+				entry.Button:SetText(caption);
 				entry.LeaderIcon:SetIcon(icons.LeaderIcon);
 				
 				-- Upvalues
@@ -6752,13 +6743,7 @@ function BuildGameSetupParameter(o, parameter)
 		UpdateValue = function(value, p)
 			local t:string = type(value);
 			if(p.Array) then
-				local valueText;
-
-				if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
-					valueText = Locale.Lookup("LOC_SELECTION_EVERYTHING");
-				else
-					valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
-				end
+				local valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
 				if(t == "table") then
 					local count = #value;
 					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
@@ -6780,7 +6765,6 @@ function BuildGameSetupParameter(o, parameter)
 					end
 				end
 				c.Value:SetText(valueText);
-				c.Value:SetToolTipString(parameter.Description);												
 			else
 				if t == "table" then
 					c.Value:SetText(value.Name);

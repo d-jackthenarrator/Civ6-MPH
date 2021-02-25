@@ -242,110 +242,9 @@ function CreateCityStatePickerDriver(o, parameter, parent)
 	return kDriver;
 end
 
--- ===========================================================================
--- This driver is for launching the leader picker in a separate window.
--- ===========================================================================
-function CreateLeaderPickerDriver(o, parameter, parent)
-
-	if(parent == nil) then
-		parent = GetControlStack(parameter.GroupId);
-	end
-			
-	-- Get the UI instance
-	local c :object = g_ButtonParameterManager:GetInstance();	
-
-	local parameterId:string = parameter.ParameterId;
-	local button:table = c.Button;
-	button:RegisterCallback( Mouse.eLClick, function()
-		LuaEvents.LeaderPicker_Initialize(o.Parameters[parameterId], g_GameParameters);
-		Controls.LeaderPicker:SetHide(false);
-	end);
-	button:SetToolTipString(parameter.Description);
-
-	-- Store the root control, NOT the instance table.
-	g_SortingMap[tostring(c.ButtonRoot)] = parameter;
-
-	c.ButtonRoot:ChangeParent(parent);
-	if c.StringName ~= nil then
-		c.StringName:SetText(parameter.Name);
-	end
-
-	local cache:table = {};
-
-	local kDriver :table = {
-		Control = c,
-		Cache = cache,
-		UpdateValue = function(value, p)
-			local valueText = value and value.Name or nil;
-			local valueAmount :number = 0;
-
-			-- Remove random leaders from the Values table that is used to determine number of leaders selected
-			for i = #p.Values, 1, -1 do
-				local kItem:table = p.Values[i];
-				if kItem.Value == "RANDOM" or kItem.Value == "RANDOM_POOL1" or kItem.Value == "RANDOM_POOL2" then
-					table.remove(p.Values, i);
-				end
-			end
-		
-			if(valueText == nil) then
-				if(value == nil) then
-					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
-						valueText = "LOC_SELECTION_EVERYTHING";
-					else
-						valueText = "LOC_SELECTION_NOTHING";
-					end
-				elseif(type(value) == "table") then
-					local count = #value;
-					if (parameter.UxHint ~= nil and parameter.UxHint == "InvertSelection") then
-						if(count == 0) then
-							valueText = "LOC_SELECTION_EVERYTHING";
-						elseif(count == #p.Values) then
-							valueText = "LOC_SELECTION_NOTHING";
-						else
-							valueText = "LOC_SELECTION_CUSTOM";
-							valueAmount = #p.Values - count;
-						end
-					else
-						if(count == 0) then
-							valueText = "LOC_SELECTION_NOTHING";
-						elseif(count == #p.Values) then
-							valueText = "LOC_SELECTION_EVERYTHING";
-						else
-							valueText = "LOC_SELECTION_CUSTOM";
-							valueAmount = count;
-						end
-					end
-				end
-			end				
-
-			if(cache.ValueText ~= valueText) or (cache.ValueAmount ~= valueAmount) then
-				local button:table = c.Button;			
-				button:LocalizeAndSetText(valueText, valueAmount);
-				cache.ValueText = valueText;
-				cache.ValueAmount = valueAmount;
-			end
-		end,
-		UpdateValues = function(values, p) 
-			-- Values are refreshed when the window is open.
-		end,
-		SetEnabled = function(enabled, p)
-			c.Button:SetDisabled(not enabled or #p.Values <= 1);
-		end,
-		SetVisible = function(visible)
-			c.ButtonRoot:SetHide(not visible);
-		end,
-		Destroy = function()
-			g_ButtonParameterManager:ReleaseInstance(c);
-		end,
-	};	
-
-	return kDriver;
-end																			  
 function GameParameters_UI_CreateParameterDriver(o, parameter, parent, ...)
 	if(parameter.ParameterId == "CityStates") then
 		return CreateCityStatePickerDriver(o, parameter);
-	elseif(parameter.ParameterId == "LeaderPool1" or parameter.ParameterId == "LeaderPool2") then
-	return CreateLeaderPickerDriver(o, parameter);																						  
 	elseif(parameter.Array) then
 		return CreateMultiSelectWindowDriver(o, parameter);
 	else
@@ -754,7 +653,6 @@ function OnShutdown()
 	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "isHidden", ContextPtr:IsHidden());
 	LuaEvents.MultiSelectWindow_SetParameterValues.Remove(OnSetParameterValues);
 	LuaEvents.CityStatePicker_SetParameterValues.Remove(OnSetParameterValues);
-	LuaEvents.LeaderPicker_SetParameterValues.Remove(OnSetParameterValues);																	
 end
 
 -- ===========================================================================
@@ -877,7 +775,6 @@ function Initialize()
 
 	LuaEvents.MultiSelectWindow_SetParameterValues.Add(OnSetParameterValues);
 	LuaEvents.CityStatePicker_SetParameterValues.Add(OnSetParameterValues);																		
-	LuaEvents.LeaderPicker_SetParameterValues.Add(OnSetParameterValues);																 
 	Controls.BackButton:RegisterCallback( Mouse.eLClick, OnExitGameAskAreYouSure);
 	Controls.LoadButton:RegisterCallback( Mouse.eLClick, LoadButtonClick );
 
