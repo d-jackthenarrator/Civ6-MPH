@@ -120,6 +120,7 @@
 	<LuaContext FileName="UI/FrontEnd/SaveGameMenu" ID="SaveGameMenu"	Hidden="1" />
 	<LuaContext FileName="MultiSelectWindow" ID="MultiSelectWindow"  Hidden="1"/>
 	<LuaContext FileName="CityStatePicker" ID="CityStatePicker"  Hidden="1"/>
+	  <LuaContext FileName="LeaderPicker" ID="LeaderPicker"  Hidden="1"/>
 	<Instance Name="ShellTab">
 		<Container ID="TopControl"  Size="auto,auto">
 			<GridButton ID="Button" Anchor="C,T" Style="ShellTab"/>
