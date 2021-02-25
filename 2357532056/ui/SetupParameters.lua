@@ -1324,7 +1324,7 @@ end
 -- GameSetupLogic or PlayerSetupLogic.
 -------------------------------------------------------------------------------
 function GetPlayerCivilization(domain, leader_type)
-	if(leader_type ~= "RANDOM") then
+	if(leader_type ~= "RANDOM" and leader_type ~= "RANDOM_POOL1" and leader_type ~= "RANDOM_POOL2") then
 		local info_query = "SELECT CivilizationType from Players where Domain = ? and LeaderType = ? LIMIT 1";
 		local info_results = CachedQuery(info_query, domain, leader_type);
 		
@@ -1598,9 +1598,9 @@ function SetupParameters:Parameter_FilterValues(parameter, values)
 				reason = "LOC_SETUP_ERROR_NO_DUPLICATE_LEADERS";
 			elseif( unique_bans and ( GameConfiguration.GetValue("CPL_BAN_FORMAT") > 1 and leaders_in_bans[v.Value] ) ) then
 				reason = "LOC_SETUP_ERROR_NO_BANNED_LEADERS";
-			elseif( unique_bans and (GameConfiguration.GetValue("CPL_BAN_FORMAT") == 1 and v.Value == "RANDOM") ) then 
+			elseif( unique_bans and (GameConfiguration.GetValue("CPL_BAN_FORMAT") == 1 and (v.Value == "RANDOM" or v.Value == "RANDOM_POOL1" or v.Value == "RANDOM_POOL2") ) ) then 
 				reason = "LOC_SETUP_ERROR_NO_RANDOM_LEADERS";
-			elseif(restricted_draft == true and (not (leaders_in_draft[v.Value] == true)) and v.Value ~= "LEADER_SPECTATOR" and v.Value ~= "RANDOM" and checkOwnership and curSlotStatus ~= SlotStatus.SS_COMPUTER and GameConfiguration.GetGameState() == -901772834 ) then
+			elseif(restricted_draft == true and (not (leaders_in_draft[v.Value] == true)) and v.Value ~= "LEADER_SPECTATOR" and v.Value ~= "RANDOM" and v.Value ~= "RANDOM_POOL2" and v.Value ~= "RANDOM_POOL1" and checkOwnership and curSlotStatus ~= SlotStatus.SS_COMPUTER and GameConfiguration.GetGameState() == -901772834 ) then
 				reason = "LOC_SETUP_ERROR_NOT_DRAFTED_LEADERS";
 			elseif(unique_civilizations) then
 				local civilization = GetPlayerCivilization(v.Domain, v.Value);

@@ -499,6 +499,7 @@
 							<Image Texture="Controls_CircleBacking45" Size="51,51" Anchor="C,C" Offset="0,1"/>
 							<Image ID="LeaderIcon" Texture="Leaders45" Size="45,45" Icon="ICON_LEADER_DEFAULT" Anchor="C,C"/>
 						</Container>
+                        <ScrollTextField ID="ScrollText" Size="170,50" Offset="60,0" Style="TabFont"  Anchor="L,C"/>																													
 					</GridButton>
 				</ButtonData>
 			</PullDown>
