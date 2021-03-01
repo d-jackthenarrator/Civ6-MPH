@@ -2277,6 +2277,9 @@ function HostSkip()
 				local tmp = { LeaderType = "LEADER_NONE", LeaderName = "None", LeaderIcon = "ICON_LEADER_DEFAULT"}
 				m_LeaderBan[0] = tmp
 			end
+			
+			m_LeaderBan = GetShuffledCopyOfTable(m_LeaderBan)
+			
 			local num = 6
 			if g_slot_draft == 3 then
 				num = 10
@@ -2304,6 +2307,9 @@ function HostSkip()
 						end
 					end		
 				end
+				if (leader.LeaderType  == nil) then
+					b_add = false
+				end
 				if b_add == true then
 					leader_rand = leader.LeaderType
 					break
@@ -2326,6 +2332,27 @@ function HostSkip()
 		end
 	end
 
+end
+
+------------------------------------------------------------------------------
+function GetShuffledCopyOfTable(incoming_table)
+	-- Designed to operate on tables with no gaps. Does not affect original table.
+	local len = table.maxn(incoming_table);
+	local copy = {};
+	local shuffledVersion = {};
+	-- Make copy of table.
+	for loop = 1, len do
+		copy[loop] = incoming_table[loop];
+	end
+	-- One at a time, choose a random index from Copy to insert in to final table, then remove it from the copy.
+	local left_to_do = table.maxn(copy);
+	for loop = 1, len do
+		local random_index = 1 + math.random (left_to_do);
+		table.insert(shuffledVersion, copy[random_index]);
+		table.remove(copy, random_index);
+		left_to_do = left_to_do - 1;
+	end
+	return shuffledVersion
 end
 
 function HostUnlock()
