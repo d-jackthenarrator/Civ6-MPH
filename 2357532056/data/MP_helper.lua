@@ -74,6 +74,9 @@
 -- v1.2.3
 --		Updated version number
 --		Congress no longer can be skipped on lag
+-- v1.3.2
+-- 		Random leader picked
+--		ConfigurationUpdate changes for CWC
 
 
 
@@ -81,7 +84,7 @@
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.2.3"
+local g_version = "v1.3.2"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0

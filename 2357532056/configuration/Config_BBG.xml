@@ -1,0 +1,7 @@
+<GameInfo>
+	<ConfigurationUpdates>
+		<!--  CWC Defaulting  -->
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BARBS_SETTING" TargetValue="-1" Hash="0" />
+		<Row SourceGroup="Game" SourceId="CPL_CWC" SourceValue="1" TargetGroup="Game" TargetId="BBGVictorySpeedSlider" TargetValue="5" Hash="0" />
+	</ConfigurationUpdates>
+</GameInfo>
