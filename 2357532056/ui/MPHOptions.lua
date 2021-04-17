@@ -347,6 +347,25 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		--OnRequestHostSeedCheck(tmp,fromPlayer)
 		return
 	end
+	
+	-- Test
+	
+	if (string.lower(text)== ".mph_ui_requestsnap" and localID == fromPlayer)  then
+		print("Network.RequestSnapshot()",Network.RequestSnapshot())
+		return
+	end
+	
+	if (string.lower(text)== ".mph_ui_triggertest" and localID == fromPlayer)  then
+		print("Network.TriggerTestSync()",Network.TriggerTestSync())
+		return
+	end	
+	
+	if (string.lower(text)== ".mph_ui_forceresync" and localID == fromPlayer)  then
+		print("Network.ForceResync()",Network.ForceResync())
+		return
+	end		
+	
+	
 end
 
 function OnLoadScreenClose()

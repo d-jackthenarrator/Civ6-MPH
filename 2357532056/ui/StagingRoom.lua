@@ -12,9 +12,8 @@ include( "PopupDialog" );
 include( "Civ6Common" );
 include( "TeamSupport" );
 
-local g_version = "1.3"
-print("Staging Room For MPH ",g_version)						
-
+local g_version = "13X"
+print("Staging Room For MPH ",g_version)					
 ----------------------------------------------------------------  
 -- Constants
 ---------------------------------------------------------------- 
@@ -57,7 +56,8 @@ local m_nickname = ""
 -- Connection / Refresh / Timer
 local g_last_tick_time = nil
 local g_timer = 0
-local g_tick_size = 4 -- Time between refresh in second
+local g_tick_size = 5 -- Time between refresh in second
+local b_tick = false
 local g_player_status = {} 
 
 
@@ -72,8 +72,8 @@ local g_map_script = nil
 local g_map_temp = nil
 local g_map_age = nil
 local g_player_name = nil
--- Specator Support
-local b_spec_game = false
+
+
 local b_teamer = false
 local g_phase = -1
 
@@ -86,7 +86,7 @@ local PHASE_READY = 3
 local PHASE_VOTE_BAN_MAP = 11
 local PHASE_VOTE_BAN_LEADER = 12
 
-
+local b_debug = true
 local g_debug = false
 local b_has_voted = true
 local isCivPlayerName = false
@@ -100,7 +100,18 @@ local g_all_players = 0
 local b_check = false
 local b_launch = false
 local b_clean = true
-local b_mph_game = false
+--------------------------------------------
+-- Mod Flags
+--------------------------------------------
+local b_mph_game = false;
+local b_spec_game = false;
+local b_bbg_game = false;
+local b_bbs_game = false;
+local s_bbs_id = "";
+local s_bbg_id = "";
+local b_mods_ok = false
+
+
 local g_cached_playerIDs = {}
 local g_map_pool = {}
 local g_version_map = {}	
@@ -483,6 +494,9 @@ function OnTick()
 	end
 	if os.clock() > g_last_tick_time + g_tick_size or os.clock() == g_last_tick_time + g_tick_size then
 		g_last_tick_time = os.clock()
+		if b_tick == true then
+			b_tick = false
+		end
 		Refresh()
 		RefreshStatus()
 		ShowHideEditButton()
@@ -530,14 +544,44 @@ function CheckStatusID(playerID)
 	end
 end
 
-function RefreshStatusID(playerID,version)
-	print("RefreshStatusID",playerID,version)
-	if GameConfiguration.GetGameState() ~= -901772834 then
+function GetLocalModVersion(id)
+	if id == nil then
+		return nil
+	end
+	
+	local mods = Modding.GetInstalledMods();
+	if(mods == nil or #mods == 0) then
+		print("No mods locally installed!")
+		return nil
+	end
+	
+	local handle = -1
+	for i,mod in ipairs(mods) do
+		if mod.Id == id then
+			handle = mod.Handle
+			break
+		end
+	end
+	if handle ~= -1 then
+		local version = Modding.GetModProperty(handle, "Version");
+		return version
+		else
+		return nil
+	end
+	
+	
+end
+
+function RefreshStatusID(playerID,version,bbs_version,bbg_version)
+	print("RefreshStatusID",playerID,version,bbg_version,bbs_version)
+	if GameConfiguration.GetGameState() ~= -901772834 or m_countdownType =="Launch" then
 		return
 	end
 	local fresh_id = true
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
+	local versionBBS = GetLocalModVersion(s_bbs_id)
+	local versionBBG = GetLocalModVersion(s_bbg_id)
 	
 	if g_player_status ~= nil then
 		if version == nil then
@@ -546,17 +590,41 @@ function RefreshStatusID(playerID,version)
 					if Network.IsPlayerConnected(playerID) then
 						player.Status = 0
 						player.Version = 0
+						if b_bbg_game == true then
+							player.bbg_id = s_bbg_id
+							player.bbg_v = 0
+						end
+						if b_bbs_game == true then
+							player.bbs_id = s_bbs_id
+							player.bbs_v = 0
+						end
 						player.Name = PlayerConfigurations[playerID]:GetPlayerName()
 						fresh_id = false
 						if player.ID == hostID then
 							player.Status = 99
 							player.Version = tostring(g_version)
+							if b_bbg_game == true then
+								player.bbg_id = s_bbg_id
+								player.bbg_v = versionBBG
+							end
+							if b_bbs_game == true then
+								player.bbs_id = s_bbs_id
+								player.bbs_v = versionBBS
+							end
 							fresh_id = false					
 						end
 						else
 						player.Status = -1
 						player.Version = 0
 						player.Name = "AI"
+						if b_bbg_game == true then
+							player.bbg_id = s_bbg_id
+							player.bbg_v = 0
+						end
+						if b_bbs_game == true then
+							player.bbs_id = s_bbs_id
+							player.bbs_v = 0
+						end
 						fresh_id = false					
 					end
 				end
@@ -567,9 +635,25 @@ function RefreshStatusID(playerID,version)
 					if PlayerConfigurations[playerID] ~= nil then
 						if playerID == hostID then
 							local tmp = { ID = playerID, Status = 99, Version = g_version, Name = PlayerConfigurations[playerID]:GetPlayerName()}
+							if b_bbg_game == true then
+								tmp.bbg_id = s_bbg_id
+								tmp.bbg_v = versionBBG
+							end
+							if b_bbs_game == true then
+								tmp.bbs_id = s_bbs_id
+								tmp.bbs_v = versionBBS
+							end
 							table.insert(g_player_status, tmp)
 							else
 							local tmp = { ID = playerID, Status = 0, Version = 0, Name = PlayerConfigurations[playerID]:GetPlayerName()}
+							if b_bbg_game == true then
+								tmp.bbg_id = s_bbg_id
+								tmp.bbg_v = 0
+							end
+							if b_bbs_game == true then
+								tmp.bbs_id = s_bbs_id
+								tmp.bbs_v = 0
+							end
 							table.insert(g_player_status, tmp)
 						end
 						else
@@ -577,6 +661,14 @@ function RefreshStatusID(playerID,version)
 					end
 					else
 					local tmp = { ID = playerID, Status = -1, Version = 0, Name = "AI"}
+					if b_bbg_game == true then
+						tmp.bbg_id = s_bbg_id
+						tmp.bbg_v = 0
+					end
+					if b_bbs_game == true then
+						tmp.bbs_id = s_bbs_id
+						tmp.bbs_v = 0
+					end
 					table.insert(g_player_status, tmp)
 				end
 			end
@@ -588,6 +680,8 @@ function RefreshStatusID(playerID,version)
 					if Network.IsPlayerConnected(playerID) then
 						player.Status = 2
 						player.Version = tostring(version)	
+						player.bbg_v = tostring(bbg_version)	
+						player.bbs_v = tostring(bbs_version)	
 						player.Name = PlayerConfigurations[playerID]:GetPlayerName()
 					end
 				end
@@ -597,25 +691,51 @@ function RefreshStatusID(playerID,version)
 end
 
 function ResetStatus()
-	if GameConfiguration.GetGameState() ~= -901772834 then
+	print("ResetStatus()")
+	if GameConfiguration.GetGameState() ~= -901772834 or m_countdownType =="Launch" then
 		return
 	end
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
-
+	local versionBBS = GetLocalModVersion(s_bbs_id)
+	local versionBBG = GetLocalModVersion(s_bbg_id)
 	g_player_status = {}
 	local player_ids = GameConfiguration.GetMultiplayerPlayerIDs();
 	for i, iPlayer in ipairs(player_ids) do
 		if Network.IsPlayerConnected(iPlayer) then
 			if iPlayer ~= hostID then
 				local tmp = { ID = iPlayer, Status = 0, Version = 0, Name = PlayerConfigurations[iPlayer]:GetPlayerName()}
+				if b_bbg_game == true then
+					tmp.bbg_id = s_bbg_id
+					tmp.bbg_v = 0
+				end
+				if b_bbs_game == true then
+					tmp.bbs_id = s_bbs_id
+					tmp.bbs_v = 0
+				end
 				table.insert(g_player_status, tmp)
 				else
 				local tmp = { ID = iPlayer, Status = 99, Version = g_version, Name = PlayerConfigurations[iPlayer]:GetPlayerName()}
+				if b_bbg_game == true then
+					tmp.bbg_id = s_bbg_id
+					tmp.bbg_v = versionBBG
+				end
+				if b_bbs_game == true then
+					tmp.bbs_id = s_bbs_id
+					tmp.bbs_v = versionBBS
+				end
 				table.insert(g_player_status, tmp)					
 			end
 			else
 			local tmp = { ID = iPlayer, Status = -1, Version = g_version, Name = "AI"}
+				if b_bbg_game == true then
+					tmp.bbg_id = s_bbg_id
+					tmp.bbg_v = versionBBG
+				end
+				if b_bbs_game == true then
+					tmp.bbs_id = s_bbs_id
+					tmp.bbs_v = versionBBS
+				end
 			table.insert(g_player_status, tmp)				
 		end
 		
@@ -634,18 +754,46 @@ function ResetStatus_SpecificID(playerID)
 			if player.ID == playerID then
 				player.Status = 0
 				player.Version = 0
+				if b_bbg_game == true then
+					player.bbg_id = s_bbg_id
+					player.bbg_v = 0
+				end
+				if b_bbs_game == true then
+					player.bbs_id = s_bbs_id
+					player.bbs_v = 0
+				end
+			end
+		end
+	end
+end
+
+function GetStatus_SpecificID(playerID)
+	if GameConfiguration.GetGameState() ~= -901772834 then
+		return "Wrong State"
+	end
+	local localID = Network.GetLocalPlayerID()
+	local hostID = Network.GetGameHostPlayerID()
+	local status = "no player ID"
+	if g_player_status ~= nil and g_player_status ~= {} then
+		for i, player in pairs(g_player_status) do
+			if player.ID == playerID then
+				status = player.Status
+				return status
 			end
 		end
 	end
 end
 
 function RefreshStatus()
-	if GameConfiguration.GetGameState() ~= -901772834 or b_mph_game == false then
+	print("RefreshStatus()",os.date("%c"),b_tick)
+	if GameConfiguration.GetGameState() ~= -901772834 or b_mph_game == false or m_countdownType =="Launch" or b_tick == true then
 		return
 	end
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
-	if hostID == localID and b_mph_game == true and g_phase ~= PHASE_DEFAULT then
+	b_tick = true
+	b_mods_ok = true
+	if hostID == localID and b_mph_game == true then
 		if g_player_status ~= nil and g_player_status ~= {} then
 			for i, player in pairs(g_player_status) do
 				if Network.IsPlayerConnected(player.ID) == false and player.Status ~= -1 then
@@ -653,25 +801,43 @@ function RefreshStatus()
 				end
 				if player.Status == 1 then
 					-- We haven't received an answer most likely hasn't a fully loaded MPH
-						Network.SendChat("[COLOR_Civ6Red]Error:"..player.Name.." - Not preloaded. Custom drafing desactivated.",-2,player.ID)
+						Network.SendChat("[COLOR_Civ6Red]Error:"..player.Name.." - MPH not preloaded. Cannot check Mod Version.",-2,player.ID)
 						Network.SendChat("[COLOR_Civ6Red]You do not have a fully loaded version of MPH! [NEWLINE]Please subscribe to the mod on Steam. [NEWLINE]Be sure you to have MPH selected in additional content [NEWLINE]Be sure to restart the game before joining this game.[ENDCOLOR]",-2,player.ID)
 
 					player.Status = 66
+					b_mods_ok = false
 				end
-				if player.Status == 2 and player.Version ~= g_version  then
+				if player.Status == 2 then
 					-- We haven't received an answer most likely hasn't a fully loaded MPH
-						Network.SendChat("[COLOR_Civ6Red]Error:"..player.Name.." - Wrong version loaded.",-2,player.ID)
-						Network.SendChat("[COLOR_Civ6Red]You are running an outdated version of MPH! [NEWLINE]Please subscribe to the mod on Steam. [NEWLINE]Be sure you to have MPH selected in additional content [NEWLINE]Be sure to restart the game before joining this game.[ENDCOLOR]",-2,player.ID)
-
-					player.Status = 66
-				end
-				if player.Status == 2 and player.Version == g_version  then
-					player.Status = 3
-				end					
+						if tostring(player.Version) ~= tostring(g_version) then
+							Network.SendChat("[COLOR_Civ6Red]MPH Host version: "..tostring(g_version).." Your version: "..tostring(player.Version),-2,player.ID)
+							player.Status = 66
+						end
+						if b_bbs_game == true and tostring(player.bbs_v) ~= tostring(GetLocalModVersion(s_bbs_id)) then
+							Network.SendChat("[COLOR_Civ6Red]BBS Host version: "..tostring(GetLocalModVersion(s_bbs_id)).." Your version: "..tostring(player.bbs_v),-2,player.ID)
+							player.Status = 66
+						end
+						if b_bbg_game == true and tostring(player.bbs_v) ~= tostring(GetLocalModVersion(s_bbg_id)) then
+							Network.SendChat("[COLOR_Civ6Red]BBG Host version: "..tostring(GetLocalModVersion(s_bbg_id)).." Your version: "..tostring(player.bbg_v),-2,player.ID)
+							player.Status = 66
+						end
+						if player.Status == 66 then
+							Network.SendChat("[COLOR_Civ6Red]Error:"..player.Name.." - Version Mismatch.",-2,player.ID)
+							b_mods_ok = false
+							else
+							player.Status = 3
+							Network.SendChat("[COLOR_Civ6Green]"..player.Name.." - Mod Versions - OK.",-2,player.ID)
+						end
+				end				
 				if player.Status == 0 then
 					print("RefreshStatus() - Host Querrying - ID:",player.ID)
+					local name = PlayerConfigurations[player.ID]:GetPlayerName()
+					if name == nil then
+						name = "Player "..player.ID
+					end
+					name = tostring(name)
 					-- Request Clients
-					Network.SendChat("[COLOR_Civ6Green]# Greetings! You have joined a MP game using Multiplayer Helper (v "..g_version.."). [ENDCOLOR]",-2,player.ID)
+					Network.SendChat("[COLOR_Civ6Green]# Greetings! "..name.." has joined a MP game using Multiplayer Helper (v "..g_version.."). [ENDCOLOR]",-2,player.ID)
 					player.Status = 1
 				end
 				if Network.IsPlayerConnected(player.ID) and (g_phase == PHASE_DEFAULT or g_phase == PHASE_INIT) then
@@ -680,18 +846,28 @@ function RefreshStatus()
 			end	
 			else
 			ResetStatus()
+			b_mods_ok = false
 			return
 		end
 	end
+end
+
+function OnModCheck()
+	print("OnModCheck()",os.date("%c"))
+	local localID = Network.GetLocalPlayerID()
+	local hostID = Network.GetGameHostPlayerID()
+	b_mods_ok = false
+	g_player_status = {}
+	ResetStatus()
 end
 
 function SendVersion()
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
 	if localID ~= hostID and b_mph_game == true then
-		if GameConfiguration.GetGameState() == -901772834 and g_phase ~= PHASE_DEFAULT then
-			Network.SendChat("[COLOR_Civ6Green]# Running MPH "..g_version,-2,hostID)
-		end	
+		local bbs_version = GetLocalModVersion(s_bbs_id)
+		local bbg_version = GetLocalModVersion(s_bbg_id)
+		Network.SendChat(".mph_ui_modversion_"..tostring(g_version).."_BBS_"..tostring(bbs_version).."_BBG_"..tostring(bbg_version),-2,hostID)
 	end
 end
 
@@ -867,6 +1043,7 @@ function PhaseVisibility()
 	if g_phase == PHASE_INIT then
 		g_disabled_civ = false
 		b_has_voted = false
+		Controls.ModCheckButton:SetHide(true)
 		Controls.VoteMapScriptPullDown:SetHide(true)
 		Controls.VoteMapAgePullDown:SetHide(true)
 		Controls.VoteMapTempPullDown:SetHide(true)
@@ -968,6 +1145,7 @@ function PhaseVisibility()
 	end
 	
 	if g_phase == PHASE_MAPBAN then
+		Controls.ModCheckButton:SetHide(true)
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
 		g_disabled_civ = true
 		g_hide_map = false
@@ -1029,6 +1207,7 @@ function PhaseVisibility()
 	end
 	
 	if g_phase == PHASE_VOTE_BAN_MAP then
+		Controls.ModCheckButton:SetHide(true)
 		if localID == hostID then
 			Controls.PhaseButton:SetHide(false)
 			Controls.ResetButton:SetHide(false)
@@ -1066,6 +1245,7 @@ function PhaseVisibility()
 	end
 
 	if g_phase == PHASE_VOTE_BAN_LEADER then
+		Controls.ModCheckButton:SetHide(true)
 		Controls.BanMadeLabel:SetHide(false) 
 		Controls.BanMade_1:SetHide(false)
 		Controls.BanMade_2:SetHide(false)
@@ -1107,6 +1287,7 @@ function PhaseVisibility()
 	
 	
 	if g_phase == PHASE_LEADERBAN then
+		Controls.ModCheckButton:SetHide(true)
 		g_disabled_slot_settings = true
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
 		g_disabled_civ = true
@@ -1182,6 +1363,7 @@ function PhaseVisibility()
 	end
 	
 	if g_phase == PHASE_LEADERPICK then
+		Controls.ModCheckButton:SetHide(true)
 		g_disabled_slot_settings = true
 		Controls.MPH_Leader_ConfirmButton:SetHide(false)
 		Controls.MPH_VoteButton:SetHide(true)
@@ -1235,6 +1417,7 @@ function PhaseVisibility()
 	end
 	
 	if g_phase == PHASE_READY then
+		Controls.ModCheckButton:SetHide(true)
 		Controls.MPH_Leader_ConfirmButton:SetHide(true)
 		Controls.MPH_ConfirmButton:SetHide(true)
 				Controls.PickMadeLabel:SetHide(true) 
@@ -1285,6 +1468,11 @@ function QuickRefresh()
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
 	g_refreshing = g_refreshing.."."
+	if localID == hostID then
+		Controls.ModCheckButton:SetHide(false)
+		else
+		Controls.ModCheckButton:SetHide(true)	
+	end
 	if string.len(g_refreshing) > 30 then
 		g_refreshing = "Refreshing"
 	end
@@ -1303,9 +1491,10 @@ function QuickRefresh()
 		Controls.VoteMapTempLabel:SetHide(true)
 		return
 	end
-	
+
 	if Network.IsPlayerHotJoining(localID) or IsCloudInProgress() or GameConfiguration.IsHotseat() or GameConfiguration.GetGameState() ~= -901772834 then
 		g_phase = PHASE_DEFAULT
+		Controls.ModCheckButton:SetHide(true)
 		Controls.PhaseButton:SetHide(true)
 		Controls.ResetButton:SetHide(true)
 		Controls.PhaseLabel:SetHide(false)
@@ -1459,6 +1648,9 @@ function Refresh()
 		Controls.ResetButton:SetDisabled(true)
 		else
 		Controls.PhaseButton:SetDisabled(false)
+		if b_mods_ok == false then
+			Controls.PhaseButton:SetDisabled(true)	
+		end
 		if g_player_status ~= nil and GameConfiguration.GetGameState() == -901772834 then
 			for i, player in ipairs(g_player_status) do 
 				if Network.IsPlayerConnected(player.ID) then
@@ -3899,6 +4091,7 @@ end
 -- Chat
 -------------------------------------------------
 function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
+	-- .mph_ui_modversion_mphcommence_BBS_bbsyes_BBG_bbgpum
 	local localID = Network.GetLocalPlayerID()
 	local hostID = Network.GetGameHostPlayerID()
 	local bversion_display = true
@@ -3934,6 +4127,16 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		end
 	end
 	
+	if string.sub(text,1,18) == ".mph_ui_modversion"  then --and toPlayer == Network.GetGameHostPlayerID()
+		local indexBBSs, indexBBSe = string.find(text,"_BBS_")
+		local indexBBGs, indexBBGe = string.find(text,"_BBG_")
+		local mph_version = string.sub(text,20,indexBBSs-1)
+		local bbs_version = string.sub(text,indexBBSe+1,indexBBGs-1)
+		local bbg_version = string.sub(text, indexBBGe+1)
+		RefreshStatusID(fromPlayer,mph_version,bbs_version,bbg_version)
+
+	end
+	
 	if string.sub(text,1,30) == "[COLOR_Civ6Green]# Running MPH" and toPlayer == Network.GetGameHostPlayerID() and bversion_display == true then
 		local version = tonumber(string.sub(text,31))
 		RefreshStatusID(fromPlayer,version)
@@ -3945,7 +4148,7 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		end
 	end
 	
-	if b_ishost == true and string.sub(text,1,25) == "[COLOR_Civ6Green]# Greeti" and g_phase ~= PHASE_DEFAULT then
+	if b_ishost == true and string.sub(text,1,25) == "[COLOR_Civ6Green]# Greeti" then
 		if localID == toPlayer then
 			SendVersion()
 		end
@@ -4048,6 +4251,11 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		if g_debug == false then
 			return
 		end
+	end
+
+	if b_ishost == true and string.sub(text,1,6) == ".stat_" then	
+		local status = GetStatus_SpecificID(tonumber(string.sub(text,7)))
+		text = string.sub(text,7).." - "..status
 	end
 	
 	if b_ishost == true and string.sub(text,1,6) == ".timer" then
@@ -5338,7 +5546,6 @@ end
 function UpdatePlayerEntry(playerID)
 	local playerEntry = g_PlayerEntries[playerID];
 	local hostID = Network.GetGameHostPlayerID()
-	print(PlayerConfigurations[hostID]:GetLeaderTypeName())
 	if(playerEntry ~= nil) then
 		local localPlayerID = Network.GetLocalPlayerID();
 		local localPlayerConfig = PlayerConfigurations[localPlayerID];
@@ -5384,33 +5591,31 @@ function UpdatePlayerEntry(playerID)
 		playerEntry.HotseatEditButton:SetHide(not showHotseatEdit);
 		playerEntry.AlternateEditButton:SetHide(not hidePlayerCard);
 		playerEntry.AlternateSlotTypePulldown:SetHide(not hidePlayerCard);
-		
-		if hostID == localPlayerID and g_phase ~= PHASE_DEFAULT then
+
+		if hostID == localPlayerID then
+			playerEntry.PlayerVersion:SetHide(false)
 			if g_player_status ~= nil and g_player_status ~= {} then
-				playerEntry.PlayerVersion:SetHide(false)
 				for i, player in pairs(g_player_status) do
 					if player.ID == playerID then
-						if player.Status == 0 or player.Status == 1 or player.Status == 2 then
-							if hostID == localPlayerID and player.ID == hostID  then
-								playerEntry.PlayerVersion:SetText("[COLOR_GREEN]"..g_version.."[ENDCOLOR]")	
+						if player.Status == 0 or player.Status == 1 or player.Status == 2 or player.Status == 99 then
+							if player.Status == 99 then
+								playerEntry.PlayerVersion:SetText("[COLOR_GREEN]OK[ENDCOLOR]")	
 								else
 								playerEntry.PlayerVersion:SetText("[COLOR_LIGHTBLUE]Request...[ENDCOLOR]")
 							end
 							elseif player.Status == 66 then
 							playerEntry.PlayerVersion:SetText("[COLOR_RED]Error[ENDCOLOR]")
 							elseif player.Status == 3 then
-							playerEntry.PlayerVersion:SetText("[COLOR_GREEN]"..player.Version.."[ENDCOLOR]")							
+							playerEntry.PlayerVersion:SetText("[COLOR_GREEN]OK[ENDCOLOR]")							
 						end
 					end
 				end	
 				else
-				playerEntry.PlayerVersion:SetHide(true)
+				playerEntry.PlayerVersion:SetHide(false)
+				playerEntry.PlayerVersion:SetText("[COLOR_LIGHTBLUE]Run Check[ENDCOLOR]")
 			end
 			else
 			playerEntry.PlayerVersion:SetHide(true)
-		end
-		if hostID == playerID then
-			playerEntry.PlayerVersion:SetHide(false)
 		end
 
 		local statusText:string = "";
@@ -6905,13 +7110,25 @@ function BuildAdditionalContent()
 			modTitleStr =  "[COLOR_RED]".. modTitleStr .. "[ENDCOLOR]";
 		end
 		if curMod.Id == "619ac86e-d99d-4bf3-b8f0-8c5b8c402176" then
-			modTitleStr =  "[COLOR_LIGHTBLUE]".. modTitleStr .. "[ENDCOLOR]";
+			modTitleStr =  "[COLOR_LIGHTBLUE]".. modTitleStr .. "[ENDCOLOR] (local: "..GetLocalModVersion(curMod.Id)..")";
 			b_mph_game = true
 		end
 		if curMod.Id == "3291a787-4a93-445c-998d-e22034ab15b3" or curMod.Id == "c6e5ad32-0600-4a98-a7cd-5854a1abcaaf" then
 			modTitleStr =  "[COLOR_LIGHTBLUE]".. modTitleStr .. "[ENDCOLOR]";
 			b_spec_game = true
-		end															 	 
+		end		
+		if curMod.Id == "c88cba8b-8311-4d35-90c3-51a4a5d6654f" then
+			modTitleStr =  "[COLOR_LIGHTBLUE]".. modTitleStr .. "[ENDCOLOR] (local: "..GetLocalModVersion(curMod.Id)..")";
+			b_bbs_game = true
+			s_bbs_id = curMod.Id
+		end	
+		if curMod.Id == "cb84074d-5007-4207-b662-c35a5f7be230" 
+			or curMod.Id == "cb84074d-5007-4207-b662-c35a5f7be217"
+			or curMod.Id == "cb84074d-5007-4207-b662-c35a5f7be240" then
+			modTitleStr =  "[COLOR_LIGHTBLUE]".. modTitleStr .. "[ENDCOLOR] (local: "..GetLocalModVersion(curMod.Id)..")";
+			b_bbg_game = true
+			s_bbg_id = curMod.Id
+		end			
 		if(not curMod.Official) then
 			modTitleStr = ColorString_ModGreen .. modTitleStr .. "[ENDCOLOR]";
 		end
@@ -7194,10 +7411,14 @@ function GetInviteTT()
 	return Locale.Lookup("LOC_INVITE_BUTTON_TT");
 end
 
+
+
 -- ===========================================================================
 --	Initialize screen
 -- ===========================================================================
 function Initialize()
+	local localPlayerID = Network.GetLocalPlayerID();
+	local hostID = Network.GetGameHostPlayerID()
 
 	m_kPopupDialog = PopupDialog:new( "StagingRoom" );
 	
@@ -7212,6 +7433,8 @@ function Initialize()
 	Controls.EditNameButton:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
 	Controls.BackButton:RegisterCallback( Mouse.eLClick, OnExitGameAskAreYouSure );
 	Controls.BackButton:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
+	Controls.ModCheckButton:RegisterCallback( Mouse.eLClick, OnModCheck );
+	Controls.ModCheckButton:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
 	Controls.ChatEntry:RegisterCommitCallback( SendChat );
 	Controls.InviteButton:RegisterCallback( Mouse.eLClick, OnInviteButton );
 	Controls.InviteButton:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
@@ -7247,6 +7470,8 @@ function Initialize()
 	Events.SteamFriendsPresenceUpdated.Add( UpdateFriendsList );
 	Events.CloudGameKilled.Add(OnCloudGameKilled);
 	Events.CloudGameQuit.Add(OnCloudGameQuit);
+	
+
 
 	LuaEvents.GameDebug_Return.Add(OnGameDebugReturn);
 	LuaEvents.HostGame_ShowStagingRoom.Add( OnRaise );
@@ -7255,6 +7480,9 @@ function Initialize()
 	LuaEvents.Multiplayer_ExitShell.Add( OnHandleExitRequest );
 
 	Controls.TitleLabel:SetText(Locale.ToUpper(Locale.Lookup("LOC_MULTIPLAYER_STAGING_ROOM")));
+	
+	g_version = GetLocalModVersion("619ac86e-d99d-4bf3-b8f0-8c5b8c402176")
+		
 	ResizeButtonToText(Controls.BackButton);
 	ResizeButtonToText(Controls.EndGameButton);
 	ResizeButtonToText(Controls.QuitGameButton);
@@ -7263,7 +7491,10 @@ function Initialize()
 	SetupGridLines(0);
 	Resize();
 	ResetStatus();
-	
+
 end
 
 Initialize();
+
+
+

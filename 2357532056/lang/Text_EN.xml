@@ -2,7 +2,19 @@
 <GameData>
   <LocalizedText>
 	
-	<!-- New entries -->
+	<!-- New entries --> 
+	<Replace Tag="LOC_MPH_TURN_IS_PROCESSED" language="en">
+		<Text>CURRENT TURN IS BEING PROCESSED, PLEASE WAIT</Text>
+	</Replace>
+	<Replace Tag="LOC_MPH_MODCHECK_BUTTON_TOOLTIP" language="en">
+		<Text>Check the version of the mods locally installed on the clients (Support: BBS, BBG, MPH).[NEWLINE]Requires MPH to be preloaded on both Host and Client.</Text>
+	</Replace>
+	<Replace Tag="CPL_SYNCTURN_NAME" language="en">
+		<Text>Turn Synchonisation</Text>
+	</Replace>
+		<Replace Tag="CPL_SYNCTURN_DESC" language="en">
+		<Text>Human players will all start and end their turn at the same time.</Text>
+	</Replace>
 	<Replace Tag="CPL_CWC_NAME" language="en">
 		<Text>[COLOR_Civ6Red]Official CWC Game[ENDCOLOR]</Text>
 	</Replace>
