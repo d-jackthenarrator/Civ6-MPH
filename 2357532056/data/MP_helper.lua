@@ -87,7 +87,7 @@ print("MPH Gamescript")
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.3.2"
+local g_version = "v1.3.3"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0
@@ -101,47 +101,17 @@ local b_debug = false
 -- ===========================================================================
 
 
-
--- =========================================================================== 
---	NEW FUNCTIONS
--- =========================================================================== 
-
-function Init_Properties()
-	Game:SetProperty("MPH_REMAP_MODE", 0) 
-	local player_ids = PlayerManager.GetAliveMajorIDs();
-	for i, iPlayer in ipairs(player_ids) do
-		if Players[iPlayer] ~= nil then
-			Game:SetProperty("MPH_RESYNC_ARMED_"..iPlayer,0)
-		end
-	end	
-end
-
-function OnHostInstructsRemap(ePlayer : number, params : table)
-	print("OnHostInstructsRemap",ePlayer,os.date())
-	if params.GameSeed ~= nil then
-		print("params.GameSeed",params.GameSeed)
-		print("params.MapSeed",params.MapSeed)
-		Game:SetProperty("MPH_GAMESEED",params.GameSeed)
-		Game:SetProperty("MPH_MAPSEED",params.MapSeed)
-		Game:SetProperty("MPH_REMAP_MODE",1)
-	end
-end
-
-GameEvents.OnHostInstructsRemap.Add(OnHostInstructsRemap)
-
-function OnPlayerReceivedRemapInstructions(ePlayer : number, params : table)
-	print("OnPlayerReceivedRemapInstructions",ePlayer)
-	if params.Player ~= nil then
-		print("params.Player",params.Player)
-		Game:SetProperty("MPH_REMAP_READY_"..params.Player,1)
-	end
-end
-
-GameEvents.OnPlayerReceivedRemapInstructions.Add(OnPlayerReceivedRemapInstructions)
-
 -- =========================================================================== 
 --	NEW EVENTS
 -- =========================================================================== 
+
+function OnGameTurnStarted(turn)
+	-- local time
+	g_turn_start_time = os.date('%Y-%m-%d %H:%M:%S')
+	b_clean = false
+	b_debuff = false
+	print("OnGameTurnStarted: Turn",turn,"Local State:",Game.GetRandNum(100, "MPH Track Local State"),g_turn_start_time)
+end
 
 --------------------------------------------------------------------------------
 function OnCapturedCityState(playerID,cityID)
@@ -197,14 +167,6 @@ end
 LuaEvents.UICPLPlayerIrr.Add( OnIrr );
 
 -----------------------------------------------------------------------------------------
-
-function OnGameTurnStarted(turn)
-	-- local time
-	g_turn_start_time = os.date('%Y-%m-%d %H:%M:%S')
-	b_clean = false
-	b_debuff = false
-	print("OnGameTurnStarted",g_turn_start_time)
-end
 
 function FreeCities_Sronger()
 	if GameConfiguration.GetValue("CPL_FREECITY_STRONGER") == 0 then
@@ -1858,13 +1820,12 @@ function FindTableIndex(t,val)
 end
 
 function NoMoreStack()
-	print("No more stack check turn", Game.GetCurrentGameTurn())
 	if ( Game.GetCurrentGameTurn() ~= GameConfiguration.GetStartTurn()) then
 	for i = 0, PlayerManager.GetAliveMajorsCount() - 1 do
 		if (PlayerConfigurations[i]:GetLeaderTypeName() ~= "LEADER_SPECTATOR" and PlayerConfigurations[i]:GetHandicapTypeID() ~= 2021024770) then
 			local pPlayerCulture:table = Players[i]:GetCulture();
 			if pPlayerCulture:GetProgressingCivic() == -1 and pPlayerCulture:GetCultureYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic")
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic: Adjust. Turn",Game.GetCurrentGameTurn())
 				for k = 0, 58 do
 					if (pPlayerCulture:HasCivic(k) == false) then
 						pPlayerCulture:SetProgressingCivic(k)
@@ -1874,7 +1835,7 @@ function NoMoreStack()
 			end
 			local pPlayerTechs:table = Players[i]:GetTechs();
 			if pPlayerTechs:GetResearchingTech() == -1 and pPlayerTechs:GetScienceYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech")
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech: Adjust. Turn",Game.GetCurrentGameTurn())
 				for k = 0, 73 do
 					if (pPlayerTechs:HasTech(k) == false) then
 						pPlayerTechs:SetResearchingTech(k)
@@ -1997,15 +1958,8 @@ function Initialize()
 		Events.PlayerInfoChanged.Add(Debug_PlayerInfoChanged);
 		Events.GameConfigChanged.Add(Debug_GameConfigChanged);
 	end
-	Init_Properties()
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	GameEvents.OnGameTurnStarted.Add(NoMoreStack);
-	if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") ~= nil) then
-		if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") == true) then
-			print("Last Move Debuff Mechanics is On")
-			b_last_move = true
-		end
-	end
 	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
 		if Players[i]:IsAlive() == true then
 			if Players[i]:GetTeam() ~= i then

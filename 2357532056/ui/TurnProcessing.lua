@@ -235,6 +235,7 @@ function SmartTimer()
 	
 	
 	g_currenttimer = timer
+	print("Smart Timer",g_currenttimer)
 end
 
 -- ===========================================================================
@@ -242,11 +243,20 @@ end
 -- ===========================================================================
 function OnLoadScreenClose()
 	Refresh_Data()	
+	SmartTimer()
 end
 
 
 
 function OnTurnEnd(turn)
+	SmartTimer()
+	if GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 then
+		if (g_currenttimer ~= nil) then
+			GameConfiguration.SetValue("TURN_TIMER_TIME", g_currenttimer)
+			GameConfiguration.SetTurnTimerType("TURNTIMER_STANDARD")
+		end
+	end
+	
 	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true  then
 		return
 	end
@@ -311,17 +321,8 @@ function OnRemotePlayerTurnBegin(playerID)
 end
 
 
-
 function OnLocalPlayerTurnBegin()
-	if GameConfiguration.IsNetworkMultiplayer() ~= true then
-		SmartTimer()
-		if GameConfiguration.GetValue("CPL_SMARTTIMER") ~= 1 then
-			if (g_currenttimer ~= nil) then
-				GameConfiguration.SetValue("TURN_TIMER_TIME", g_currenttimer)
-				GameConfiguration.SetTurnTimerType("TURNTIMER_STANDARD")
-			end
-		end
-	end
+
 	
 	local localID = Network.GetLocalPlayerID()
 	for i, Player in ipairs(g_playertime) do
@@ -527,7 +528,7 @@ function Initialize()
 	Events.RemotePlayerTurnEnd.Add( OnRemotePlayerTurnEnd );
 	Events.LocalPlayerTurnEnd.Add(OnLocalPlayerTurnEnd );
 	Events.TurnEnd.Add(OnTurnEnd)
-	
+		
 	Events.LoadScreenClose.Add(OnLoadScreenClose);
 end
 Initialize();

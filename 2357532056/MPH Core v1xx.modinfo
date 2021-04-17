@@ -63,13 +63,6 @@
 				<Value>1</Value>
 			</ConfigurationValueMatches>
 		</Criteria>
-		<Criteria id="LastMove_Mode_Expansion2">
-			<ConfigurationValueMatches>
-				<Group>Game</Group>
-				<ConfigurationId>GAMEMODE_LASTMOVE</ConfigurationId>
-				<Value>1</Value>
-			</ConfigurationValueMatches>
-		</Criteria>
 		<Criteria id="Alliance_Military_Off">
 			<ConfigurationValueMatches>
 				<Group>Game</Group>
@@ -161,7 +154,6 @@
 	<UpdateIcons id="MPHIcons FrontEnd">
      	<File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
 		<File>icons/Anonymous_Icons.xml</File>
-		<File>icons/LastMove_Icons.xml</File>
 		<File>icons/OneCity_Icons.xml</File>
 		<File>icons/Sudden_Death_Icons.xml</File>
 	</UpdateIcons>
@@ -184,9 +176,6 @@
 			<File>icons/OneCityChallenge_44.dds</File>
 			<File>mode/onecity/OneCity_Portrait.dds</File>
 			<File>mode/onecity/OneCity_Background.dds</File>
-			<File>icons/LastMove_44.dds</File>
-			<File>mode/lastmove/LastMove_Portrait.dds</File>
-			<File>mode/lastmove/LastMove_Background.dds</File>
       </Items>
     </ImportFiles>
 
@@ -484,33 +473,14 @@
 		<File>mode/watchtower/Watchtower Improvement.dep</File>
 		<File>mode/watchtower/expansionist/Expansionist_Units.dep</File>
     </UpdateArt>
+	
     <UpdateText id="AnonText" criteria="Anonymous_Mode_Expansion2">
       <Properties>
         <LoadOrder>9999</LoadOrder>
       </Properties>
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
-        <AddUserInterfaces id="lastmove_ui_update" criteria="LastMove_Mode_Expansion2">
-		<Properties>
-			<Context>InGame</Context>
-		</Properties>
-		<File>mode/lastmove/lastmove_UI.xml</File>
-	</AddUserInterfaces>
-	 <UpdateDatabase id="lastmove_database_update" criteria="LastMove_Mode_Expansion2">
-      		<Properties>
-        		<LoadOrder>9999</LoadOrder>
-      		</Properties>
-      		<File>mode/lastmove/lastmove_unitabilities.xml</File>
-    </UpdateDatabase>
-	 <AddGameplayScripts id="lastmove_gamescript_update" criteria="LastMove_Mode_Expansion2">
-        	<File>mode/lastmove/lastmove.lua</File>
-    </AddGameplayScripts>
-	 <UpdateText id="lastmove_text_update" criteria="LastMove_Mode_Expansion2">
-      <Properties>
-        <LoadOrder>9999</LoadOrder>
-      </Properties>
-      <File>mode/lastmove/lastmove_text.xml</File>
-    </UpdateText>
+	
     <UpdateText id="OCCText" criteria="OneCityChallenge_Mode_Expansion2">
       <Properties>
         <LoadOrder>9999</LoadOrder>
@@ -856,15 +826,8 @@
     <File>icons/ExpansionistUnit_50.dds</File>
     <File>icons/ExpansionistUnit_80.dds</File>
     <File>icons/ExpansionistUnit_256.dds</File>
-	<File>icons/LastMove_44.dds</File>
-	<File>icons/LastMove_Icons.xml</File>
+
 	
-	<File>mode/lastmove/lastmove.lua</File>
-	<File>mode/lastmove/lastmove_UI.lua</File>
-	<File>mode/lastmove/lastmove_UI.xml</File>
-	<File>mode/lastmove/lastmove_text.xml</File>
-	<File>mode/lastmove/lastmove_unitabilities.xml</File>
-	<File>mode/lastmove/LastMove_Portrait.dds</File>
-	<File>mode/lastmove/LastMove_Background.dds</File> 
+
   </Files>
 </Mod>
