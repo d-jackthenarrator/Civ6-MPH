@@ -235,7 +235,6 @@ function SmartTimer()
 	
 	
 	g_currenttimer = timer
-	print("Smart Timer",g_currenttimer)
 end
 
 -- ===========================================================================

@@ -110,7 +110,10 @@ function OnGameTurnStarted(turn)
 	g_turn_start_time = os.date('%Y-%m-%d %H:%M:%S')
 	b_clean = false
 	b_debuff = false
-	print("OnGameTurnStarted: Turn",turn,"Local State:",Game.GetRandNum(100, "MPH Track Local State"),g_turn_start_time)
+	local seed = Game.GetRandNum(100, "MPH Track Local State")
+	print("OnGameTurnStarted: Turn",turn,"Local State:",seed,g_turn_start_time)
+	Game:SetProperty("LOCAL_SEED",seed)
+	Game:SetProperty("LOCAL_TURN",turn)
 end
 
 --------------------------------------------------------------------------------

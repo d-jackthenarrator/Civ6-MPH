@@ -311,6 +311,29 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		return
 	end
 	
+	-- Receiving a Seed Check
+	
+	if ((string.sub(string.lower(text),1,20) == ".mph_ui_checkseed_id") and localID == hostID)  then
+		-- Network.SendChat(".mph_ui_checkseed_id_"..tostring(playerID).."_turn_"..g_local_turn.."_seed_"..g_local_seed,-2,hostID)
+		-- .mph_ui_checkseed_id_5_turn_2_seed_66
+		local indexTurns, indexTurne = string.find(text,"_turn_")
+		local indexSeeds, indexSeede = string.find(text,"_seed_")
+		local sender_id = string.sub(text,22,indexTurns-1)
+		local turn_checked = string.sub(text,indexTurne+1,indexSeeds-1)
+		local seed_checked = string.sub(text, indexSeede+1)
+		if turn_checked == g_local_turn then
+			if seed_checked == g_local_seed then
+			print("Seed Check: Player "..sender_id.." is in sync. State:"..seed_checked.." Turn:"..turn_checked)
+			else
+			print("Seed Check: ERROR Player "..sender_id.." is out-of-sync. Local State:"..g_local_seed.." Player State:"..seed_checked.." Turn:"..turn_checked)
+			Network.SendChat(".mph_ui_snap",-2,tonumber(sender_id))
+			print("Seed Check: Sent a request for snapshot",tonumber(sender_id))
+			end
+			
+		end
+		return
+	end
+	
 	-- Requesting a General Resync
 	
 	if (string.lower(text) == ".mph_ui_resync_now" and fromPlayer == hostID)  then
@@ -381,6 +404,23 @@ function OnLoadScreenClose()
 	end
 end
 
+function OnLocalPlayerTurnBegin()
+	
+	local hostID = Network.GetGameHostPlayerID()
+	local localID = Network.GetLocalPlayerID()
+	local turn = Game.GetProperty("LOCAL_TURN")
+	local seed = Game.GetProperty("LOCAL_SEED")
+	if turn == nil or seed == nil then
+		g_local_seed = tostring(-1)
+		g_local_turn = tostring(-1)
+	end
+	g_local_seed = tostring(seed)
+	g_local_turn = tostring(turn)
+	if hostID ~= localID and localID ~= nil then
+		Network.SendChat(".mph_ui_checkseed_id_"..tostring(localID).."_turn_"..g_local_turn.."_seed_"..g_local_seed,-2,hostID)
+	end
+end
+
 -- ===========================================================================
 --	Callback
 -- ===========================================================================
@@ -394,8 +434,6 @@ function OnReturn()
 	ContextPtr:SetHide(true);
 	m_active = false
 end
-
-
 
 
 -- ===========================================================================
@@ -412,6 +450,7 @@ function Initialize()
 	LuaEvents.EscMenu_Show.Add( OnReturn );
 	Events.MultiplayerChat.Add( OnMultiplayerChat );
 	Events.LoadScreenClose.Add( OnLoadScreenClose );
+	Events.LocalPlayerTurnBegin.Add( OnLocalPlayerTurnBegin )
 end
 Initialize();
 
