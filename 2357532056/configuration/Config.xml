@@ -12,9 +12,9 @@
 		<Row ParameterId="CPL_RULES" Name="CPL_RULES_NAME" Description="CPL_RULES_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_RULES" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" SortIndex="2900" Visible="0"  />
 		<Row ParameterId="CPL_NO_PM" Name="CPL_NO_PM_NAME" Description="CPL_NO_PM_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_NO_PM" GroupId="AdvancedOptions" SortIndex="2901" Visible="0"  />
 		<Row ParameterId="CPL_SMARTTIMER" Name="CPL_SMARTTIMER_NAME" Description="CPL_SMARTTIMER_DESC" Domain="TimerLimits" DefaultValue="3" ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" GroupId="GameOptions" ChangeableAfterGameStart="1" SortIndex="41" />
+		<Row ParameterId="CPL_SYNCTURN" Name="CPL_SYNCTURN_NAME" Description="CPL_SYNCTURN_DESC" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="CPL_SYNCTURN" GroupId="GameOptions" ChangeableAfterGameStart="0" SortIndex="42" />
 		<Row ParameterId="CPL_CWC" Name="CPL_CWC_NAME" Description="CPL_CWC_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_CWC" GroupId="GameOptions" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="0" />
 		<Row ParameterId="CPL_SUDDENDEATH" Name="CPL_SUDDENDEATH_NAME" Description="CPL_SUDDENDEATH_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_SUDDENDEATH" GroupId="AdvancedOptions" SortIndex="2901" Visible="0"  />
-		<Row ParameterId="CPL_LASTMOVE_OPT" Name="CPL_LASTMOVE_OPT_NAME" Description="CPL_LASTMOVE_OPT_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_LASTMOVE_OPT" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" SortIndex="2902" Visible="0"  />
 		<Row ParameterId="CPL_NO_PINS" Name="CPL_NO_PINS_NAME" Description="CPL_NO_PINS_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_NO_PINS" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" SortIndex="2902" />
 		<Row ParameterId="CPL_FREECITY_STRONGER" Name="CPL_FREECITY_STRONGER_NAME" Description="CPL_FREECITY_STRONGER_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_FREECITY_STRONGER" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" Visible="0"  SortIndex="2902" />
 		<Row ParameterId="CPL_FREECITY_OPT" Name="CPL_FREECITY_OPT_NAME" Description="CPL_FREECITY_OPT_DESC" Domain="FreeLimits" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_FREECITY_OPT" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" Visible="0"  SortIndex="2903" />
@@ -97,15 +97,13 @@
 		<Row ParameterId="GameMode_Sudden_Death" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_SUDDEN_DEATH" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="110"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_Anonymous" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ANONYMOUS" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="120"  SupportsSinglePlayer="1" Visible="1" />
 		<Row ParameterId="GameMode_OneCity" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_ONECITY" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="130"  SupportsSinglePlayer="1" Visible="1" />
-		<Row ParameterId="GameMode_LastMove" Name="LOC_GAMEMODE_LASTMOVE_NAME" Description="LOC_GAMEMODE_LASTMOVE_DESCRIPTION" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_LASTMOVE" NameArrayConfigurationId="GAMEMODES_ENABLED_NAMES" GroupId="GameModes" SortIndex="140"  SupportsSinglePlayer="1" Visible="1" />
 	</Parameters>
 
 	<GameModeItems>
 		<Row GameModeType="GAMEMODE_SUDDEN_DEATH" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Portrait="Sudden_Death_Portrait.dds" Background="Sudden_Death_Background.dds" Icon="ICON_GAMEMODE_SUDDEN_DEATH" SortIndex="20"  />
 		<Row GameModeType="GAMEMODE_ANONYMOUS" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Portrait="Anonymous_Portrait.dds" Background="Anonymous_Background.dds" Icon="ICON_GAMEMODE_ANONYMOUS" SortIndex="30"  />
 		<Row GameModeType="GAMEMODE_ONECITY" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Portrait="OneCity_Portrait.dds" Background="OneCity_Background.dds" Icon="ICON_GAMEMODE_ONECITY" UnitIcon="ICON_UNIT_EXPANSIONIST" UnitDescription="LOC_EXPANSIONIST_DESC" UnitName="LOC_EXPANSIONIST_NAME" SortIndex="40" />
-		<Row GameModeType="GAMEMODE_LASTMOVE" Name="LOC_GAMEMODE_LASTMOVE_NAME" Description="LOC_GAMEMODE_LASTMOVE_DESCRIPTION" Portrait="LastMove_Portrait.dds" Background="LastMove_Background.dds" Icon="ICON_GAMEMODE_LASTMOVE" SortIndex="50" />
-	</GameModeItems>
+</GameModeItems>
 
 
 	<Queries>
@@ -169,6 +167,8 @@
 		<Row ParameterId="Trading_Luxuries" 					ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />		
 		<Row ParameterId="Friendship" 							ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
 		<Row ParameterId="SurpriseWar" 							ConfigurationGroup="Game" ConfigurationId="DIPLOMATIC_DEAL" Operator="NotEquals" ConfigurationValue="1" />	
+		<!--  Only have Sync Turn for Smart Timer -->
+		<Row ParameterId="CPL_SYNCTURN"							ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" Operator="NotEquals" ConfigurationValue="1" />
 	</ParameterCriteria>
 
 	<ParameterDependencies>

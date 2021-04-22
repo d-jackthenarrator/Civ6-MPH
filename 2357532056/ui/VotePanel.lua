@@ -626,35 +626,13 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 		b_ishost = true
 	end
 	
-	-- Triggering a VoteMap
-	
-	if b_ishost == true and fromPlayer == localID and (string.lower(text) == ".mph_ui_try")  then
-		GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
-		Network.BroadcastGameConfig();
-		local kParameters:table = {};
-		kParameters.GameSeed = 11582452
-		kParameters.MapSeed = 1112542452
-		kParameters.OnStart = "OnHostInstructsRemap";
-		UI.RequestPlayerOperation(fromPlayer, PlayerOperations.EXECUTE_SCRIPT, kParameters);
-		print("UI",kParameters.GameSeed,kParameters.MapSeed)
-		return
-	end
-	
+	-- Triggering a VoteMap	
 	if b_ishost == true and hostID ~= localID and (string.lower(text) == ".mph_ui_snap")  then
+		print("Snapshot Requested")
 		Network.RequestSnapshot()
 		return
 	end
 	
-	if fromPlayer == localID and (string.lower(text) == ".mph_ui_hard")  then
-		GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","Y")
-		Network.BroadcastGameConfig();
-		local kParameters:table = {};
-		kParameters.GameSeed = 11582452
-		kParameters.MapSeed = 1112542452
-		kParameters.OnStart = "OnHostInstructsRemap";
-		UI.RequestPlayerOperation(fromPlayer, PlayerOperations.EXECUTE_SCRIPT, kParameters);
-		print("UI",kParameters.GameSeed,kParameters.MapSeed)
-	end
 		
 	if b_ishost == true and (string.lower(text) == ".mph_ui_vote_remap" or string.lower(text) == ".vremap")  then
 		OnVoteRemap()
@@ -746,8 +724,8 @@ function OnRefresh()
 		--end
 
 		-- triggering a Snapshot Request (Restart Context - Host has Fully Loaded)
-		if localID == hostID and GameConfiguration.GetValue("GAME_HOST_IS_JUST_RELOADING") == "Y" and Game:GetProperty("MPH_REMAP_MODE") == 0 then
-			print(tick,"Host Command: Snapshot Request",Game:GetProperty("MPH_RESYNC_ARMED_"..localID),os.date())
+		if localID == hostID and GameConfiguration.GetValue("GAME_HOST_IS_JUST_RELOADING") == "Y" then
+			print(tick,"Host Command: Snapshot Request",os.date())
 			GameConfiguration.SetValue("GAME_HOST_IS_JUST_RELOADING","N")
 			Network.BroadcastGameConfig();			
 			Network.SendChat(".mph_ui_snap",-2,-1)

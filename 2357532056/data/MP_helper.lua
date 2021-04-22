@@ -77,212 +77,44 @@
 -- v1.3.2
 -- 		Random leader picked
 --		ConfigurationUpdate changes for CWC
-
+-- v1.3.3
+--		Added an event debug
+--		Moved the timer codes to UI (no real reason to have it on the Core side for calculation as the implementation is UI anyway)
+print("MPH Gamescript")
 
 
 -- ===========================================================================
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.3.2"
+local g_version = "v1.3.3"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0
 local b_onecity = false
 local b_teamer = false
 local g_timeshift = 0
+local b_debug = false
 
 -- ===========================================================================
 --	GLOBAL FLAGS
 -- ===========================================================================
 
 
-
--- =========================================================================== 
---	NEW FUNCTIONS
--- =========================================================================== 
-
-function Init_Properties()
-	Game:SetProperty("MPH_REMAP_MODE", 0) 
-	local player_ids = PlayerManager.GetAliveMajorIDs();
-	for i, iPlayer in ipairs(player_ids) do
-		if Players[iPlayer] ~= nil then
-			Game:SetProperty("MPH_RESYNC_ARMED_"..iPlayer,0)
-		end
-	end	
-end
-
-function OnHostInstructsRemap(ePlayer : number, params : table)
-	print("OnHostInstructsRemap",ePlayer,os.date())
-	if params.GameSeed ~= nil then
-		print("params.GameSeed",params.GameSeed)
-		print("params.MapSeed",params.MapSeed)
-		Game:SetProperty("MPH_GAMESEED",params.GameSeed)
-		Game:SetProperty("MPH_MAPSEED",params.MapSeed)
-		Game:SetProperty("MPH_REMAP_MODE",1)
-	end
-end
-
-GameEvents.OnHostInstructsRemap.Add(OnHostInstructsRemap)
-
-function OnPlayerReceivedRemapInstructions(ePlayer : number, params : table)
-	print("OnPlayerReceivedRemapInstructions",ePlayer)
-	if params.Player ~= nil then
-		print("params.Player",params.Player)
-		Game:SetProperty("MPH_REMAP_READY_"..params.Player,1)
-	end
-end
-
-GameEvents.OnPlayerReceivedRemapInstructions.Add(OnPlayerReceivedRemapInstructions)
-
-function SmartTimer()
-	-- 0: Competitive
-	-- 1: None
-	-- 2: Lege
-	-- 3: S1AL
-	-- 4: Sephis
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 1 then
-		return
-	end
-
-	local tot_cities = 0
-	local tot_units = 0
-	local tot_humans = 0
-	local b_war = false
-	local currentTurn = Game.GetCurrentGameTurn()
-	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
-		if Players[i]:IsAlive() == true then
-			if Players[i]:IsHuman() == true then
-				tot_humans = tot_humans + 1
-				tot_cities = tot_cities + Players[i]:GetCities():GetCount()
-				tot_units = tot_units + Players[i]:GetUnits():GetCount()
-				if Players[i]:GetDiplomacy():IsAtWarWithHumans() == true then
-					b_war = true
-				end
-			end
-		end
-	end
-	local avg_cities = 0
-	local avg_units = 0
-	if tot_humans > 0 then
-		avg_cities = math.floor( tot_cities / tot_humans )
-		avg_units = math.floor( tot_units / tot_humans )
-	end
-
-	local timer = 0
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 0 then
-		timer = 30 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
-
-	if currentTurn > 5 and currentTurn < 11 then
-		timer = timer + 5
-	end	
-	if currentTurn > 10 and currentTurn < 21 then
-		timer = timer + 15
-	end	
-	if currentTurn > 20 and currentTurn < 31 then
-		timer = timer + 35
-	end
-	if currentTurn > 30 and currentTurn < 51 then
-		timer = timer + 40
-	end
-	if currentTurn > 50 and currentTurn < 76 then
-		timer = timer + 45
-	end
-	if currentTurn > 75 and currentTurn < 101 then
-		timer = timer + 50
-	end
-	if currentTurn > 100 then
-		timer = timer + 55
-	end
-	if b_teamer == true then
-		if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
-			print("More time: Teamer!")
-			timer = math.floor(timer * 1.1)
-		end
-	end
-	if b_war == true then
-		if GameConfiguration.GetValue("CPL_BAN_FORMAT") ~= 3 then
-			print("More time: War!")
-			timer = math.floor(timer * 1.15)
-			else
-			print("More time: War!")
-			timer = math.floor(timer * 1.05)			
-		end
-	end
-	end
-
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 2 then
-
-	if currentTurn < 16 then
-		timer = 15 + g_timeshift
-	end	
-	if currentTurn > 15 and currentTurn < 71 then
-		timer = 45 + g_timeshift
-	end	
-	if currentTurn > 70 then
-		timer = 75 + g_timeshift
-	end
-
-	end
-
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 3 then
-
-
-	timer = 65 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
-	if currentTurn > -1 and currentTurn < 10 then
-		timer = timer - 15
-	end	
-	if currentTurn > 44 and currentTurn < 90 then
-		timer = timer + 15
-	end	
-	if currentTurn > 89 then
-		timer = timer + 30
-	end	
-	
-	end
-	
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 5 then
-
-
-	timer = 95 + avg_cities * 4 + avg_units * 1  + g_timeshift
-	
-	if currentTurn > -1 and currentTurn < 10 then
-		timer = timer - 25
-	end	
-	if currentTurn > 44 and currentTurn < 90 then
-		timer = timer + 30
-	end	
-	if currentTurn > 89 then
-		timer = timer + 20
-	end	
-	
-	end
-
-
-	if GameConfiguration.GetValue("CPL_SMARTTIMER") == 4 then
-
-
-	timer = 30 + currentTurn + g_timeshift
-	
-
-	end
-
-	print("timer",timer)
-	Game:SetProperty("CPL_TIMER",timer)
-end
-
 -- =========================================================================== 
 --	NEW EVENTS
 -- =========================================================================== 
 
-function OnAdjustTime(time_value:number)
-	g_timeshift = time_value
-	SmartTimer()
+function OnGameTurnStarted(turn)
+	-- local time
+	g_turn_start_time = os.date('%Y-%m-%d %H:%M:%S')
+	b_clean = false
+	b_debuff = false
+	local seed = Game.GetRandNum(100, "MPH Track Local State")
+	print("OnGameTurnStarted: Turn",turn,"Local State:",seed,g_turn_start_time)
+	Game:SetProperty("LOCAL_SEED",seed)
+	Game:SetProperty("LOCAL_TURN",turn)
 end
-
-LuaEvents.UITimeAdjust.Add( OnAdjustTime )
 
 --------------------------------------------------------------------------------
 function OnCapturedCityState(playerID,cityID)
@@ -338,17 +170,6 @@ end
 LuaEvents.UICPLPlayerIrr.Add( OnIrr );
 
 -----------------------------------------------------------------------------------------
-
-function OnGameTurnStarted(player)
-	-- local time
-	print("Last turn lenght",os.time()-g_turn_start_time)
-	SmartTimer()
-	g_turn_start_time = os.time()
-	b_clean = false
-	b_debuff = false
-	print("OnGameTurnStarted",g_turn_start_time)
-
-end
 
 function FreeCities_Sronger()
 	if GameConfiguration.GetValue("CPL_FREECITY_STRONGER") == 0 then
@@ -2002,13 +1823,12 @@ function FindTableIndex(t,val)
 end
 
 function NoMoreStack()
-	print("No more stack check turn", Game.GetCurrentGameTurn())
 	if ( Game.GetCurrentGameTurn() ~= GameConfiguration.GetStartTurn()) then
 	for i = 0, PlayerManager.GetAliveMajorsCount() - 1 do
 		if (PlayerConfigurations[i]:GetLeaderTypeName() ~= "LEADER_SPECTATOR" and PlayerConfigurations[i]:GetHandicapTypeID() ~= 2021024770) then
 			local pPlayerCulture:table = Players[i]:GetCulture();
 			if pPlayerCulture:GetProgressingCivic() == -1 and pPlayerCulture:GetCultureYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic")
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic: Adjust. Turn",Game.GetCurrentGameTurn())
 				for k = 0, 58 do
 					if (pPlayerCulture:HasCivic(k) == false) then
 						pPlayerCulture:SetProgressingCivic(k)
@@ -2018,7 +1838,7 @@ function NoMoreStack()
 			end
 			local pPlayerTechs:table = Players[i]:GetTechs();
 			if pPlayerTechs:GetResearchingTech() == -1 and pPlayerTechs:GetScienceYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech")
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech: Adjust. Turn",Game.GetCurrentGameTurn())
 				for k = 0, 73 do
 					if (pPlayerTechs:HasTech(k) == false) then
 						pPlayerTechs:SetResearchingTech(k)
@@ -2031,23 +1851,118 @@ function NoMoreStack()
 	end	
 end
 
+-------------------------------------------------------
+-- Event Debugging
+-------------------------------------------------------
 
+function Debug_OnGameTurnStarted(arg1,arg2)
+	print("Debug_OnGameTurnStarted",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
 
+function Debug_PlayerTurnStarted(arg1,arg2)
+	print("Debug_PlayerTurnStarted",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
 
+function Debug_PlayerTurnStartComplete(arg1,arg2)
+	print("Debug_PlayerTurnStartComplete",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
 
+function Debug_OnPlayerTurnEnded(arg1,arg2)
+	print("Debug_PlayerTurnEnded",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_PlayerTurnActivated(arg1,arg2)
+	print("Debug_PlayerTurnActivated",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_LocalPlayerTurnBegin(arg1,arg2)
+	print("Debug_LocalPlayerTurnBegin",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_LocalPlayerTurnEnd(arg1,arg2)
+	print("Debug_LocalPlayerTurnEnd",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_RemotePlayerTurnBegin(arg1,arg2)
+	print("Debug_RemotePlayerTurnBegin",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_RemotePlayerTurnEnd(arg1,arg2)
+	print("Debug_RemotePlayerTurnEnd",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_TurnEnd(arg1,arg2)
+	print("Debug_TurnEnd",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_ConnectedToNetSessionHost(arg1,arg2)
+	print("Debug_ConnectedToNetSessionHost",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerPlayerConnected(arg1,arg2)
+	print("Debug_MultiplayerPlayerConnected",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerPrePlayerDisconnected(arg1,arg2)
+	print("Debug_MultiplayerPrePlayerDisconnected",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerSnapshotRequested(arg1,arg2)
+	print("Debug_MultiplayerSnapshotRequested",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerSnapshotProcessed(arg1,arg2)
+	print("Debug_MultiplayerSnapshotProcessed",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerHostMigrated(arg1,arg2)
+	print("Debug_MultiplayerHostMigrated",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_MultiplayerMatchHostMigrated(arg1,arg2)
+	print("Debug_MultiplayerMatchHostMigrated",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_SteamServersDisconnected(arg1,arg2)
+	print("Debug_SteamServersDisconnected",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_PlayerInfoChanged(arg1,arg2)
+	print("Debug_PlayerInfoChanged",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
+
+function Debug_GameConfigChanged(arg1,arg2)
+	print("Debug_PlayerInfoChanged",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
+end
 -------------------------------------------------------
 
 function Initialize()
 	print("-- Init D. CPL Helper Gameplay Script"..g_version.." --");
-	Init_Properties()
+	
+	if b_debug == true then
+		GameEvents.OnGameTurnStarted.Add(Debug_OnGameTurnStarted);
+		GameEvents.PlayerTurnStarted.Add(Debug_PlayerTurnStarted);
+		GameEvents.PlayerTurnStartComplete.Add(Debug_PlayerTurnStartComplete);
+		GameEvents.OnPlayerTurnEnded.Add(Debug_OnPlayerTurnEnded);
+		Events.PlayerTurnActivated.Add(Debug_PlayerTurnActivated);
+		Events.LocalPlayerTurnBegin.Add(Debug_LocalPlayerTurnBegin );
+		Events.LocalPlayerTurnEnd.Add(Debug_LocalPlayerTurnEnd );
+		Events.RemotePlayerTurnBegin.Add( Debug_RemotePlayerTurnBegin);
+		Events.RemotePlayerTurnEnd.Add( Debug_RemotePlayerTurnEnd );
+		Events.TurnEnd.Add(Debug_TurnEnd)
+		Events.ConnectedToNetSessionHost.Add ( Debug_ConnectedToNetSessionHost );
+		Events.MultiplayerPlayerConnected.Add( Debug_MultiplayerPlayerConnected );
+		Events.MultiplayerPrePlayerDisconnected.Add( Debug_MultiplayerPrePlayerDisconnected );
+		Events.MultiplayerSnapshotRequested.Add(Debug_MultiplayerSnapshotRequested);
+		Events.MultiplayerSnapshotProcessed.Add(Debug_MultiplayerSnapshotProcessed);
+		Events.MultiplayerHostMigrated.Add(Debug_MultiplayerHostMigrated);
+		Events.MultiplayerMatchHostMigrated.Add(Debug_MultiplayerMatchHostMigrated);
+		Events.SteamServersDisconnected.Add( Debug_SteamServersDisconnected)
+		Events.PlayerInfoChanged.Add(Debug_PlayerInfoChanged);
+		Events.GameConfigChanged.Add(Debug_GameConfigChanged);
+	end
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	GameEvents.OnGameTurnStarted.Add(NoMoreStack);
-	if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") ~= nil) then
-		if (GameConfiguration.GetValue("CPL_LASTMOVE_OPT") == true) then
-			print("Last Move Debuff Mechanics is On")
-			b_last_move = true
-		end
-	end
 	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
 		if Players[i]:IsAlive() == true then
 			if Players[i]:GetTeam() ~= i then

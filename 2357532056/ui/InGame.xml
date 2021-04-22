@@ -35,15 +35,20 @@
 		<LuaContext ID="GenVFX"											FileName="GenVFX"									Hidden="1"/>	<!-- Generic VFX trigger support -->
 	</Container>
 	
+	<!-- Turn Processing -->
+
+
+	
 	<Container ID="HUD" Size="parent,parent">
 		<LuaContext ID="CameraManager"							FileName="CameraManager"					Hidden="1"/>
 		<LuaContext ID="PlotToolTip"								FileName="PlotToolTip"/>
 		<LuaContext ID="StatusMessagePanel"					FileName="StatusMessagePanel"/>
 		<LuaContext ID="NotificationPanel"					FileName="NotificationPanel"/>
+		<LuaContext ID="UnitPanel"									FileName="UnitPanel"							Hidden="1"	/>
+		<LuaContext		ID="TurnProcessing"				FileName="TurnProcessing"				Hidden="1" />
 		<LuaContext ID="WorldTracker"								FileName="WorldTracker"/>
 		<LuaContext ID="MinimapPanel"								FileName="MinimapPanel"/>
-    <LuaContext ID="CityPanel"									FileName="CityPanel"							Hidden="1"	/>
-		<LuaContext ID="UnitPanel"									FileName="UnitPanel"							Hidden="1"	/>
+		<LuaContext ID="CityPanel"									FileName="CityPanel"							Hidden="1"	/>
 		<LuaContext ID="ActionPanel"								FileName="ActionPanel"/>
 		<LuaContext ID="MultiplayerTurnManager"			FileName="MultiplayerTurnManager" Hidden="1"	/>		
 	</Container>
@@ -61,10 +66,7 @@
 		<LuaContext ID="ProductionPanel"						FileName="ProductionPanel"				Hidden="1"/>
 	</Container>
 
-	<!-- TODO this should have higher precedence than some things in the TopLevelHUD container -->
-	<LuaContext ID="EdgeScroll" FileName="EdgeScroll"/>
-
-	<Container ID="Screens" Size="parent,parent">
+		<Container ID="Screens" Size="parent,parent">
 		<LuaContext	ID="FullscreenMapPopup"		      FileName="FullscreenMapPopup"			Hidden="1"/>
 		<LuaContext ID="TechTree"										FileName="TechTree"								Hidden="1"/>
 		<LuaContext ID="CivicsTree"									FileName="CivicsTree"							Hidden="1"/>
@@ -77,6 +79,11 @@
     <LuaContext ID="GlobalResourcePopup"				FileName="GlobalResourcePopup"		Hidden="1"/>
     <LuaContext ID="ReportScreen"								FileName="ReportScreen"						Hidden="1"/>
 	</Container>
+
+	<!-- TODO this should have higher precedence than some things in the TopLevelHUD container -->
+	<LuaContext ID="EdgeScroll" FileName="EdgeScroll"/>
+
+
 
 	<Container ID="TopLevelHUD" Size="parent,parent">
 		<LuaContext ID="LaunchBar"									FileName="LaunchBar"/>
@@ -162,6 +169,7 @@
 				</Stack>
 		</Grid>
 	</Grid>
+
 	
 	<!-- Always very last/top: the in-game 'SHELL' menu. -->
 	<LuaContext		ID="HotSeatBackground"				FileName="HotSeatBackground"				Hidden="1" />

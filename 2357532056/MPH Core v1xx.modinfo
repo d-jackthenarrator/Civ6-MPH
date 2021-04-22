@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="132">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="133">
 
   <Properties>
     <Name>LOC_MPH_TITLE</Name>
     <Description>LOC_MPH_DESCRIPTION</Description>
 	<Created>1</Created>
+	<Version>133</Version>
     <Teaser>LOC_MPH_TEASER</Teaser>
     <Authors>D. / Jack The Narrator</Authors>
 	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, TC_, Sailor Cat, coloo</SpecialThanks>
@@ -13,8 +14,8 @@
   
 	<LocalizedText>
 		<Text id="LOC_MPH_TITLE">
-			<en_US>Multiplayer Helper 1.3.2</en_US>
-			<fr_FR>Multiplayer Helper 1.3.2</fr_FR>
+			<en_US>Multiplayer Helper 1.3.3</en_US>
+			<fr_FR>Multiplayer Helper 1.3.3</fr_FR>
 		</Text>
 		<Text id="LOC_MPH_TEASER">
 			<en_US>Esport oriented mod to help tournament and game statibility.</en_US>
@@ -59,13 +60,6 @@
 			<ConfigurationValueMatches>
 				<Group>Game</Group>
 				<ConfigurationId>GAMEMODE_ANONYMOUS</ConfigurationId>
-				<Value>1</Value>
-			</ConfigurationValueMatches>
-		</Criteria>
-		<Criteria id="LastMove_Mode_Expansion2">
-			<ConfigurationValueMatches>
-				<Group>Game</Group>
-				<ConfigurationId>GAMEMODE_LASTMOVE</ConfigurationId>
 				<Value>1</Value>
 			</ConfigurationValueMatches>
 		</Criteria>
@@ -160,7 +154,6 @@
 	<UpdateIcons id="MPHIcons FrontEnd">
      	<File>mode/watchtower/Icons/Sailor_WatchTower_Icons.xml</File>
 		<File>icons/Anonymous_Icons.xml</File>
-		<File>icons/LastMove_Icons.xml</File>
 		<File>icons/OneCity_Icons.xml</File>
 		<File>icons/Sudden_Death_Icons.xml</File>
 	</UpdateIcons>
@@ -183,9 +176,6 @@
 			<File>icons/OneCityChallenge_44.dds</File>
 			<File>mode/onecity/OneCity_Portrait.dds</File>
 			<File>mode/onecity/OneCity_Background.dds</File>
-			<File>icons/LastMove_44.dds</File>
-			<File>mode/lastmove/LastMove_Portrait.dds</File>
-			<File>mode/lastmove/LastMove_Background.dds</File>
       </Items>
     </ImportFiles>
 
@@ -403,6 +393,8 @@
 		 </Properties>
 		<File>ui/InGame.xml</File>
 		<File>ui/InGame.lua</File>
+		<File>ui/TurnProcessing.xml</File>
+		<File>ui/TurnProcessing.lua</File>
 	</ImportFiles>
 
 	<ReplaceUIScript id="CPL_ChatPanel">
@@ -413,13 +405,6 @@
 		</Properties>
 	</ReplaceUIScript>
 
-	<ReplaceUIScript id="CPL_ActionPanel">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-			<LuaContext>ActionPanel</LuaContext>
-			<LuaReplace>ui/CPL_helper_ActionPanel.lua</LuaReplace>
-		</Properties>
-	</ReplaceUIScript>
 
 	<ReplaceUIScript id="Spectator_StatusMessagePanel" criteria="Expansion2">
 		<Properties>
@@ -488,33 +473,14 @@
 		<File>mode/watchtower/Watchtower Improvement.dep</File>
 		<File>mode/watchtower/expansionist/Expansionist_Units.dep</File>
     </UpdateArt>
+	
     <UpdateText id="AnonText" criteria="Anonymous_Mode_Expansion2">
       <Properties>
         <LoadOrder>9999</LoadOrder>
       </Properties>
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
-        <AddUserInterfaces id="lastmove_ui_update" criteria="LastMove_Mode_Expansion2">
-		<Properties>
-			<Context>InGame</Context>
-		</Properties>
-		<File>mode/lastmove/lastmove_UI.xml</File>
-	</AddUserInterfaces>
-	 <UpdateDatabase id="lastmove_database_update" criteria="LastMove_Mode_Expansion2">
-      		<Properties>
-        		<LoadOrder>9999</LoadOrder>
-      		</Properties>
-      		<File>mode/lastmove/lastmove_unitabilities.xml</File>
-    </UpdateDatabase>
-	 <AddGameplayScripts id="lastmove_gamescript_update" criteria="LastMove_Mode_Expansion2">
-        	<File>mode/lastmove/lastmove.lua</File>
-    </AddGameplayScripts>
-	 <UpdateText id="lastmove_text_update" criteria="LastMove_Mode_Expansion2">
-      <Properties>
-        <LoadOrder>9999</LoadOrder>
-      </Properties>
-      <File>mode/lastmove/lastmove_text.xml</File>
-    </UpdateText>
+	
     <UpdateText id="OCCText" criteria="OneCityChallenge_Mode_Expansion2">
       <Properties>
         <LoadOrder>9999</LoadOrder>
@@ -552,7 +518,6 @@
 	<File>sql/mph_diplomacy_no_fs.sql</File>
 	<File>sql/mph_diplomacy_no_sw.sql</File>
 
-	<File>ui/CPL_helper_ActionPanel.lua</File>
 	<File>ui/CPL_helper_ChatPanel.lua</File>
 	<File>ui/CPL_helper_InGameTopOptionsMenu.lua</File>
 	<File>ui/DiplomacyActionView_MPH.lua</File>
@@ -581,6 +546,8 @@
 	<File>ui/StatusMessagePanel.xml</File>
 	<File>ui/SuddenDeathPanel.lua</File>
 	<File>ui/SuddenDeathPanel.xml</File>
+	<File>ui/TurnProcessing.xml</File>
+	<File>ui/TurnProcessing.lua</File>
 	<File>ui/UnitFlagManager.lua</File>
 	<File>ui/VotePanel.xml</File>
 	<File>ui/VotePanel.lua</File>	
@@ -859,15 +826,8 @@
     <File>icons/ExpansionistUnit_50.dds</File>
     <File>icons/ExpansionistUnit_80.dds</File>
     <File>icons/ExpansionistUnit_256.dds</File>
-	<File>icons/LastMove_44.dds</File>
-	<File>icons/LastMove_Icons.xml</File>
+
 	
-	<File>mode/lastmove/lastmove.lua</File>
-	<File>mode/lastmove/lastmove_UI.lua</File>
-	<File>mode/lastmove/lastmove_UI.xml</File>
-	<File>mode/lastmove/lastmove_text.xml</File>
-	<File>mode/lastmove/lastmove_unitabilities.xml</File>
-	<File>mode/lastmove/LastMove_Portrait.dds</File>
-	<File>mode/lastmove/LastMove_Background.dds</File> 
+
   </Files>
 </Mod>

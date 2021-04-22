@@ -19,6 +19,7 @@
 					<GridButton ID="StartButton" Style="ShellButtonOrnateFlat" Anchor="R,C" Offset="150,0" Size="150,38" String="[COLOR_GREEN]START GAME[ENDCOLOR]" Hidden="1" ToolTip="LOC_MPH_START_BUTTON_TOOLTIP"/>
 					<GridButton ID="PhaseButton" Style="ShellButtonOrnateFlat" Anchor="L,C" Offset="1,0" Size="110,38" String="LAUNCH" Hidden="1" ToolTip="LOC_MPH_PHASE_BUTTON_TOOLTIP"/>
 					<GridButton ID="ResetButton" Style="ShellButtonOrnateFlat" Anchor="L,C" Offset="180,0" Size="110,38" String="RESET" Hidden="1" ToolTip="LOC_MPH_RESET_BUTTON_TOOLTIP"/>
+					<GridButton ID="ModCheckButton" Style="ShellButtonOrnateFlat" Anchor="R,C" Offset="180,0" Size="150,38" String="MOD CHECK" Hidden="0" ToolTip="LOC_MPH_MODCHECK_BUTTON_TOOLTIP"/>
 					<Stack ID="LeftTopButtonStack" Anchor="L,C" Offset="1,0" StackGrowth="Right" Padding="10">
 						<GridButton ID="EndGameButton" Style="ShellButtonOrnateFlat" Anchor="L,C" Offset="0,0" String="LOC_MULTIPLAYER_END_GAME" Hidden="1"/>
 						<GridButton ID="QuitGameButton" Style="ShellButtonOrnateFlat" Anchor="L,C" Offset="0,0" String="LOC_MULTIPLAYER_QUIT_GAME" Hidden="1"/>
@@ -50,7 +51,6 @@
 					<Image ID="AnchorLine" Anchor="C,B" Offset="0,11" Size="parent+2,4" Texture="Controls_DecoMapScale" StretchMode="Tile" Color="20,55,70,255"/>
 				</Grid>
 			</Stack>
-			
 			
 			
 			<!-- Phase Display -->
@@ -449,7 +449,7 @@
 					<Label ID="PlayerName" Anchor="C,T" Offset="0,7" Style="WhiteSemiBold14" String="PlayerName" TruncateWidth="210" Hidden="0"/>
 					<Label ID="PlayerStatus" Anchor="L,B" Offset="10,7" Style="WhiteSemiBold12" String="PlayerStatus"/>
 					<!-- Additional MPH -->
-					<Label ID="PlayerVersion" Anchor="R,B" Offset="20,7" Style="WhiteSemiBold12" String="" />
+					<Label ID="PlayerVersion" Anchor="R,B" Offset="20,7" Style="WhiteSemiBold12" String="?" Hidden="0"/>
 					<Label ID="PlayerID" Anchor="C,B" Offset="-35,7" Style="WhiteSemiBold12" String="" Hidden="0"/>
 					<Label ID="PlayerAction" Anchor="C,B" Offset="25,7" Style="WhiteSemiBold12" String="" Hidden="0"/>
 				</PullDown>

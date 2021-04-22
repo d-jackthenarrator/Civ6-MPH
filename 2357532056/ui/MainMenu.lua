@@ -27,7 +27,7 @@ local m_matchMakeButton:table = nil;	--Cache CivRoyale matchmaking button so it 
 local m_howToRoyaleControl:table = nil;	--Cache CivRoyale how-to button so that it can be updated later.
 local m_isQuitting :boolean = false;	-- Is the application shutting down (after user approval.)
 
-local g_version = " - [COLOR_LIGHTBLUE]MPH / 1.3.2[ENDCOLOR]"
+local g_version = " - [COLOR_LIGHTBLUE]MPH[ENDCOLOR]"
 
 g_LogoTexture = nil;	-- Custom Logo texture override.
 g_LogoMovie = nil;		-- Custom Logo movie override.
@@ -1378,6 +1378,36 @@ function OnShutdown()
 end
 
 -- ===========================================================================
+function GetLocalModVersion(id)
+	if id == nil then
+		return nil
+	end
+	
+	local mods = Modding.GetInstalledMods();
+	if(mods == nil or #mods == 0) then
+		print("No mods locally installed!")
+		return nil
+	end
+	
+	local handle = -1
+	for i,mod in ipairs(mods) do
+		if mod.Id == id then
+			handle = mod.Handle
+			break
+		end
+	end
+	if handle ~= -1 then
+		local version = Modding.GetModProperty(handle, "Version");
+		print("id",id,version)
+		return version
+		else
+		return nil
+	end
+	
+	
+end
+
+-- ===========================================================================
 function Initialize()
 
 	UI.CheckUserSetup();
@@ -1396,9 +1426,9 @@ function Initialize()
 	ContextPtr:SetShowHandler( OnShow );
 	ContextPtr:SetShutdown( OnShutdown );
 	
-	Controls.VersionLabel:SetText( tostring(UI.GetAppVersion()..g_version) );
 	Controls.My2KLogin:RegisterCallback( Mouse.eLClick, OnMy2KLogin );
 	Controls.My2KLogin:RegisterCallback( Mouse.eMouseEnter, function() UI.PlaySound("Main_Menu_Mouse_Over"); end);
+
 
 	if (not UI.IsFinalRelease()) then
 		Controls.MotDLogo:RegisterCallback( Mouse.eLClick, OnCycleMotD );
@@ -1428,5 +1458,7 @@ function Initialize()
 	BuildAllMenus();
 	UpdateMotD();
 	RealizeLogoAndMovie();
+	g_version = " - [COLOR_LIGHTBLUE]MPH / "..GetLocalModVersion("619ac86e-d99d-4bf3-b8f0-8c5b8c402176").."[ENDCOLOR]"
+	Controls.VersionLabel:SetText( tostring(UI.GetAppVersion()..g_version) );
 end
 Initialize();

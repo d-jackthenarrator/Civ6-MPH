@@ -294,6 +294,8 @@ function GameParameters_UI_DefaultCreateParameterDriver(o, parameter, parent)
 			end,
 			UpdateValues = function(values)
 				c.OptionSlider:SetNumSteps(values.MaximumValue - values.MinimumValue);
+				minimumValue = values.MinimumValue;
+				maximumValue = values.MaximumValue;									   									   
 			end,
 			SetEnabled = function(enabled, parameter)
 				c.OptionSlider:SetHide(not enabled or parameter.Values == nil or parameter.Values.MinimumValue == parameter.Values.MaximumValue);

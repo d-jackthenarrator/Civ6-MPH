@@ -57,6 +57,15 @@ function OnSetParameterValues(pid: string, values: table)
 end
 
 -- ===========================================================================
+function OnSetParameterValue(pid: string, value: number)
+	if(g_GameParameters) then
+		local kParameter: table = g_GameParameters.Parameters and g_GameParameters.Parameters[pid] or nil;
+		if(kParameter and kParameter.Value ~= nil) then	
+            g_GameParameters:SetParameterValue(kParameter, value);
+			Network.BroadcastGameConfig();	
+		end
+	end	
+end
 -- This driver is for launching a multi-select option in a separate window.
 -- ===========================================================================
 function CreateMultiSelectWindowDriver(o, parameter, parent)
@@ -754,6 +763,7 @@ function OnShutdown()
 	LuaEvents.GameDebug_AddValue(RELOAD_CACHE_ID, "isHidden", ContextPtr:IsHidden());
 	LuaEvents.MultiSelectWindow_SetParameterValues.Remove(OnSetParameterValues);
 	LuaEvents.CityStatePicker_SetParameterValues.Remove(OnSetParameterValues);
+	LuaEvents.CityStatePicker_SetParameterValue.Remove(OnSetParameterValue);																		 
 	LuaEvents.LeaderPicker_SetParameterValues.Remove(OnSetParameterValues);																	
 end
 
@@ -877,6 +887,7 @@ function Initialize()
 
 	LuaEvents.MultiSelectWindow_SetParameterValues.Add(OnSetParameterValues);
 	LuaEvents.CityStatePicker_SetParameterValues.Add(OnSetParameterValues);																		
+	LuaEvents.CityStatePicker_SetParameterValue.Add(OnSetParameterValue);																	  
 	LuaEvents.LeaderPicker_SetParameterValues.Add(OnSetParameterValues);																 
 	Controls.BackButton:RegisterCallback( Mouse.eLClick, OnExitGameAskAreYouSure);
 	Controls.LoadButton:RegisterCallback( Mouse.eLClick, LoadButtonClick );

@@ -17,8 +17,6 @@ local m_last_update = 0
 --	New Functions
 -- ===========================================================================
 function OnMultiplayerPrePlayerDisconnected( playerID )
-	print("Player Disconnecting", playerID)
-	print("Human?",Players[playerID]:IsHuman())
 	print ("Time Disconnect", os.date("%c"))
 	ContextPtr:SetHide(false);
 	local hostID = Network.GetGameHostPlayerID()
@@ -48,8 +46,6 @@ end
 
 
 function OnMultplayerPlayerConnected( playerID )
-	print("Player Connecting", playerID)
-	print("Human?",Players[playerID]:IsHuman())
 	print ("Time Connected", os.date("%c"))
 	if g_dropped_player_list ~= {} then
 		for i, player in ipairs(g_dropped_player_list) do

@@ -49,7 +49,10 @@ function OnMultplayerPlayerConnected( playerID:number )
 			else
 			name = pPlayerConfig:GetPlayerName()
 		end
-		local statusMessage :string= Locale.Lookup(name) .. " " .. TXT_PLAYER_CONNECTED_CHAT;
+		local statusMessage :string= Locale.Lookup(name)
+		if TXT_PLAYER_CONNECTED_CHAT ~= nil then
+			statusMessage = statusMessage .. " " .. TXT_PLAYER_CONNECTED_CHAT;
+		end
 		OnStatusMessage( statusMessage, DEFAULT_TIME_TO_DISPLAY, ReportingStatusTypes.DEFAULT );
 	end
 end
@@ -73,9 +76,13 @@ function OnMultiplayerPrePlayerDisconnected( playerID:number )
 		end
 		statusMessage = Locale.Lookup(name);
 		if(Network.IsPlayerKicked(playerID)) then
-			statusMessage = statusMessage .. " " .. TXT_PLAYER_KICKED_CHAT;
+			if TXT_PLAYER_KICKED_CHAT ~= nil then
+				statusMessage = statusMessage .. " " .. TXT_PLAYER_KICKED_CHAT;
+			end
 		else
-    		statusMessage = statusMessage .. " " .. TXT_PLAYER_DISCONNECTED_CHAT;
+			if TXT_PLAYER_DISCONNECTED_CHAT ~= nil then
+				statusMessage = statusMessage .. " " .. TXT_PLAYER_DISCONNECTED_CHAT;
+			end
 		end
 		OnStatusMessage(statusMessage, DEFAULT_TIME_TO_DISPLAY, ReportingStatusTypes.DEFAULT);
 	end
