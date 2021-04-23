@@ -71,15 +71,7 @@ DefaultMessageHandler[KeyEvents.KeyUp] =
 				return true;
 			end
 			return false;	-- Already open, let it handle it.
-			
-		elseif( uiKey == Keys.U ) then
-			-- DEBUG: Force Process
-			if( Controls.TurnProcessing:IsHidden() ) then
-				OpenTurnProcessing();
-				return true;
-			end
-			return false;	-- Already open, let it handle it.
-			
+						
 
         elseif( uiKey == Keys.B and pInputStruct:IsShiftDown() and pInputStruct:IsAltDown() and (not UI.IsFinalRelease()) ) then
 			-- DEBUG: Force unhiding

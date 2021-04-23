@@ -817,7 +817,7 @@ function RefreshStatus()
 							Network.SendChat("[COLOR_Civ6Red]BBS Host version: "..tostring(GetLocalModVersion(s_bbs_id)).." Your version: "..tostring(player.bbs_v),-2,player.ID)
 							player.Status = 66
 						end
-						if b_bbg_game == true and tostring(player.bbs_v) ~= tostring(GetLocalModVersion(s_bbg_id)) then
+						if b_bbg_game == true and tostring(player.bbg_v) ~= tostring(GetLocalModVersion(s_bbg_id)) then
 							Network.SendChat("[COLOR_Civ6Red]BBG Host version: "..tostring(GetLocalModVersion(s_bbg_id)).." Your version: "..tostring(player.bbg_v),-2,player.ID)
 							player.Status = 66
 						end

@@ -15,7 +15,7 @@
 		</Box>
 		<Label			ID="Processing_Text"				Style="WindowHeader"	Anchor="C,T" String="LOC_MPH_TURN_IS_PROCESSED" Offset="0,75"/>
 		<Label			ID="Processing_Text_Number"			Style="WindowHeader"	Anchor="C,T" String="152" Offset="0,100"/>
-		<Label			ID="Player_Status"			Style="FontNormal14" FontStyle="Shadow"	Anchor="C,B" String="Player Status" Offset="0,0"/>
+		<Label			ID="Player_Status"			Style="FontNormal14" FontStyle="Shadow"	Anchor="L,C" String="Player Status" Offset="0,200"/>
   </AlphaAnim>
 
 
