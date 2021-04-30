@@ -3984,16 +3984,10 @@ function OnPlayerInfoChanged(playerID)
 				UpdateAllPlayerEntries_SlotTypeDisabled();
 
 				PlayerInfoChanged_SpecificPlayer(playerID);
-				if g_phase == PHASE_INIT or g_phase == PHASE_DEFAULT then
-					ResetStatus_SpecificID(playerID)
-				end
 				
 			end
 		else
 			PlayerInfoChanged_SpecificPlayer(playerID);
-			if g_phase == PHASE_INIT or g_phase == PHASE_DEFAULT then
-				ResetStatus_SpecificID(playerID)
-			end
 		end
 
 		CheckGameAutoStart();	-- Player might have changed their ready status.
@@ -4179,6 +4173,7 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 			return
 		end
 	end
+	
 	
 	if b_ishost == true and text == ".next" then
 		local tmp = GetNextID()
@@ -4480,9 +4475,6 @@ function OnMultplayerPlayerConnected( playerID )
 	end
 	
 	RefreshStatusID(playerID)
-	if g_phase ~= PHASE_DEFAULT and g_phase ~= PHASE_READY then
-		HostReset()
-	end
 	g_phase = PHASE_DEFAULT						  
 	if( ContextPtr:IsHidden() == false ) then
 		if GameConfiguration.GetValue("GAMEMODE_ANONYMOUS") == false then

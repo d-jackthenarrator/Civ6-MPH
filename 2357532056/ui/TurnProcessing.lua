@@ -26,7 +26,7 @@ local b_setprocess = false
 -- ===========================================================================
 function Refresh_Data()
 	g_playertime = {}
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1 then
 		return
 	end
 	local localID = Network.GetLocalPlayerID()
@@ -256,7 +256,7 @@ function OnTurnEnd(turn)
 		end
 	end
 	
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true  then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1  then
 		return
 	end
 	for i, Player in ipairs(g_playertime) do
@@ -277,7 +277,7 @@ end
 -- End
 
 function OnLocalPlayerTurnEnd(playerID)
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1 then
 		return
 	end
 	local localID = Network.GetLocalPlayerID()
@@ -292,7 +292,7 @@ end
 
 
 function OnRemotePlayerTurnEnd(playerID)
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true  then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1 then
 		return
 	end
 	for i, Player in ipairs(g_playertime) do
@@ -307,7 +307,7 @@ end
 
 -- Start
 function OnRemotePlayerTurnBegin(playerID)
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true  then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1  then
 		return
 	end
 	for i, Player in ipairs(g_playertime) do
@@ -338,7 +338,7 @@ end
 -----------------------------------------------------------------------------------------------
 
 function OnTick()
-	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true then
+	if GameConfiguration.IsNetworkMultiplayer() ~= true or GameConfiguration.GetValue("CPL_SYNCTURN") ~= true or GameConfiguration.GetValue("CPL_SMARTTIMER") == 1  then
 		Events.GameCoreEventPublishComplete.Remove(OnTick)
 		return
 	end
