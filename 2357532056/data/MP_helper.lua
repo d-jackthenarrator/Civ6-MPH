@@ -80,6 +80,8 @@
 -- v1.3.3
 --		Added an event debug
 --		Moved the timer codes to UI (no real reason to have it on the Core side for calculation as the implementation is UI anyway)
+-- v1.3.4
+--		Presets Updated
 print("MPH Gamescript")
 
 
@@ -87,7 +89,7 @@ print("MPH Gamescript")
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.3.3"
+local g_version = "v1.3.4"
 local Drop_Data = {};
 local b_freecity = false
 local g_turn_start_time = 0

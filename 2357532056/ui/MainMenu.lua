@@ -23,8 +23,10 @@ local m_multiplayerButton:table = nil;	--Cache multiplayer button so it can be u
 local m_cloudGamesButton:table = nil;	--Cache cloud games button so it can be updated if a new cloud turn comes in.
 local m_resumeButton:table = nil;		--Cache resume button so it can be updated when FileListQueryResults event fires
 local m_scenariosButton:table = nil;	--Cache scenarios button so it can be updated later.
-local m_matchMakeButton:table = nil;	--Cache CivRoyale matchmaking button so it can be updated later.
+local m_matchRoyaleButton:table = nil;	--Cache CivRoyale matchmaking button so it can be updated later.
 local m_howToRoyaleControl:table = nil;	--Cache CivRoyale how-to button so that it can be updated later.
+local m_matchPiratesButton:table = nil;	--Cache Pirates matchmaking button so it can be updated later.
+local m_howToPiratesControl:table = nil;--Cache Pirates how-to button so that it can be updated later.																									  
 local m_isQuitting :boolean = false;	-- Is the application shutting down (after user approval.)
 
 local g_version = " - [COLOR_LIGHTBLUE]MPH[ENDCOLOR]"
@@ -38,8 +40,9 @@ g_LogoMovie = nil;		-- Custom Logo movie override.
 local PAUSE_INCREMENT				:number = .18;			--How long to wait (in seconds) between main menu flyouts - length of the menu cascade
 local TRACK_PADDING					:number = 40;			--The amount of Y pixels to add to the track on top of the list height
 local OPTION_SEEN_CIVROYALE_INTRO	:string = "HasSeenCivRoyaleIntro";	-- Option key for having seen the CivRoyale How to Play screen.
+local OPTION_SEEN_PIRATES_INTRO		:string = "HasSeenPiratesIntro";	-- Option key for having seen the Pirates How to Play screen.
 local MOD_CIVROYALE_GUID			:string = "F264EE10-F21B-4A9A-BBCD-D534E9843E90";
-
+local MOD_PIRATES_GUID				:string = "A55FAFB4-9070-4597-9453-B28A99910CDA";
 -- ===========================================================================
 --	Globals
 -- ===========================================================================
@@ -97,17 +100,35 @@ function UpdateScenariosButton(button)
 end
 
 
-function OnPlayCiv6()
-	
+-- ===========================================================================
+--	Starting game
+--	Step 1 of 2: Stop extra clicks and signal to raise loading screen
+-- ===========================================================================
+function OnPlayCiv6()	
+ 
 	-- Avoid double clicks.
 	if(_ClickedPlayNow) then 
 		return;
 	end
 	_ClickedPlayNow = true;
 	
+	LuaEvents.Raise_State_Transition("MainMenu");	-- Will raise screen
+end
+
+-- ===========================================================================
+--	Starting game
+--	Step 2 of 2: State transition has raised a loading screen, kick off
+--	potentially expensive operations to start loading.
+--	It's the loadingscreen's responsibility to lower the state transition.
+-- ===========================================================================
+function OnStateTransition( who:string )
+	if (who ~= "MainMenu") then
+		return;	-- Meant for someone else
+	end
+	
 	local save = Options.GetAppOption("Debug", "PlayNowSave");
 	if(save ~= nil) then
-		print("MainMenu::OnPlayCiv6() PlayNowSave leaving the network session.");																   
+		print("MainMenu::OnPlayCiv6() PlayNowSave leaving the network session.");
 		Network.LeaveGame();
 
 		local serverType : number = ServerType.SERVER_TYPE_NONE;
@@ -293,7 +314,18 @@ function GetCivRoyaleOfflineTT()
 	return Locale.Lookup("LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_OFFLINE_TT");
 end
 
+
 -- ===========================================================================
+function GetPiratesOfflineTT()
+
+	if( Network.GetNetworkPlatform() == NetworkPlatform.NETWORK_PLATFORM_EOS ) then
+		return Locale.Lookup("LOC_EPIC_MULTIPLAYER_MATCHMAKE_PIRATES_OFFLINE_TT");
+	end
+
+	return Locale.Lookup("LOC_MULTIPLAYER_MATCHMAKE_PIRATES_OFFLINE_TT");
+end
+
+-- ===========================================================================																			  
 function GetInternetGameOfflineTT()
 	if( Network.GetNetworkPlatform() == NetworkPlatform.NETWORK_PLATFORM_EOS ) then
 		return Locale.Lookup("LOC_EPIC_MULTIPLAYER_INTERNET_GAME_OFFLINE_TT");
@@ -318,8 +350,7 @@ local MultiplayerButtonHaveTurnTTStr : string = Locale.Lookup("LOC_MAINMENU_MULT
 local MultiplayerButtonGameReadyTTStr : string = Locale.Lookup("LOC_MAINMENU_MULTIPLAYER_GAME_READY_TT");
 local MultiplayerButtonUnseenCompleteTTStr : string = Locale.Lookup("LOC_MAINMENU_MULTIPLAYER_UNSEEN_COMPLETE_GAME_TT");
 local MultiplayerButtonNewMPModeTTStr : string = Locale.Lookup("LOC_MAINMENU_MULTIPLAYER_NEW_MP_MODE_TT");
-local CivRoyaleButtonOnlineStr : string = Locale.Lookup("LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_TT");
-local CivRoyaleButtonOfflineStr : string = GetCivRoyaleOfflineTT();
+
 
 
 -- ===========================================================================
@@ -349,15 +380,17 @@ function OnEnterCrossPlayLobby()
 	end
 end
 LuaEvents.EnterCrossPlayLobby.Add(OnEnterCrossPlayLobby);
-
 -- ===========================================================================
-function OnCivRoyaleMatchMake()
-	local skipIntroScreen =  Options.GetUserOption("Tutorial", OPTION_SEEN_CIVROYALE_INTRO) == 1;
-	if(skipIntroScreen) then
-		StartMatchMaking();
-	else
-		LuaEvents.MainMenu_ShowCivRoyaleIntro();
+function GetOnMatchMakeFunction(sentOption :string, startMatchMakeFunction, showHowToEvent)
+	function CustomOnMatchMakeFunction()
+		local skipIntroScreen =  Options.GetUserOption("Tutorial", sentOption) == 1;
+		if(skipIntroScreen) then
+			startMatchMakeFunction();
+		else
+			showHowToEvent();
+		end
 	end
+	return CustomOnMatchMakeFunction;
 end
 
 -- ===========================================================================
@@ -365,12 +398,24 @@ function OnCivRoyaleHowToPlay()
 	LuaEvents.MainMenu_ShowCivRoyaleIntro();
 end
 
+function OnPiratesHowToPlay()
+	LuaEvents.MainMenu_ShowPiratesIntro();
+end
+
 -- ===========================================================================
-function StartMatchMaking()
+function StartPiratesMatchMaking()
+	StartMatchMaking(MOD_PIRATES_GUID, "RULESET_SCENARIO_PIRATES");
+end
+
+function StartRoyaleMatchMaking()
+	StartMatchMaking(MOD_CIVROYALE_GUID, "RULESET_SCENARIO_CIV_ROYALE");
+end
+
+function StartMatchMaking(modGUID :string, rulesetName :string)
 	GameConfiguration.SetToDefaults(GameModeTypes.INTERNET);	
 	GameConfiguration.ClearEnabledMods();
-	GameConfiguration.AddEnabledMods( MOD_CIVROYALE_GUID );
-	GameConfiguration.SetRuleSet("RULESET_SCENARIO_CIV_ROYALE");
+	GameConfiguration.AddEnabledMods( modGUID );
+	GameConfiguration.SetRuleSet(rulesetName);
 
 	-- Many game setup values are driven by Lua-implemented parameter logic.
 	do
@@ -387,9 +432,10 @@ function StartMatchMaking()
 	end
 
 	GameConfiguration.SetMatchMaking(true);
-	GameConfiguration.SetKickVoting(true);								   
+	GameConfiguration.SetKickVoting(true);
 	Network.MatchMake();
 end
+
 
 -- ===========================================================================
 --	WB: This callback is complicated by these events which can happen at any time.
@@ -498,7 +544,19 @@ end
 function UpdateInternetControls()
 	UpdateInternetButton();
 	UpdateCrossPlayButton();
-	UpdateCivRoyaleMatchMakeButton();
+
+	UpdateCivRoyaleButton();
+	UpdatePiratesButton();
+end
+
+function UpdateCivRoyaleButton()
+	updateRoyaleButtonFunc = GetMatchMakeButtonUpdateFunction(m_matchRoyaleButton, MOD_CIVROYALE_GUID, "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE", "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_TT", "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_OFFLINE", GetCivRoyaleOfflineTT());
+	updateRoyaleButtonFunc(nil);
+end
+
+function UpdatePiratesButton()
+	updatePiratesButtonFunc = GetMatchMakeButtonUpdateFunction(m_matchPiratesButton, MOD_PIRATES_GUID, "LOC_MULTIPLAYER_MATCHMAKE_PIRATES", "LOC_MULTIPLAYER_MATCHMAKE_PIRATES_TT", "LOC_MULTIPLAYER_MATCHMAKE_PIRATES_OFFLINE", GetPiratesOfflineTT());
+	updatePiratesButtonFunc(nil);
 end
 
 function UpdateInternetButton(buttonControl: table)
@@ -557,45 +615,51 @@ function UpdateCrossPlayButton(buttonControl: table)
 	end
 end
 
-function UpdateCivRoyaleHowToButton(buttonControl: table)
-	if (buttonControl ~=nil) then
-		m_howToRoyaleControl = buttonControl;
-	end
+function GetMatchMakeButtonUpdateFunction(cacheButtonControl :table, modGUIDStr :string, onlineTitleStr :string, onlineTTStr :string, offlineTitleStr :string, offlineTTStr :string)
+	function CustomMatchUpdateFunction(buttonControl: table)
+		if (buttonControl ~=nil) then
+			cacheButtonControl = buttonControl;
+		end
 	
-	if(m_howToRoyaleControl ~= nil) then
-		-- Is CivRoyale enabled?
-		local enabled = Modding.IsModEnabled( MOD_CIVROYALE_GUID );
-		m_howToRoyaleControl.Top:SetHide(not enabled);
-	end
-end
+		if(cacheButtonControl ~= nil) then
+			if(Modding.IsModEnabled( modGUIDStr )) then
+				cacheButtonControl.Top:SetHide(false);
 
-function UpdateCivRoyaleMatchMakeButton(buttonControl: table)
-	if (buttonControl ~=nil) then
-		m_matchMakeButton = buttonControl;
-	end
-	
-	if(m_matchMakeButton ~= nil) then
-		if(Modding.IsModEnabled( MOD_CIVROYALE_GUID )) then
-			m_matchMakeButton.Top:SetHide(false);
-
-			-- Internet available?
-			if (Network.IsInternetLobbyServiceAvailable()) then
-				m_matchMakeButton.OptionButton:SetDisabled(false);
-				m_matchMakeButton.Top:SetToolTipString(CivRoyaleButtonOnlineStr);
-				m_matchMakeButton.ButtonLabel:SetText(Locale.Lookup("LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE"));
-				m_matchMakeButton.ButtonLabel:SetColorByName( "ButtonCS" );
+				-- Internet available?
+				if (Network.IsInternetLobbyServiceAvailable()) then
+					cacheButtonControl.OptionButton:SetDisabled(false);
+					cacheButtonControl.Top:SetToolTipString(Locale.Lookup(onlineTitleStr));
+					cacheButtonControl.ButtonLabel:SetText(Locale.Lookup(onlineTitleStr));
+					cacheButtonControl.ButtonLabel:SetColorByName( "ButtonCS" );
+				else
+					cacheButtonControl.OptionButton:SetDisabled(true);
+					cacheButtonControl.Top:SetToolTipString(Locale.Lookup(offlineTTStr));
+					cacheButtonControl.ButtonLabel:SetText(Locale.Lookup(offlineTitleStr));
+					cacheButtonControl.ButtonLabel:SetColorByName( "ButtonDisabledCS" );
+				end
 			else
-				m_matchMakeButton.OptionButton:SetDisabled(true);
-				m_matchMakeButton.Top:SetToolTipString(CivRoyaleButtonOfflineStr);
-				m_matchMakeButton.ButtonLabel:SetText(Locale.Lookup("LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_OFFLINE"));
-				m_matchMakeButton.ButtonLabel:SetColorByName( "ButtonDisabledCS" );
+				cacheButtonControl.Top:SetHide(true);
 			end
-		else
-			m_matchMakeButton.Top:SetHide(true);
 		end
 	end
+	return CustomMatchUpdateFunction;
 end
 
+function GetHowToButtonUpdateFunction(cacheButtonControl :table, modGUIDStr :string)
+	function CustomHowToUpdateFunction(buttonControl: table)
+		if (buttonControl ~=nil) then
+			cacheButtonControl = buttonControl;
+		end
+	
+		if(cacheButtonControl ~= nil) then
+			-- Is CivRoyale enabled?
+			local enabled = Modding.IsModEnabled( modGUIDStr );
+			cacheButtonControl.Top:SetHide(not enabled);
+			cacheButtonControl.HelpButton:SetHide(not enabled);
+		end
+	end
+	return CustomHowToUpdateFunction;
+end
 function UpdateCloudGamesButton(buttonControl: table)
 	if (buttonControl ~=nil) then
 		m_cloudGamesButton = buttonControl;
@@ -897,8 +961,8 @@ local m_MultiPlayerSubMenu :table = {
 								{label = "LOC_MULTIPLAYER_LAN_GAME",			callback = OnLANGame,				tooltip = "LOC_MULTIPLAYER_LAN_GAME_TT"},
 								{label = "LOC_MULTIPLAYER_HOTSEAT_GAME",		callback = OnHotSeat,				tooltip = "LOC_MULTIPLAYER_HOTSEAT_GAME_TT"},
 								{space = true},
-								{label = "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE",	callback = OnCivRoyaleMatchMake,	tooltip = "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_TT", colorName = "RoyaleButtonCS", buttonState = UpdateCivRoyaleMatchMakeButton},
-								{label = "LOC_MULTIPLAYER_HOWTOPLAY_CIVROYALE",	callback = OnCivRoyaleHowToPlay,	tooltip = "LOC_MULTIPLAYER_HOWTOPLAY_CIVROYALE_TT", colorName = "RoyaleButtonCS", buttonState = UpdateCivRoyaleHowToButton},
+								{label = "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE",	callback = GetOnMatchMakeFunction(OPTION_SEEN_CIVROYALE_INTRO, StartRoyaleMatchMaking, LuaEvents.MainMenu_ShowCivRoyaleIntro),	tooltip = "LOC_MULTIPLAYER_MATCHMAKE_CIVROYALE_TT", colorName = "RoyaleButtonCS",  helpCallback = OnCivRoyaleHowToPlay, helpTooltip = "LOC_MULTIPLAYER_HOWTOPLAY_CIVROYALE_TT", buttonState = GetHowToButtonUpdateFunction(m_howToRoyaleControl, MOD_CIVROYALE_GUID)},
+								{label = "LOC_MULTIPLAYER_MATCHMAKE_PIRATES",	callback = GetOnMatchMakeFunction(OPTION_SEEN_PIRATES_INTRO, StartPiratesMatchMaking, LuaEvents.MainMenu_ShowPiratesIntro),	tooltip = "LOC_MULTIPLAYER_MATCHMAKE_PIRATES_TT", colorName = "PiratesButtonCS",  helpCallback = OnPiratesHowToPlay, helpTooltip = "LOC_MULTIPLAYER_HOWTOPLAY_PIRATES_TT", buttonState = GetHowToButtonUpdateFunction(m_howToPiratesControl, MOD_PIRATES_GUID)}
 							};
 
 local m_AdditionalSubMenu :table = {
@@ -1102,6 +1166,10 @@ function BuildSubMenu(menuOptions:table)
 				uiOption.ButtonLabel:SetColorByName( kMenuOption.colorName );
 			end
 
+			if (kMenuOption.helpCallback ~= nil) then
+				uiOption.HelpButton:LocalizeAndSetToolTip(kMenuOption.helpTooltip);
+				uiOption.HelpButton:RegisterCallback( Mouse.eLClick, kMenuOption.helpCallback);
+			end
 		end		
 	end
 
@@ -1179,8 +1247,10 @@ function BuildAllMenus()
 	m_scenariosButton = nil;
 	m_multiplayerButton = nil;
 	m_cloudGamesButton = nil;
-	m_matchMakeButton = nil;
+	m_matchRoyaleButton = nil;
 	m_howToRoyaleControl = nil;
+	m_matchPiratesButton = nil;
+	m_howToPiratesControl = nil;							 
 
 	-- WISHLIST: When we rebuild the menus, let's check to see if there are ANY saved games whatsoever.  
 	-- If none exist, then do not display the option in the submenu. (See: OnFileListQueryResults)
@@ -1453,7 +1523,9 @@ function Initialize()
 	-- LUA Events
 	LuaEvents.FileListQueryResults.Add( OnFileListQueryResults );
 	LuaEvents.MainMenu_ShowAdditionalContent.Add(OnMods);
-	LuaEvents.CivRoyaleIntro_StartMatchMaking.Add(StartMatchMaking);
+	LuaEvents.CivRoyaleIntro_StartMatchMaking.Add(StartRoyaleMatchMaking);
+	LuaEvents.PiratesIntro_StartMatchMaking.Add(StartPiratesMatchMaking);
+	LuaEvents.StateTransition_SignalRaised.Add( OnStateTransition );																 
 
 	BuildAllMenus();
 	UpdateMotD();

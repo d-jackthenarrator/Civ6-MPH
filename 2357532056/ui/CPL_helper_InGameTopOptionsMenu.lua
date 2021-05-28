@@ -8,7 +8,15 @@ BASE_LateInitialize = LateInitialize;
 BASE_OnYes = OnYes
 BASE_SetupButtons = SetupButtons
 local g_cached_playerIDs = {}
-local ms_ExitToMain = false
+local ms_ExitToMain		: boolean = true;
+local m_isSimpleMenu	: boolean = false;
+local m_isLoadingDone   : boolean = false;
+local m_isRetired		: boolean = false;
+local m_isEndGameOpen	: boolean = false;
+local m_isNeedRestoreOptions		: boolean = false;
+local m_isNeedRestoreSaveGameMenu	: boolean = false;
+local m_isNeedRestoreLoadGameMenu	: boolean = false;
+local m_isClosing		: boolean = false;
 local m_kPopupDialog	: table;			-- Custom due to Utmost popup status
 -- ===========================================================================
 function OnExpansionIntro()

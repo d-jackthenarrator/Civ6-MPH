@@ -7,7 +7,7 @@
   <Stack                  ID="ShellMenuAndLogo" StackGrowth="Down" Anchor="C,C">
     <Image ID="Logo"				Anchor="C,T"	Offset="0,0" Texture="MainLogo.dds" StretchMode="Auto"/>
     
-    <SlideAnim            ID="SubMenuSlide" Begin="200,54"	End="0,34" Size="640,450" Anchor="C,T" Speed="2" Cycle="Once" Function="OutQuad" Stopped="1" FunctionPower="5" Hidden="0">
+    <SlideAnim            ID="SubMenuSlide" Begin="200,54"	End="0,54" Size="640,450" Anchor="C,T" Speed="2" Cycle="Once" Function="OutQuad" Stopped="1" FunctionPower="5" Hidden="0">
       <Stack              ID="ShellStack" StackGrowth="Right" StackPadding="20">
         <Container Size="300,400">
           <ScrollPanel	  ID="MainMenuClip" Anchor="L,C"	Size="400,450" FullClip="1" Disabled="1">
@@ -47,9 +47,10 @@
       <SlideAnim          ID="FlagAnim" Begin="-300,0"	End="-10,0"		Size="300,32" Speed="4" Cycle="Bounce" Function="OutQuad" Stopped="1" FunctionPower="1">
         <GridButton       ID="OptionButton" Style="ShellFlag" Size="300,32">
           <AlphaAnim      ID="LabelAlphaAnim" Pause="2.0" AlphaBegin="0" AlphaEnd="1" Cycle="Once" Function="Root" Speed="1" Size="parent,parent">
-            <Label        ID="ButtonLabel" Style="ShellFlagButtonFont" Anchor="L,C" Offset="30,0" String="Button Text"/>
+            <Label        ID="ButtonLabel" Style="ShellFlagButtonFont" Anchor="L,C" Offset="30,0" String="Button Text" TruncateWidth="240"/>   
           </AlphaAnim>
         </GridButton>
+        <Button       ID="HelpButton"  Size="20,20" Offset="305,0"  Anchor="L,C" Hidden="1" Texture="Controls_HowtoPlayButton"/>
       </SlideAnim>
       <AlphaAnim          ID="SelectionAnimAlpha" AlphaBegin="0"	AlphaEnd="1" Size="parent,parent" Speed="2" Cycle="Once" Function="OutQuad" Stopped="1" FunctionPower="5">
         <SlideAnim        ID="SelectionAnimSlide" Begin="-300,-4"	End="0,-4"		Size="parent,parent" Speed="2" Cycle="Once" Function="OutQuad" Stopped="1" FunctionPower="5">
@@ -100,5 +101,6 @@
   <LuaContext    ID="SaveGameMenu"                        FileName="SaveGameMenu"     Hidden="1" />
   <LuaContext    ID="FrontEndPopup"                       FileName="FrontEndPopup"    Hidden="1" />
   <LuaContext    ID="CivRoyaleIntro"                      FileName="CivRoyaleIntro"   Hidden="1" />
+  <LuaContext    ID="PiratesIntro"                        FileName="PiratesIntro"     Hidden="1" />
   <LuaContext    ID="CrossPlay"                           FileName="CrossPlayLogin"   Hidden="1" />
 </ContextDefaults>

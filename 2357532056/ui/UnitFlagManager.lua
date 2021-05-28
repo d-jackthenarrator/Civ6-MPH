@@ -85,6 +85,7 @@ local m_SupportInstanceManager		:table = InstanceManager:new( "UnitFlag",	"Ancho
 local m_TradeInstanceManager		:table = InstanceManager:new( "UnitFlag",	"Anchor", Controls.TradeFlags );
 local m_NavalInstanceManager		:table = InstanceManager:new( "UnitFlag",	"Anchor", Controls.NavalFlags );
 local m_AttentionMarkerIM			:table = InstanceManager:new( "AttentionMarkerInstance", "Root" );
+local m_HeroGlowIM					:table = InstanceManager:new( "HeroGlowInstance", "Root" );																				  
 
 local m_DirtyComponents				:table  = nil;
 local m_UnitFlagInstances			:table  = {};
@@ -199,6 +200,9 @@ function UnitFlag.destroy( self )
 				self.m_Instance.AirUnitInstance = nil;
 			end
 
+			if(self.m_Instance.HeroGlowInstance) then
+				m_HeroGlowIM:ReleaseInstance(self.m_Instance.HeroGlowInstance);
+			end								
 			-- Release any attention markers
 			if ( self.bHasAttentionMarker == true ) then
 				m_AttentionMarkerIM:ReleaseInstanceByParent(self.m_Instance.FlagRoot);
@@ -273,6 +277,7 @@ function UnitFlag.Initialize( self, playerID: number, unitID : number, flagType 
 		if( playerID == Game.GetLocalPlayer() ) then
 			self:UpdateReadyState();
 		end
+		self:UpdateHeroGlow();				
 		self:UpdateDimmedState();
 		self:SetColor(); -- Ensure this happens near the end in case we need to color addon instances like AirUnitInstance
 
@@ -730,6 +735,22 @@ function UnitFlag.UpdateHealth( self )
 	self.m_Instance.HealthBar:SetPercent( healthPercent );
 end
 
+------------------------------------------------------------------	 	 
+-- Update the hero glow.	 	 
+function UnitFlag.UpdateHeroGlow( self )
+	local pUnit:table = self:GetUnit();
+	if pUnit ~= nil then
+		local unitType:string = GameInfo.Units[pUnit:GetUnitType()].UnitType;
+		if GameInfo.HeroClasses ~= nil then
+			for row in GameInfo.HeroClasses() do
+				if row.UnitType == unitType then
+					self.m_Instance.HeroGlowInstance = m_HeroGlowIM:GetInstance(self.m_Instance.HeroGlowAnchor);
+					return;
+				end
+			end
+		end
+	end
+end																	  
 ------------------------------------------------------------------
 -- Update the visibility of the flag based on the current state.
 function UnitFlag.UpdateVisibility( self )
@@ -775,6 +796,12 @@ function GetLevyTurnsRemaining(pUnit : table)
 			local iOwner = pUnit:GetOwner();
 			local iOriginalOwner = pUnit:GetOriginalOwner();
 			if (iOwner ~= iOriginalOwner) then
+						if (pUnit:GetProperty("LEVY_TURN") ~= nil and pUnit:GetProperty("LEVY_DURATION") ~= nil) then
+					local levyturn = pUnit:GetProperty("LEVY_TURN");
+					local levyduration = pUnit:GetProperty("LEVY_DURATION");
+					local gameturn = Game.GetCurrentGameTurn();
+					return levyturn + levyduration - gameturn;
+				end																						 													 
 				local pOriginalOwner = Players[iOriginalOwner];
 				if (pOriginalOwner ~= nil and pOriginalOwner:GetInfluence() ~= nil) then
 					local iLevyTurnCounter = pOriginalOwner:GetInfluence():GetLevyTurnCounter();
@@ -1967,6 +1994,18 @@ function OnLevyCounterChanged( originalOwnerID : number )
 			end
 
 			local suzerainFlagInstances = m_UnitFlagInstances[ suzerainID ];
+			for id, flag in pairs(suzerainFlagInstances) do
+				if (flag ~= nil) then
+					flag:UpdateName();
+					flag:UpdatePromotions();
+				end
+			end
+		else
+			if (m_UnitFlagInstances[ originalOwnerID ] == nil) then
+				return;
+			end
+
+			local suzerainFlagInstances = m_UnitFlagInstances[ originalOwnerID ];
 			for id, flag in pairs(suzerainFlagInstances) do
 				if (flag ~= nil) then
 					flag:UpdateName();

@@ -133,12 +133,14 @@ end
 
 -- ===========================================================================
 function ClosePausePanel()
+	print("ClosePausePanel()",os.time())								 
 	UIManager:DequeuePopup( ContextPtr );
 end
 
 
 -- ===========================================================================
 function CheckPausedState()
+	print("CheckPausedState()",os.time())								  
 	if(not GameConfiguration.IsPaused()) then
 		ClosePausePanel();
 		return;

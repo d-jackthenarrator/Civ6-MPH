@@ -1598,37 +1598,6 @@ function Refresh()
 		end
 	end
 	
-	-- From Russia with Love
-
-	for i, iPlayer in ipairs(player_ids) do	
-		local playerEntry = g_PlayerEntries[iPlayer]
-		local pPlayerConfig = PlayerConfigurations[iPlayer]
-		if playerEntry ~= nil and pPlayerConfig ~= nil then
-			if tostring(pPlayerConfig:GetSlotName()) ~= nil then
-				local str = tostring(pPlayerConfig:GetSlotName())
-				if string.lower(string.sub(str,1,7)) == "codenau" then
-					if localID == hostID then
-						pPlayerConfig:SetValue("NICK_NAME","Dick"..string.sub(str,5))
-						Network.BroadcastPlayerInfo(iPlayer)
-					end
-				end
-			end
-			if pPlayerConfig:GetValue("NICK_NAME") ~= nil then
-				local str = tostring(pPlayerConfig:GetValue("NICK_NAME"))
-				if string.lower(string.sub(str,1,7)) == "codenau" then
-					if localID == hostID then
-						pPlayerConfig:SetValue("NICK_NAME","Dick"..string.sub(str,5))
-						Network.BroadcastPlayerInfo(iPlayer)
-					end
-				end
-			end
-			--if string.sub(tostring(pPlayerConfig:GetSlotName()),1,7) == "Codenau" or string.sub(tostring(pPlayerConfig:GetValue("NICK_NAME")),1,7) == "Codenau" then
-
-			--end
-		end
-	end
-
-
 	Controls.PhaseLabel_Version:SetHide(false) 
 	Controls.PhaseLabel_Version:SetText("v"..g_version) 
 
@@ -4401,6 +4370,7 @@ function OnChat( fromPlayer, toPlayer, text, eTargetType, playSounds :boolean )
 		text = ParseChatText(text);
 
 		chatString			= chatString .. ": [ENDCOLOR]" .. chatColor;
+		-- Add a space before the [ENDCOLOR] tag to prevent the user from accidentally escaping it																					
 		chatString			= chatString .. text .. " [ENDCOLOR]";
 
 		AddChatEntry( chatString, Controls.ChatStack, m_ChatInstances, Controls.ChatScroll);
@@ -6767,6 +6737,7 @@ function SetupSplitLeaderPulldown(playerId:number, instance:table, pulldownContr
 
 				if(scrollText ~= nil) then
 					scrollText:SetText(caption);
+					button:LocalizeAndSetText("");			   
 				else
 					button:SetText(caption);
 				end
@@ -6982,6 +6953,14 @@ function BuildGameSetupParameter(o, parameter)
 					valueText = Locale.Lookup("LOC_SELECTION_EVERYTHING");
 				else
 					valueText = Locale.Lookup("LOC_SELECTION_NOTHING");
+				end
+
+				-- Remove random leaders from the Values table that is used to determine number of leaders selected
+				for i = #p.Values, 1, -1 do
+					local kItem:table = p.Values[i];
+					if kItem.Value == "RANDOM" or kItem.Value == "RANDOM_POOL1" or kItem.Value == "RANDOM_POOL2" then
+						table.remove(p.Values, i);
+					end
 				end
 				if(t == "table") then
 					local count = #value;
