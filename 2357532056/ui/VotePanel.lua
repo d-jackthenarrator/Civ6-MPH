@@ -5,7 +5,7 @@ include("InstanceManager");
 include("PopupDialog");
 include( "PlayerSetupLogic" );
 include( "GameSetupLogic" );
-
+print("MPH Remap Panel")
 
 -- ===========================================================================
 --	Variables

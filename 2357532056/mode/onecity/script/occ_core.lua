@@ -44,19 +44,28 @@ function OnImprovementPillaged(iPlotIndex :number, eImprovement :number)
 		if(improvPlot:GetImprovementOwner() ~= NO_PLAYER) then
 			local pOwner :object = Players[improvPlot:GetImprovementOwner()];
 			if(pOwner ~= nil) then
-				improvPlot:SetOwner(NO_PLAYER)
-				for i=0,5,1 do --Look at each adjacent plot
-		
-					local adjacentPlot = Map.GetAdjacentPlot(improvPlot:GetX(),improvPlot:GetY(), i);
+				local pCapitalCity = pOwner:GetCities():GetCapitalCity()
+				if pCapitalCity ~= nil then
+					local distance = Map.GetPlotDistance(pCapitalCity:GetIndex(),improvPlot:GetIndex())
+					if distance > 4 then
+						improvPlot:SetOwner(NO_PLAYER)
+						for i=0,5,1 do --Look at each adjacent plot
+							local adjacentPlot = Map.GetAdjacentPlot(improvPlot:GetX(),improvPlot:GetY(), i);
 
-					if (adjacentPlot ~= nil) and (adjacentPlot:IsOwned()) and (adjacentPlot:GetOwner() == improvPlot:GetImprovementOwner()) then
-						adjacentPlot:SetOwner(NO_PLAYER)
+							if (adjacentPlot ~= nil) and (adjacentPlot:IsOwned()) and (adjacentPlot:GetOwner() == improvPlot:GetImprovementOwner()) then
+								local distance_adj = Map.GetPlotDistance(adjacentPlot:GetIndex(),adjacentPlot:GetIndex())
+								if distance_adj > 4 then
+									adjacentPlot:SetOwner(NO_PLAYER)
+								end
+							end
+						end
 					end
+					ImprovementBuilder.SetImprovementType(improvPlot, -1, NO_PLAYER); 
 				end
-				ImprovementBuilder.SetImprovementType(improvPlot, -1);
 			end
 		end
 	end
+	print("OnImprovementPillaged END")
 end
 
 function OnGameTurnStarted_OneCity(turn)
@@ -212,7 +221,6 @@ function GetWaveUnit(iPlayerID)
 	local era = pPlayer:GetEra()
 	local leader = PlayerConfigurations[iPlayerID]:GetLeaderTypeName()
 	
-	print("GetWaveUnit",era,leader)
 
 -- 40 Aluminium
 -- 41 Coal

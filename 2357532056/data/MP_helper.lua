@@ -499,12 +499,33 @@ end
 function Debug_GameConfigChanged(arg1,arg2)
 	print("Debug_PlayerInfoChanged",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
 end
+
+function Debug_OnUnitInitialized(iPlayerID : number, iUnitID : number)
+	print("Debug_OnUnitInitialized",os.date('%Y-%m-%d %H:%M:%S'),"iPlayerID",iPlayerID,"iUnitID",iUnitID)
+end
+
+function Debug_OnUnitCreated(iPlayerID : number, iUnitID : number)
+	print("Debug_OnUnitCreated",os.date('%Y-%m-%d %H:%M:%S'),"iPlayerID",iPlayerID,"iUnitID",iUnitID)
+end
+
+function Debug_OnImprovementPillaged(iPlotIndex :number, eImprovement :number)
+	print("Debug_OnImprovementPillaged",os.date('%Y-%m-%d %H:%M:%S'),"iPlotIndex",iPlotIndex,"eImprovement",eImprovement)
+end
+
+function Debug_OnCityBuilt( playerID: number, cityID : number, cityX : number, cityY : number )	
+	print("Debug_OnCityBuilt",os.date('%Y-%m-%d %H:%M:%S'),"playerID",playerID,"cityID",cityID,"cityX",cityX,"cityY",cityY)
+end
+
+function Debug_OnCombatOccurred(attackerPlayerID :number, attackerUnitID :number, defenderPlayerID :number, defenderUnitID :number)
+	print("Debug_OnCombatOccurred",os.date('%Y-%m-%d %H:%M:%S'),"attackerPlayerID",attackerPlayerID,"defenderPlayerID",defenderPlayerID,"defenderUnitID",defenderUnitID)
+end
 -------------------------------------------------------
 
 function Initialize()
 	print("-- Init D. CPL Helper Gameplay Script"..g_version.." --");
 	
 	if b_debug == true then
+		-- Player
 		GameEvents.OnGameTurnStarted.Add(Debug_OnGameTurnStarted);
 		GameEvents.PlayerTurnStarted.Add(Debug_PlayerTurnStarted);
 		GameEvents.PlayerTurnStartComplete.Add(Debug_PlayerTurnStartComplete);
@@ -515,6 +536,7 @@ function Initialize()
 		Events.RemotePlayerTurnBegin.Add( Debug_RemotePlayerTurnBegin);
 		Events.RemotePlayerTurnEnd.Add( Debug_RemotePlayerTurnEnd );
 		Events.TurnEnd.Add(Debug_TurnEnd)
+		-- Connection
 		Events.ConnectedToNetSessionHost.Add ( Debug_ConnectedToNetSessionHost );
 		Events.MultiplayerPlayerConnected.Add( Debug_MultiplayerPlayerConnected );
 		Events.MultiplayerPrePlayerDisconnected.Add( Debug_MultiplayerPrePlayerDisconnected );
@@ -525,6 +547,14 @@ function Initialize()
 		Events.SteamServersDisconnected.Add( Debug_SteamServersDisconnected)
 		Events.PlayerInfoChanged.Add(Debug_PlayerInfoChanged);
 		Events.GameConfigChanged.Add(Debug_GameConfigChanged);
+		-- Unit
+		GameEvents.UnitInitialized.Add(Debug_OnUnitInitialized)
+		GameEvents.UnitCreated.Add(Debug_OnUnitCreated);
+		GameEvents.OnCombatOccurred.Add(Debug_OnCombatOccurred)
+		-- Improvement
+		GameEvents.OnImprovementPillaged.Add(Debug_OnImprovementPillaged);
+		-- City
+		GameEvents.CityBuilt.Add(Debug_OnCityBuilt);
 	end
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	GameEvents.OnGameTurnStarted.Add(NoMoreStack);

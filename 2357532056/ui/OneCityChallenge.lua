@@ -22,6 +22,7 @@ local NO_PLAYER = -1;
 function OnPlayerTurnActivated()
 	local localPlayer:number = Game.GetLocalPlayer();
 	if localPlayer == nil then
+		ContextPtr:SetHide(true);
 		return
 	end
 	local b_first_wave = false
@@ -95,6 +96,12 @@ function OnPlayerTurnActivated()
 		unit = unit.."_PORTRAIT"
 		Controls.UnitIcon:SetIcon(tostring(unit))
 	end
+	
+	if PlayerConfigurations[Game.GetLocalPlayer()]:GetLeaderTypeName() == "LEADER_SPECTATOR" then
+		Controls.NextWave_Label:SetText(tostring("-- "))
+		Controls.UnitIcon:SetIcon("ICON_UNIT_SETTLER_PORTRAIT")
+		Controls.Turn_Label:SetText(tostring("In -- Turns"))
+	end
 end
 
 -- ===========================================================================
@@ -115,7 +122,6 @@ function GetWaveUnit(iPlayerID)
 	local era = pPlayer:GetEra()
 	local leader = PlayerConfigurations[iPlayerID]:GetLeaderTypeName()
 	
-	print("GetWaveUnit",era,leader)
 
 -- 40 Aluminium
 -- 41 Coal
@@ -374,68 +380,76 @@ function GetWaveUnit(iPlayerID)
 end
 
 function OnDiplomacyHideIngameUI()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnDiplomacyShowIngameUI()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnFullscreenMapShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnFullscreenMapClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnProjectBuiltShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnProjectBuiltClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnDisasterRevealPopupShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnDisasterRevealPopupClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnNaturalWonderPopupShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function  OnNaturalWonderPopupClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnRockBandMoviePopupShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnRockBandMoviePopupClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
 end
 
 function OnWonderBuiltPopupShown()
-	ContextPtr:SetHide(true);
+	OnHide()
 end
 
 function OnWonderBuiltPopupClosed()
-	ContextPtr:SetHide(false);
+	OnShow()
+end
+
+function OnHide()
+	ContextPtr:SetHide(true)
+end
+
+function OnShow()
+	ContextPtr:SetHide(false)
 end
 
 function Initialize()
-	ContextPtr:SetHide(true);
-	
-	if GameConfiguration.GetValue("GAMEMODE_ONECITY") ~= true then
+	OnHide()
+	local localPlayer:number = Game.GetLocalPlayer();
+	if GameConfiguration.GetValue("GAMEMODE_ONECITY") ~= true  then
 		return
 		else
-		ContextPtr:SetHide(false);
+		OnShow()
 		Events.LocalPlayerTurnBegin.Add(OnPlayerTurnActivated);
 		Events.ResearchCompleted.Add(OnPlayerTurnActivated);
 		Events.ResearchChanged.Add(OnPlayerTurnActivated);
@@ -443,7 +457,7 @@ function Initialize()
 		LuaEvents.DiplomacyActionView_ShowIngameUI.Add( OnDiplomacyShowIngameUI );
 		LuaEvents.FullscreenMap_Shown.Add( OnFullscreenMapShown );
 		LuaEvents.FullscreenMap_Closed.Add(	OnFullscreenMapClosed );
-			LuaEvents.ProjectBuiltPopup_Shown.Add( OnProjectBuiltShown );
+		LuaEvents.ProjectBuiltPopup_Shown.Add( OnProjectBuiltShown );
 		LuaEvents.ProjectBuiltPopup_Closed.Add( OnProjectBuiltClosed );
 		LuaEvents.NaturalDisasterPopup_Shown.Add( OnDisasterRevealPopupShown );
 		LuaEvents.NaturalDisasterPopup_Closed.Add( OnDisasterRevealPopupClosed );
