@@ -65,7 +65,6 @@ function OnImprovementPillaged(iPlotIndex :number, eImprovement :number)
 			end
 		end
 	end
-	print("OnImprovementPillaged END")
 end
 
 function OnGameTurnStarted_OneCity(turn)
