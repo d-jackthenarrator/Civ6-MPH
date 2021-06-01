@@ -7,5 +7,8 @@
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="2" TargetGroup="Game" TargetId="BARBS_SETTING" TargetValue="3" Hash="0" />
 		<!-- CivFR Teamer -->
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BARBS_SETTING" TargetValue="-1" Hash="0" />
+		<!-- OCC -->
+		<Row SourceGroup="Game" SourceId="GAMEMODE_ONECITY" SourceValue="1" TargetGroup="Game" TargetId="BARBS_SETTING" TargetValue="-1" Static="1"/>
+	
 	</ConfigurationUpdates>
 </GameInfo>

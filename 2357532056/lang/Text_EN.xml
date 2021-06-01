@@ -690,8 +690,7 @@
             <Text>One City Challenge Mode</Text>
         </Replace>
         <Replace Tag="LOC_GAMEMODE_ONECITY_DESCRIPTION" Language="en_US">
-            <Text>We can only have one city... Plan ahead to build it into an unchallenged military center or a new
-                tower of Babel![NEWLINE]Settlers are disabled.[NEWLINE]Any captured city would be immediately razed.
+            <Text>We can only have one city... Plan ahead to build it into an unchallenged military center or a new tower of Babel!
             </Text>
         </Replace>
         <Replace Tag="LOC_GAMEMODE_LASTMOVE_NAME" Language="en_US">
@@ -954,7 +953,7 @@
 
         <!--  OCC Settings -->
         <Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_NAME" Language="en_US">
-            <Text>Watchtower</Text>
+            <Text>Outer Walls</Text>
         </Row>
         <Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_DESCRIPTION" Language="en_US">
             <Text>Allows to claim land outside of your capital</Text>
@@ -963,7 +962,7 @@
             <Text>Expansionist</Text>
         </Row>
         <Row Tag="LOC_EXPANSIONIST_DESC" Language="en_US">
-            <Text>Can build watchtower improvement to claim lands outside of your borders</Text>
+            <Text>Can build outer walls improvement to claim lands outside of your borders</Text>
         </Row>
     </LocalizedText>
 </GameData>

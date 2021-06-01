@@ -49,8 +49,8 @@ function CheckReady()
 	end
 	local bready = true 
 	for i, Player in ipairs(g_playertime) do
-		if Player.id ~= nil then
-			if Player.status ~= 1 then
+		if Player.id ~= nil and Players[Player.id] ~= nil then
+			if Player.status ~= 1 and (Players[Player.id]:IsHuman() == true )then
 				bready = false
 			end
 		end

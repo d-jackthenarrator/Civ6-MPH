@@ -14,7 +14,7 @@
 		<Row ParameterId="CPL_RULES" Name="CPL_RULES_NAME" Description="CPL_RULES_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_RULES" GroupId="AdvancedOptions" ChangeableAfterGameStart="1" SortIndex="2900" Visible="0"  />
 		<Row ParameterId="CPL_NO_PM" Name="CPL_NO_PM_NAME" Description="CPL_NO_PM_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_NO_PM" GroupId="AdvancedOptions" SortIndex="2901" Visible="0"  />
 		<Row ParameterId="CPL_SMARTTIMER" Name="CPL_SMARTTIMER_NAME" Description="CPL_SMARTTIMER_DESC" Domain="TimerLimits" DefaultValue="3" ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" GroupId="GameOptions" ChangeableAfterGameStart="1" SupportsSinglePlayer="1" SupportsPlayByCloud="0" SupportsHotSeat="1" SupportsLANMultiplayer="1" SupportsInternetMultiplayer="1" SortIndex="41" />
-		<Row ParameterId="CPL_SYNCTURN" Name="CPL_SYNCTURN_NAME" Description="CPL_SYNCTURN_DESC" Domain="bool" DefaultValue="1" ConfigurationGroup="Game" ConfigurationId="CPL_SYNCTURN" GroupId="GameOptions" ChangeableAfterGameStart="1" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="42" />
+		<Row ParameterId="CPL_SYNCTURN" Name="CPL_SYNCTURN_NAME" Description="CPL_SYNCTURN_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_SYNCTURN" GroupId="GameOptions" ChangeableAfterGameStart="1" SupportsSinglePlayer="0" SupportsPlayByCloud="0" SupportsHotSeat="0" SortIndex="42" />
 		<Row ParameterId="CPL_SUDDENDEATH" Name="CPL_SUDDENDEATH_NAME" Description="CPL_SUDDENDEATH_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_SUDDENDEATH" GroupId="AdvancedOptions" SortIndex="2901" Visible="0"  />
 		<Row ParameterId="CPL_NO_PINS" Name="CPL_NO_PINS_NAME" Description="CPL_NO_PINS_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_NO_PINS" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" SortIndex="2902" />
 		<Row ParameterId="CPL_FREECITY_STRONGER" Name="CPL_FREECITY_STRONGER_NAME" Description="CPL_FREECITY_STRONGER_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Game" ConfigurationId="CPL_FREECITY_STRONGER" GroupId="AdvancedOptions" ChangeableAfterGameStart="0" Visible="0"  SortIndex="2902" />
@@ -104,7 +104,7 @@
 		<Row GameModeType="GAMEMODE_SUDDEN_DEATH" Name="LOC_GAMEMODE_SUDDEN_DEATH_NAME" Description="LOC_GAMEMODE_SUDDEN_DEATH_DESCRIPTION" Portrait="Sudden_Death_Portrait.dds" Background="Sudden_Death_Background.dds" Icon="ICON_GAMEMODE_SUDDEN_DEATH" SortIndex="20"  />
 		<Row GameModeType="GAMEMODE_ANONYMOUS" Name="LOC_GAMEMODE_ANONYMOUS_NAME" Description="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Portrait="Anonymous_Portrait.dds" Background="Anonymous_Background.dds" Icon="ICON_GAMEMODE_ANONYMOUS" SortIndex="30"  />
 		<Row GameModeType="GAMEMODE_ONECITY" Name="LOC_GAMEMODE_ONECITY_NAME" Description="LOC_GAMEMODE_ONECITY_DESCRIPTION" Portrait="OneCity_Portrait.dds" Background="OneCity_Background.dds" Icon="ICON_GAMEMODE_ONECITY" UnitIcon="ICON_UNIT_EXPANSIONIST" UnitDescription="LOC_EXPANSIONIST_DESC" UnitName="LOC_EXPANSIONIST_NAME" SortIndex="40" />
-</GameModeItems>
+	</GameModeItems>
 
 
 	<Queries>
@@ -201,10 +201,16 @@
 		<Row ParameterId="Alliance_Research" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
 		<Row ParameterId="Alliance_Economic" 					ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2" />	
 		<!--  Remove Turn Timer with Smart Timer -->
-		<Row ParameterId="TurnTimerType" 						ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" Operator="Equals" ConfigurationValue="1" />		
+		<Row ParameterId="TurnTimerType" 						ConfigurationGroup="Game" ConfigurationId="CPL_SMARTTIMER" Operator="Equals" ConfigurationValue="1" />
+		<!-- OCC -->
+		<Row ParameterId="GameMode_OneCity" ConfigurationGroup="Game" ConfigurationId="RULESET" Operator="Equals" ConfigurationValue="RULESET_EXPANSION_2"/>
+		<Row ParameterId="GameMode_OneCity" ConfigurationGroup="Game" ConfigurationId="WORLD_BUILDER" Operator="NotEquals" ConfigurationValue="1"/>
 	</ParameterDependencies>
 
 	<ConfigurationUpdates>
+		<!-- OCC -->
+		<Row SourceGroup="Game" SourceId="GAMEMODE_ONECITY" SourceValue="1" TargetGroup="Game" TargetId="GAME_START_ERA" TargetValue="ERA_ANCIENT"  Static="1"/>
+		<Row SourceGroup="Game" SourceId="GAMEMODE_ONECITY" SourceValue="1" TargetGroup="Game" TargetId="GAME_NO_BARBARIANS" TargetValue="1" Static="1"/>
 		<!--  Vote Draft Can Only Be Random -->
 		<Row SourceGroup="Game" SourceId="CPL_BAN_FORMAT" SourceValue="4" TargetGroup="Game" TargetId="DRAFT_SLOT_ORDER" TargetValue="0" />
 		<!--  Block the Gamespeeds to Online with Smart Timer
@@ -266,7 +272,7 @@
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_DUPLICATE_LEADERS" TargetValue="0" Hash="0" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_DUPLICATE_CIVILIZATIONS" TargetValue="0" Hash="0" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="GAME_START_ERA" TargetValue="ERA_ANCIENT" Hash="1"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="3"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="world_age" TargetValue="1"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="resources" TargetValue="2"/>

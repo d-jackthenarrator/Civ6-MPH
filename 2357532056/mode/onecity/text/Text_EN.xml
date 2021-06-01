@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+    <LocalizedText>
+
+        <!-- OCC -->
+        <Replace Tag="LOC_MOMENT_CATEGORY_INFRASTRUCTURE_BONUS_GOLDEN_AGE" language="en">
+            <Text>Monumentality Golden Age:[NEWLINE]+2 [ICON_Movement] Movement for all Builders. May purchase civilian units with [ICON_Faith] Faith. Builders and Expansionists are 30% cheaper to purchase with [ICON_FAITH] Faith and [ICON_GOLD] Gold.</Text>
+        </Replace>
+         <Replace Tag="LOC_BELIEF_RELIGIOUS_SETTLEMENTS_DESCRIPTION" language="en">
+            <Text>When chosen receive two Expansionists in your capital. Border expansion rate is 15% faster.</Text>
+        </Replace>  
+         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_NAME" language="en">
+            <Text>Build a protective wall</Text>
+        </Replace> 
+         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_DESCRIPTION" language="en">
+           <Text>Provide defensive bonus to garnisson units and allow to claim territory outside of your city limits</Text>
+        </Replace> 
+         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_DISABLED_TT" language="en">
+            <Text>Cannot be build on claimed territory, impassable terrain, cities or districts</Text>
+        </Replace> 	
+         <Replace Tag="LOC_IMPROVEMENT_OCC_WALL_NAME" language="en">
+            <Text>Outer Walls</Text>
+        </Replace> 	
+         <Replace Tag="LOC_IMPROVEMENT_OCC_WALL_DESC" language="en">
+            <Text>Use this improvement to claim territory and protect your troups.</Text>
+        </Replace> 				
+    </LocalizedText>
+</GameData>
