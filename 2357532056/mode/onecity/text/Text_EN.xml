@@ -23,6 +23,9 @@
         </Replace> 	
          <Replace Tag="LOC_IMPROVEMENT_OCC_WALL_DESC" language="en">
             <Text>Use this improvement to claim territory and protect your troups.</Text>
-        </Replace> 				
+        </Replace> 	
+		 <Replace Tag="LOC_SCENARIO_HUD_CHARGES" language="en">
+		    <Text>OUTER WALL CHARGES</Text>
+        </Replace> 	
     </LocalizedText>
 </GameData>

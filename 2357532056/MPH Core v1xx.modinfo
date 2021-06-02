@@ -500,6 +500,7 @@
 			<File>mode/onecity/script/occ_StateUtils.lua</File>
 			<File>mode/onecity/script/occ_UnitCommandDefs.lua</File>
 			<File>mode/onecity/script/occ_UnitCommands.lua</File>
+			<File>mode/onecity/script/occ_Rules.lua</File>
 			<File>mode/onecity/UI/Replacements/UnitPanel_occ.lua</File>
 			 </Items>
      </ImportFiles>	
@@ -583,6 +584,7 @@
 	<File>mode/onecity/script/occ_core.lua</File>
 	<File>mode/onecity/script/occ_UnitCommandDefs.lua</File>
 	<File>mode/onecity/script/occ_UnitCommands.lua</File>
+	<File>mode/onecity/script/occ_Rules.lua</File>
 	<File>mode/onecity/UI/Replacements/UnitPanel_occ.lua</File>
 	
 	<File>mode/sudden_death/Sudden_Death_Portrait.dds</File>

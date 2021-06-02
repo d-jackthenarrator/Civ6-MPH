@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 include "occ_StateUtils"
 include "occ_UnitCommands"
+include "occ_Rules"
 -- ===========================================================================
 --	NEW VARIABLES
 -- ===========================================================================
@@ -38,7 +39,7 @@ function OnImprovementPillaged(iPlotIndex :number, eImprovement :number)
 		local improvPlot :object = Map.GetPlotByIndex(iPlotIndex);
 		if(improvPlot == nil) then
 			print("ERROR: improvPlot missing");
-			return;
+			return;	
 		end
 		
 		if(improvPlot:GetImprovementOwner() ~= NO_PLAYER) then
@@ -147,6 +148,29 @@ function OnPlayerTurnActivated_OneCity(playerID:number)
 		end
 	end
 end
+
+function OnUnitInitialized(iPlayerID : number, iUnitID : number)
+	print("OnUnitInitialized")
+	local pUnit : object = UnitManager.GetUnit(iPlayerID, iUnitID);
+	if (pUnit == nil) then
+		return;
+	end
+	local pPlayer : object = Players[iPlayerID];
+
+	-- Init Charges properties for units it is relevant to
+	local eUnitType = pUnit:GetTypeHash();
+	print("OnUnitInitialized",pUnit:GetName(),eUnitType)
+	for eType, pChargesData in pairs(RULES.UnitCharges) do
+		print(eType,pChargesData,GetObjectState(pUnit, g_PropertyKeys.Charges))
+		if (eUnitType == eType and GetObjectState(pUnit, g_PropertyKeys.Charges) == nil) then
+			SetObjectState(pUnit, g_PropertyKeys.Charges, 0);
+
+			local iMaxCharges : number = pChargesData.Base;
+			SetObjectState(pUnit, g_PropertyKeys.MaxCharges, iMaxCharges);
+		end
+	end
+end
+
 
 -- =========================================================================== 
 --	One City Challenge
@@ -489,6 +513,13 @@ function Initialize()
 		GameEvents.PlayerTurnStarted.Add(OnPlayerTurnActivated_OneCity);
 		GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted_OneCity);
 		GameEvents.OnImprovementPillaged.Add(OnImprovementPillaged);
+		GameEvents.UnitInitialized.Add(OnUnitInitialized);
+		
+		-- Do NEW GAME INIT (if applicable)
+		local bInited : boolean = GetObjectState(Game, g_PropertyKeys.Initialized);
+		if (bInited == nil or bInited == false) then
+			SetObjectState(Game, g_PropertyKeys.Initialized, true);
+		end
 	end
 end
 

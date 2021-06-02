@@ -6,35 +6,9 @@
 -- ===========================================================================
 
 g_PropertyKeys = {
-	Initialized	= "Init",
-	Plague		= "Plague",
-	CityPlagueDeaths		= "CityPlagueDeaths",
-	Wave		= "Wave",
-	CohortOrder	= "CohortOrder",
-	SeaSpreadPlots	= "SeaSpreadPlots",
-	Spotted		= "Flag_Spotted",	
+	Initialized	= "Init",	
 	Charges			= "Charges",
 	MaxCharges		= "MaxCharges",
-	TurnAppeared	= "Appeared",
-	TotalPlagueDeaths	= "NumDeaths",
-	PlagueDeathsCounter	= "DeathCounter",	-- Used to track deaths since last reset time, like a trip odometer
-	PlagueTurnReduction	= "ReduceTurns",
-	AvoidDeathChance	= "AvoidChance",
-	AllowWorkOnPlague	= "WorkPlague",
-	CoerceTurns			= "Coerce",
-	CoerceStartTurn		= "CoerceStart",
-	CoerceGold		= "CoerceGold",
-	CityFlags = {
-		Rumor		= "Flag_Rumor",
-		Outbreak	= "Flag_Outbreak",
-		Studied		= "Flag_Studied",
-	},
-	EventTags = {
-		Raised			= "_Raised",
-	},
-	Commands = {
-		HolyFervorLastUsed	= "HolyFervor",
-	},
 };
 
 -- Every time SetObjectState is called, the script-side cache is updated to prevent unnecessary
@@ -44,12 +18,13 @@ local g_ObjectStateCache = {};
 
 -- ===========================================================================
 function SetObjectState(pObject : object, sPropertyName : string, value)
+	--print("occ_StateUtils SetObjectState",pObject,sPropertyName,value);
 	if (sPropertyName == nil) then
 		return nil;
 	end
 
 	if (pObject == nil) then
-		print("BlackDeathScenario_StateUtils SetObjectState: ERROR: object is nil!");
+		print("occ_StateUtils SetObjectState: ERROR: object is nil!");
 		return nil;
 	end
 
@@ -103,7 +78,7 @@ function GetObjectState(pObject : object, sPropertyName : string, bCacheCheckOnl
 	end
 
 	if (pObject == nil) then
-		print("BlackDeathScenario_StateUtils GetObjectState: ERROR: object is nil!");
+		print("occ_StateUtils GetObjectState: ERROR: object is nil!");
 		return nil;
 	end
 

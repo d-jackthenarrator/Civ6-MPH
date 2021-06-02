@@ -22,7 +22,6 @@ INSERT INTO Units	(
 		CostProgressionModel,
 		CostProgressionParam1,
 		PurchaseYield,
-		BuildCharges,
 		PrereqCivic
 		)
 VALUES  (
@@ -40,7 +39,6 @@ VALUES  (
 		'COST_PROGRESSION_PREVIOUS_COPIES', 
 		'20', 
 		'YIELD_GOLD', 
-		'3', 
 		'CIVIC_EARLY_EMPIRE'
 		);
 
@@ -66,6 +64,10 @@ WHERE ImprovementType='IMPROVEMENT_GREAT_WALL';
 
 UPDATE Improvements
 Set Buildable=0
+WHERE ImprovementType='IMPROVEMENT_GREAT_WALL';
+
+UPDATE Improvement_ValidBuildUnits
+Set UnitType='UNIT_EXPANSIONIST'
 WHERE ImprovementType='IMPROVEMENT_GREAT_WALL';
 
 -----------------------------------------------

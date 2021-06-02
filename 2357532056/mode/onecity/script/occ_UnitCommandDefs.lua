@@ -12,7 +12,7 @@ include "occ_StateUtils"
 -- =========================================================================]]
 
 m_ScenarioUnitCommands = {};
-
+local ms_WallImprov :number		= GameInfo.Improvements["IMPROVEMENT_GREAT_WALL"].Index;
 --[[ =======================================================================
 	BUILDWALL
 
@@ -64,6 +64,11 @@ function m_ScenarioUnitCommands.BUILDWALL.IsDisabled(pUnit : object)
 	-- Not in a city
 	local pCity : object = CityManager.GetCityAt(pPlot:GetX(), pPlot:GetY());
 	if (pCity ~= nil) then
+		return true;
+	end
+	
+	-- Not Already a Wall
+	if pPlot:GetImprovementType() == ms_WallImprov then
 		return true;
 	end
 	

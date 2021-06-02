@@ -15,7 +15,7 @@ include "occ_StateUtils"
 --	CACHE BASE FUNCTIONS
 -- ===========================================================================
 XP2_GetUnitActionsTable = GetUnitActionsTable;
-
+XP2_FilterUnitStatsFromUnitData = FilterUnitStatsFromUnitData;
 -- ===========================================================================
 --	OVERRIDE BASE FUNCTIONS
 -- ===========================================================================
@@ -68,4 +68,27 @@ function GetUnitActionsTable(pUnit : object)
 	return pBaseActionsTable;
 end
 
+-- ===========================================================================
+function FilterUnitStatsFromUnitData(unitData : table, ignoreStatType : number)
+	local pBaseData : table = XP2_FilterUnitStatsFromUnitData(unitData, ignoreStatType);
 
+	local pUnit : object = UnitManager.GetUnit(unitData.Owner, unitData.UnitID);
+	if (pUnit ~= nil) then
+
+		local iChargesProp : number = pUnit:GetProperty(g_PropertyKeys.Charges);
+		local iMaxChargesProp : number = pUnit:GetProperty(g_PropertyKeys.MaxCharges);
+
+		if (iChargesProp ~= nil and iMaxChargesProp ~= nil) then
+			local iChargesLeft = iMaxChargesProp - iChargesProp;
+			table.insert(pBaseData, {
+				Value = iChargesLeft,	
+				Type = "SpreadCharges", 
+				Label = "LOC_SCENARIO_HUD_CHARGES",				
+				FontIcon ="[ICON_Charges_Large]",	
+				IconName ="ICON_STATS_SPREADCHARGES"
+			});
+		end
+	end
+
+	return pBaseData;
+end
