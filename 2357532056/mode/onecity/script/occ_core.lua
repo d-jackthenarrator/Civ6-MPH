@@ -19,6 +19,7 @@ local ms_StandardWaveInterval = 40
 local ms_EpicWaveInterval = 50
 local ms_MarathonWaveInterval = 66
 local NO_PLAYER = -1;
+local GOLD_REWARD = 600;
 
 -- ===========================================================================
 --	GLOBAL FLAGS
@@ -128,17 +129,48 @@ function OnGameTurnStarted_OneCity(turn)
 	end
 end
 
+function OnGameTurnStarted_CheckBorder(turn)
+	-- Cannot ever have improvement or tile of a dead major player on the map
+	local pAllEverPlayerIDs : table = PlayerManager.GetWasEverAliveMajorIDs();	
+	for _,iPlayerID in ipairs(pAllEverPlayerIDs) do
+	
+		local pPlayer : object = Players[iPlayerID];
+
+		if pPlayer ~= nil then
+			if pPlayer:IsAlive() == false and pPlayer:IsMajor() == true then
+				for iPlotIndex = 0, Map.GetPlotCount()-1, 1 do
+					local pPlot = Map.GetPlotByIndex(iPlotIndex)
+					if pPlot ~= nil then
+					
+						local pPlot_Owner = pPlot:GetOwner()
+						if (pPlot_Owner ~=nil ) then
+							if pPlot_Owner == iPlayerID then
+								pPlot:SetOwner(NO_PLAYER)
+								ImprovementBuilder.SetImprovementType(pPlot, -1, NO_PLAYER); 		
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+
+
+end
+
 
 function OnPlayerTurnActivated_OneCity(playerID:number)
 	local pAllPlayerIDs : table = PlayerManager.GetAliveIDs();	
 	for _,iPlayerID in ipairs(pAllPlayerIDs) do
 	
 		local pPlayer : object = Players[iPlayerID];
+		if pPlayer ~= nil then
 		local pPlayerUnits : object = pPlayer:GetUnits();
 		local pPlayerCities = pPlayer:GetCities();
 		
 		
-		if pPlayerCities:GetCount() > 0 then
+		if pPlayerCities:GetCount() > 0 and pPlayer:IsMajor() then
 			for k, pUnit in pPlayerUnits:Members() do
 				if pUnit:GetName() == "LOC_UNIT_SETTLER_NAME" then
 					print("One City Challenge: Destroy Setter",iPlayerID)
@@ -146,11 +178,14 @@ function OnPlayerTurnActivated_OneCity(playerID:number)
 				end				
 			end
 		end
+		end
 	end
 end
 
 function OnUnitInitialized(iPlayerID : number, iUnitID : number)
-	print("OnUnitInitialized")
+	if iPlayerID == -1 or iPlayerID == nil or iUnitID == nil then
+		return
+	end
 	local pUnit : object = UnitManager.GetUnit(iPlayerID, iUnitID);
 	if (pUnit == nil) then
 		return;
@@ -159,9 +194,7 @@ function OnUnitInitialized(iPlayerID : number, iUnitID : number)
 
 	-- Init Charges properties for units it is relevant to
 	local eUnitType = pUnit:GetTypeHash();
-	print("OnUnitInitialized",pUnit:GetName(),eUnitType)
 	for eType, pChargesData in pairs(RULES.UnitCharges) do
-		print(eType,pChargesData,GetObjectState(pUnit, g_PropertyKeys.Charges))
 		if (eUnitType == eType and GetObjectState(pUnit, g_PropertyKeys.Charges) == nil) then
 			SetObjectState(pUnit, g_PropertyKeys.Charges, 0);
 
@@ -171,6 +204,21 @@ function OnUnitInitialized(iPlayerID : number, iUnitID : number)
 	end
 end
 
+function OnCityConquered(capturerID,  ownerID, cityID , cityX, cityY)
+	
+	if capturerID == nil then
+		return
+	end
+	
+	local pPlayer = Players[capturerID]
+	
+	if pPlayer ~= nil then
+		local pGold:table = pPlayer:GetTreasury();
+		print("Award Gold to",capturerID)
+		pGold:ChangeGoldBalance(GOLD_REWARD);
+	end
+	
+end
 
 -- =========================================================================== 
 --	One City Challenge
@@ -496,6 +544,9 @@ function GetWaveUnit(iPlayerID)
 		if playerTechs:HasTech(GameInfo.Technologies["TECH_ARCHERY"].Index) then
 			return "UNIT_ARCHER", unitNumber
 		end
+		
+		print("No pre-exiting scenario",iPlayerID)
+		
 		return "UNIT_WARRIOR", unitNumber
 
 
@@ -512,7 +563,9 @@ function Initialize()
 		b_onecity = true
 		GameEvents.PlayerTurnStarted.Add(OnPlayerTurnActivated_OneCity);
 		GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted_OneCity);
+		GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted_CheckBorder);
 		GameEvents.OnImprovementPillaged.Add(OnImprovementPillaged);
+		GameEvents.CityConquered.Add(OnCityConquered);
 		GameEvents.UnitInitialized.Add(OnUnitInitialized);
 		
 		-- Do NEW GAME INIT (if applicable)

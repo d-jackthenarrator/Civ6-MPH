@@ -167,6 +167,7 @@
 
   </FrontEndActions>
    <InGameActions>
+   <!---
     	<UpdateColors id="GameplayColors">
       		<File>configuration/NONE_CoreColors.xml</File>
       		<File>configuration/NONE_PlayerColors.xml</File>
@@ -180,7 +181,7 @@
       		<File>configuration/NONE_Civilization.xml</File>
       		<File>configuration/NONE_LeaderAnimations.xml</File>
     	</UpdateDatabase>
-		
+		-->
     	<AddGameplayScripts id="CPL_Helper">
         	<File>data/MP_helper.lua</File>
     	</AddGameplayScripts>
@@ -567,13 +568,14 @@
 
 	<File>configuration/Config.xml</File>
 	<File>configuration/Config_BBG.xml</File>
+	<!--
       	<File>configuration/NONE_CoreColors.xml</File>
       	<File>configuration/NONE_PlayerColors.xml</File>
       	<File>configuration/NONE_Leaders.xml</File>
       	<File>configuration/NONE_Civilization.xml</File>
       	<File>configuration/NONE_LeaderAnimations.xml</File>
       	<File>configuration/NONE_Config.xml</File>
-
+-->
 	<File>mode/onecity/OneCity_Portrait.dds</File>
 	<File>mode/onecity/OneCity_Background.dds</File>
     <File>mode/onecity/expansionist/Expansionist_Units.dep</File>

@@ -3,8 +3,8 @@
 		
 	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
 		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
-			<Grid																	   Size="auto,auto"			Anchor="L,B" Offset="-20,170"    Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="0">
-				<Grid																	 Size="270,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameHUD" AutoSizePadding="0,0">
+			<Grid																	   Size="auto,auto"			Anchor="C,B" Offset="0,0"    Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="0">
+				<Grid					ID="OCCUIGrid"											 Size="270,auto"			Anchor="C,C" Offset="-200,0" Style="WindowFrameHUD" AutoSizePadding="0,0">
 					<Container			ID="OCCContainer"											 Size="parent,auto"                        Hidden="0">
 					<Stack				ID="OCCStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,0" StackGrowth="Bottom" StackPadding="0">
 						<Label			ID="OCCTitle"       Anchor="C,T" Style="FontNormal14" Align="Left" WrapWidth="500" String="NEXT UNIT WAVE:" Offset="0,0"  />

@@ -17,7 +17,7 @@ local m_last_update = 0
 --	New Functions
 -- ===========================================================================
 function OnMultiplayerPrePlayerDisconnected( playerID )
-	print ("Time Disconnect", os.date("%c"))
+	--print ("Time Disconnect", os.date("%c"))
 	ContextPtr:SetHide(false);
 	local hostID = Network.GetGameHostPlayerID()
 	local localID = Network.GetLocalPlayerID()
@@ -46,7 +46,7 @@ end
 
 
 function OnMultplayerPlayerConnected( playerID )
-	print ("Time Connected", os.date("%c"))
+	--print ("Time Connected", os.date("%c"))
 	if g_dropped_player_list ~= {} then
 		for i, player in ipairs(g_dropped_player_list) do
 			if player.ID == playerID and player.IsDropped == true then
@@ -203,6 +203,7 @@ end
 -- ===========================================================================
 function Initialize()
 	ContextPtr:SetHide(true);
+	ContextPtr:SetShutdown( OnShutdown );
 	Controls.DropTitle:SetText(Locale.Lookup("LOC_MPH_DROP_TITLE_TEXT"))
 	Controls.DropLabel:SetText(Locale.Lookup("LOC_MPH_DROP_LABEL_TEXT"))
 	_kPopupDialog = PopupDialog:new( "DropControl" );

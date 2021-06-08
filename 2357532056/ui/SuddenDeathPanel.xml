@@ -7,7 +7,7 @@
 	
 	<AlphaAnim						ID="PopupAlphaIn"      Size="parent,parent"  AlphaBegin="0"  AlphaEnd="1"  Speed="3" Function="Root" Cycle="Once">
 		<SlideAnim					ID="PopupSlideIn"      Size="parent,parent"  Start="0,-20"   End="0,0"     Speed="3" Function="Root" Cycle="Once">
-			<Grid																	   Size="auto,auto"			Anchor="C,B" Offset="0,0" Style="TutorialContainer"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
+			<Grid																	   Size="auto,auto"			Anchor="C,B" Offset="100,0" Style="TutorialContainer"     Color="255,255,255,200" AutoSizePadding="25,25" ConsumeMouse="1">
 				<Grid																	 Size="300,auto"			Anchor="C,C" Offset="0,0" Style="WindowFrameHUD" AutoSizePadding="0,0">
 					<Container			ID="SuddenDeathContainer"											 Size="parent,auto"                        Hidden="0">
 					<Stack				ID="SuddenDeathStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,0" StackGrowth="Bottom" StackPadding="0">

@@ -420,6 +420,7 @@ end
 -- Event Debugging
 -------------------------------------------------------
 
+-- Player
 function Debug_OnGameTurnStarted(arg1,arg2)
 	print("Debug_OnGameTurnStarted",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
 end
@@ -460,6 +461,14 @@ function Debug_TurnEnd(arg1,arg2)
 	print("Debug_TurnEnd",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
 end
 
+function Debug_PlayerDefeat( player, defeat, eventID)
+	print("Debug_PlayerDefeat",os.date('%Y-%m-%d %H:%M:%S'),"player",player,"defeat",defeat,"eventID",eventID)
+end
+
+
+
+
+-- Connect
 function Debug_ConnectedToNetSessionHost(arg1,arg2)
 	print("Debug_ConnectedToNetSessionHost",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2)
 end
@@ -512,13 +521,20 @@ function Debug_OnImprovementPillaged(iPlotIndex :number, eImprovement :number)
 	print("Debug_OnImprovementPillaged",os.date('%Y-%m-%d %H:%M:%S'),"iPlotIndex",iPlotIndex,"eImprovement",eImprovement)
 end
 
+-- city
 function Debug_OnCityBuilt( playerID: number, cityID : number, cityX : number, cityY : number )	
 	print("Debug_OnCityBuilt",os.date('%Y-%m-%d %H:%M:%S'),"playerID",playerID,"cityID",cityID,"cityX",cityX,"cityY",cityY)
+end
+
+function Debug_OnCityConquered(capturerID,  ownerID, cityID , cityX, cityY)
+	print("Debug_OnCityConquered",os.date('%Y-%m-%d %H:%M:%S'),"capturerID",capturerID,"ownerID,",ownerID,"cityID",cityID,"cityX",cityX,"cityY",cityY)
 end
 
 function Debug_OnCombatOccurred(attackerPlayerID :number, attackerUnitID :number, defenderPlayerID :number, defenderUnitID :number)
 	print("Debug_OnCombatOccurred",os.date('%Y-%m-%d %H:%M:%S'),"attackerPlayerID",attackerPlayerID,"defenderPlayerID",defenderPlayerID,"defenderUnitID",defenderUnitID)
 end
+
+
 -------------------------------------------------------
 
 function Initialize()
@@ -530,12 +546,14 @@ function Initialize()
 		GameEvents.PlayerTurnStarted.Add(Debug_PlayerTurnStarted);
 		GameEvents.PlayerTurnStartComplete.Add(Debug_PlayerTurnStartComplete);
 		GameEvents.OnPlayerTurnEnded.Add(Debug_OnPlayerTurnEnded);
+		
 		Events.PlayerTurnActivated.Add(Debug_PlayerTurnActivated);
 		Events.LocalPlayerTurnBegin.Add(Debug_LocalPlayerTurnBegin );
 		Events.LocalPlayerTurnEnd.Add(Debug_LocalPlayerTurnEnd );
 		Events.RemotePlayerTurnBegin.Add( Debug_RemotePlayerTurnBegin);
 		Events.RemotePlayerTurnEnd.Add( Debug_RemotePlayerTurnEnd );
 		Events.TurnEnd.Add(Debug_TurnEnd)
+		Events.PlayerDefeat.Add( Debug_PlayerDefeat );	
 		-- Connection
 		Events.ConnectedToNetSessionHost.Add ( Debug_ConnectedToNetSessionHost );
 		Events.MultiplayerPlayerConnected.Add( Debug_MultiplayerPlayerConnected );
@@ -555,6 +573,7 @@ function Initialize()
 		GameEvents.OnImprovementPillaged.Add(Debug_OnImprovementPillaged);
 		-- City
 		GameEvents.CityBuilt.Add(Debug_OnCityBuilt);
+		GameEvents.CityConquered.Add(Debug_OnCityConquered);
 	end
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	GameEvents.OnGameTurnStarted.Add(NoMoreStack);
