@@ -34,8 +34,6 @@
     <LuaContext ID="PowerLensManager"	          FileName="PowerLensManager"/>
 		<LuaContext ID="GenVFX"											FileName="GenVFX"									Hidden="1"/>	<!-- Generic VFX trigger support -->
 	</Container>
-	<!-- OCC -->
-	<LuaContext		ID="OneCityChallenge"								FileName="OneCityChallenge"						Hidden="1"/>
 	<!-- Turn Processing -->
 
 
@@ -149,7 +147,6 @@
 	
 	<LuaContext		ID="Civilopedia"							FileName="CivilopediaScreen"				Hidden="1"/>
 	<LuaContext		ID="PausePanel"								FileName="PausePanel"						Hidden="1"/>
-	<LuaContext		ID="SuddenDeathPanel"								FileName="SuddenDeathPanel"						Hidden="1"/>
 	<LuaContext		ID="VotePanel"								FileName="VotePanel"						Hidden="1"/>
 	<LuaContext		ID="DropControl"								FileName="DropControl"						Hidden="1"/>
 	<LuaContext FileName="MPHOptions"			ID="MPHOptions"			Hidden="1" TutorialActive="1" />

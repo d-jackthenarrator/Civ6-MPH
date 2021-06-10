@@ -366,7 +366,6 @@ end
 LuaEvents.UISuddenDeathTimeExpireAI.Add( OnTimerExpires );
 
 function OnTimeSaved(timeleft:number)
-	print("OnTimeSaved", timeleft)
 	Game:SetProperty("MPH_SD_TIME_LEFT", timeleft );	
 end
 

@@ -207,8 +207,15 @@ function OnMultiplayerChat( fromPlayer, toPlayer, text, eTargetType )
 	end	
 end
 
+-- ===========================================================================
+function OnShutdown()
+	Events.GameCoreEventPublishComplete.Remove( OnTimeTicks );
+
+end
+
 function Initialize()
 	ContextPtr:SetHide(true);
+	ContextPtr:SetShutdown(OnShutdown);
 	if GameConfiguration.GetValue("GAMEMODE_SUDDEN_DEATH") ~= true then
 		return
 	end

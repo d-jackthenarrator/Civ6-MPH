@@ -36,17 +36,18 @@
 			<GameCoreInUse>Expansion1</GameCoreInUse>
 		</Criteria>		
 
-		<Criteria id="OneCityChallenge_Mode_Expansion2">
-			<ConfigurationValueMatches>
-				<Group>Game</Group>
-				<ConfigurationId>GAMEMODE_ONECITY</ConfigurationId>
-				<Value>1</Value>
-			</ConfigurationValueMatches>
-		</Criteria>
+
 		<Criteria id="Anonymous_Mode_Expansion2">
 			<ConfigurationValueMatches>
 				<Group>Game</Group>
 				<ConfigurationId>GAMEMODE_ANONYMOUS</ConfigurationId>
+				<Value>1</Value>
+			</ConfigurationValueMatches>
+		</Criteria>
+		<Criteria id="Sudden_Death_Mode_Expansion2">
+			<ConfigurationValueMatches>
+				<Group>Game</Group>
+				<ConfigurationId>GAMEMODE_SUDDEN_DEATH</ConfigurationId>
 				<Value>1</Value>
 			</ConfigurationValueMatches>
 		</Criteria>
@@ -140,7 +141,6 @@
 	
 	<UpdateIcons id="MPHIcons FrontEnd">
 		<File>icons/Anonymous_Icons.xml</File>
-		<File>icons/OneCity_Icons.xml</File>
 		<File>icons/Sudden_Death_Icons.xml</File>
 	</UpdateIcons>
 	
@@ -153,35 +153,12 @@
 			<File>icons/Anonymous_44.dds</File>
 			<File>mode/anonymous/Anonymous_Portrait.dds</File>
 			<File>mode/anonymous/Anonymous_Background.dds</File>
-			<File>icons/ExpansionistUnit_22.dds</File>
-			<File>icons/ExpansionistUnit_32.dds</File>
-			<File>icons/ExpansionistUnit_38.dds</File>
-			<File>icons/ExpansionistUnit_50.dds</File>
-			<File>icons/ExpansionistUnit_80.dds</File>
-			<File>icons/ExpansionistUnit_256.dds</File>
-			<File>icons/OneCityChallenge_44.dds</File>
-			<File>mode/onecity/OneCity_Portrait.dds</File>
-			<File>mode/onecity/OneCity_Background.dds</File>
       </Items>
     </ImportFiles>
 
   </FrontEndActions>
    <InGameActions>
-   <!---
-    	<UpdateColors id="GameplayColors">
-      		<File>configuration/NONE_CoreColors.xml</File>
-      		<File>configuration/NONE_PlayerColors.xml</File>
-    	</UpdateColors>
 
-    	<UpdateDatabase id="Spectator_Gameplay">
-      		<Properties>
-        		<LoadOrder>9999</LoadOrder>
-      		</Properties>
-      		<File>configuration/NONE_Leaders.xml</File>
-      		<File>configuration/NONE_Civilization.xml</File>
-      		<File>configuration/NONE_LeaderAnimations.xml</File>
-    	</UpdateDatabase>
-		-->
     	<AddGameplayScripts id="CPL_Helper">
         	<File>data/MP_helper.lua</File>
     	</AddGameplayScripts>
@@ -373,9 +350,25 @@
 		<File>ui/PausePanel.xml</File>
 		<File>ui/SuddenDeathPanel.lua</File>
 		<File>ui/SuddenDeathPanel.xml</File>
-		<File>ui/OneCityChallenge.lua</File>
-		<File>ui/OneCityChallenge.xml</File>
 	</ImportFiles>
+	
+	<AddUserInterfaces id="SD_InGameUI" criteria="Sudden_Death_Mode_Expansion2">
+			<Properties>
+				<Context>InGame</Context>
+			</Properties>
+		<File>ui/Additions/SuddenDeathPanel.xml</File>
+	</AddUserInterfaces>
+	
+	<ImportFiles id="SD_Import" criteria="Sudden_Death_Mode_Expansion2">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/Additions/SuddenDeathPanel.lua</File>
+		<File>ui/Additions/SuddenDeathPanel.xml</File>
+	</ImportFiles>
+	
+	
+	
 	<ImportFiles id="cpl_InGame">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
@@ -445,66 +438,7 @@
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
 	
-	<!-- OCC InGame -->
-	<ImportFiles id="SF_Import" >
-      <Items>
-    <File>icons/ExpansionistUnit_22.dds</File>
-    <File>icons/ExpansionistUnit_32.dds</File>
-    <File>icons/ExpansionistUnit_38.dds</File>
-    <File>icons/ExpansionistUnit_50.dds</File>
-    <File>icons/ExpansionistUnit_80.dds</File>
-    <File>icons/ExpansionistUnit_256.dds</File>
-	<File>icons/OneCityChallenge_44.dds</File>
-      </Items>
-    </ImportFiles>
-	
-    <UpdateIcons id="OneCity_Challenge_Icon" >
-	 <File>icons/OneCity_Icons.xml</File>
-    </UpdateIcons>
-	
-    <UpdateText id="OCCText">
-      <Properties>
-        <LoadOrder>9999</LoadOrder>
-      </Properties>
-	  <Criteria>OneCityChallenge_Mode_Expansion2</Criteria>
-      <File>mode/onecity/text/Text_EN.xml</File>
-    </UpdateText>
-	
-	 <AddGameplayScripts id="OCC_Script">
-		<Criteria>OneCityChallenge_Mode_Expansion2</Criteria>
-        <File>mode/onecity/script/occ_core.lua</File>
-    </AddGameplayScripts>
-	
 
-	<UpdateDatabase id="OCC_SQL">
-            <Properties>
-                <LoadOrder>20000</LoadOrder>
-            </Properties>
-			<Criteria>OneCityChallenge_Mode_Expansion2</Criteria>
-			<File>mode/onecity/sql/core.sql</File>
-      </UpdateDatabase>	
-	  
-	  <ReplaceUIScript id="OCC_UnitPanel" criteria="OneCityChallenge_Mode_Expansion2">
-			<Properties>
-				<LoadOrder>20000</LoadOrder>
-				<LuaContext>UnitPanel</LuaContext>
-				<LuaReplace>mode/onecity/UI/Replacements/UnitPanel_occ.lua</LuaReplace>
-			</Properties>
-		</ReplaceUIScript>
-	
-	<ImportFiles id="OCC_Other">
-            <Properties>
-                <LoadOrder>20000</LoadOrder>
-            </Properties>
-			<Criteria>OneCityChallenge_Mode_Expansion2</Criteria>
-			<Items>
-			<File>mode/onecity/script/occ_StateUtils.lua</File>
-			<File>mode/onecity/script/occ_UnitCommandDefs.lua</File>
-			<File>mode/onecity/script/occ_UnitCommands.lua</File>
-			<File>mode/onecity/script/occ_Rules.lua</File>
-			<File>mode/onecity/UI/Replacements/UnitPanel_occ.lua</File>
-			 </Items>
-     </ImportFiles>	
 	
 	
 	
@@ -538,8 +472,6 @@
 	<File>ui/DropControl.lua</File>
 	<File>ui/EndGameMenu.lua</File>
 	<File>ui/EndGameMenu.xml</File>
-	<File>ui/OneCityChallenge.lua</File>
-	<File>ui/OneCityChallenge.xml</File>
 	<File>ui/GameSetupLogic.lua</File>
 	<File>ui/HostGame.lua</File>
 	<File>ui/HostGame.xml</File>
@@ -558,36 +490,18 @@
 	<File>ui/StagingRoom.xml</File>
 	<File>ui/StatusMessagePanel_Spectator.lua</File>
 	<File>ui/StatusMessagePanel.xml</File>
-	<File>ui/SuddenDeathPanel.lua</File>
-	<File>ui/SuddenDeathPanel.xml</File>
 	<File>ui/TurnProcessing.xml</File>
 	<File>ui/TurnProcessing.lua</File>
 	<File>ui/UnitFlagManager.lua</File>
 	<File>ui/VotePanel.xml</File>
 	<File>ui/VotePanel.lua</File>	
+	
+	<File>ui/Additions/SuddenDeathPanel.lua</File>
+	<File>ui/Additions/SuddenDeathPanel.xml</File>
 
 	<File>configuration/Config.xml</File>
 	<File>configuration/Config_BBG.xml</File>
-	<!--
-      	<File>configuration/NONE_CoreColors.xml</File>
-      	<File>configuration/NONE_PlayerColors.xml</File>
-      	<File>configuration/NONE_Leaders.xml</File>
-      	<File>configuration/NONE_Civilization.xml</File>
-      	<File>configuration/NONE_LeaderAnimations.xml</File>
-      	<File>configuration/NONE_Config.xml</File>
--->
-	<File>mode/onecity/OneCity_Portrait.dds</File>
-	<File>mode/onecity/OneCity_Background.dds</File>
-    <File>mode/onecity/expansionist/Expansionist_Units.dep</File>
-    <File>mode/onecity/expansionist/ArtDefs/Units.artdef</File>
-	<File>mode/onecity/sql/core.sql</File>
-	<File>mode/onecity/text/Text.xml</File>
-	<File>mode/onecity/script/occ_StateUtils.lua</File>
-	<File>mode/onecity/script/occ_core.lua</File>
-	<File>mode/onecity/script/occ_UnitCommandDefs.lua</File>
-	<File>mode/onecity/script/occ_UnitCommands.lua</File>
-	<File>mode/onecity/script/occ_Rules.lua</File>
-	<File>mode/onecity/UI/Replacements/UnitPanel_occ.lua</File>
+
 	
 	<File>mode/sudden_death/Sudden_Death_Portrait.dds</File>
 	<File>mode/sudden_death/Sudden_Death_Background.dds</File>
@@ -601,15 +515,7 @@
 	<File>icons/Anonymous_44.dds</File>
     <File>icons/Sudden_Death_Icons.xml</File>
 	<File>icons/Sudden_Death_44.dds</File>
-    <File>icons/OneCity_Icons.xml</File>
-	<File>icons/OneCityChallenge_38.dds</File>
-	<File>icons/OneCityChallenge_44.dds</File>
-    <File>icons/ExpansionistUnit_22.dds</File>
-    <File>icons/ExpansionistUnit_32.dds</File>
-    <File>icons/ExpansionistUnit_38.dds</File>
-    <File>icons/ExpansionistUnit_50.dds</File>
-    <File>icons/ExpansionistUnit_80.dds</File>
-    <File>icons/ExpansionistUnit_256.dds</File>
+
 
 	
 

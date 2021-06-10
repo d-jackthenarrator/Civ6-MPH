@@ -620,13 +620,6 @@
         <Replace Tag="LOC_GAMEMODE_ANONYMOUS_DESCRIPTION" Language="en_US">
             <Text>Players are all anonymous![NEWLINE]No more side-arrangement.</Text>
         </Replace>
-        <Replace Tag="LOC_GAMEMODE_ONECITY_NAME" Language="en_US">
-            <Text>One City Challenge Mode</Text>
-        </Replace>
-        <Replace Tag="LOC_GAMEMODE_ONECITY_DESCRIPTION" Language="en_US">
-            <Text>We can only have one city... Plan ahead to build it into an unchallenged military center or a new tower of Babel!
-            </Text>
-        </Replace>
         <Replace Tag="LOC_GAMEMODE_LASTMOVE_NAME" Language="en_US">
             <Text>Last Move - First Move Mode</Text>
         </Replace>
@@ -872,44 +865,6 @@
         <Replace Tag="MPH_PRESET_CIVFRTEAMER_DESC" Language="en_US">
             <Text>CivFR typical settings for teamers</Text>
         </Replace>
-
-        <!--  OCC Settings -->
-        <Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_NAME" Language="en_US">
-            <Text>Outer Walls</Text>
-        </Row>
-        <Row Tag="LOC_IMPROVEMENT_SAILOR_WATCHTOWER_DESCRIPTION" Language="en_US">
-            <Text>Allows to claim land outside of your capital</Text>
-        </Row>
-        <Row Tag="LOC_EXPANSIONIST_NAME" Language="en_US">
-            <Text>Expansionist</Text>
-        </Row>
-        <Row Tag="LOC_EXPANSIONIST_DESC" Language="en_US">
-            <Text>Can build outer walls improvement to claim lands outside of your borders</Text>
-        </Row>
-		        <!-- OCC -->
-        <Replace Tag="LOC_MOMENT_CATEGORY_INFRASTRUCTURE_BONUS_GOLDEN_AGE" language="en">
-            <Text>Monumentality Golden Age:[NEWLINE]+2 [ICON_Movement] Movement for all Builders. May purchase civilian units with [ICON_Faith] Faith. Builders and Expansionists are 30% cheaper to purchase with [ICON_FAITH] Faith and [ICON_GOLD] Gold.</Text>
-        </Replace>
-         <Replace Tag="LOC_BELIEF_RELIGIOUS_SETTLEMENTS_DESCRIPTION" language="en">
-            <Text>When chosen receive two Expansionists in your capital. Border expansion rate is 15% faster.</Text>
-        </Replace>  
-         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_NAME" language="en">
-            <Text>Build a protective wall</Text>
-        </Replace> 
-         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_DESCRIPTION" language="en">
-           <Text>Provide defensive bonus to garnisson units and allow to claim territory outside of your city limits</Text>
-        </Replace> 
-         <Replace Tag="LOC_UNITCOMMAND_BUILDWALL_DISABLED_TT" language="en">
-            <Text>Cannot be build on claimed territory, impassable terrain, cities or districts</Text>
-        </Replace> 	
-         <Replace Tag="LOC_IMPROVEMENT_OCC_WALL_NAME" language="en">
-            <Text>Outer Walls</Text>
-        </Replace> 	
-         <Replace Tag="LOC_IMPROVEMENT_OCC_WALL_DESC" language="en">
-            <Text>Use this improvement to claim territory and protect your troups.</Text>
-        </Replace> 	
-		 <Replace Tag="LOC_SCENARIO_HUD_CHARGES" language="en">
-		    <Text>OUTER WALL CHARGES</Text>
-        </Replace> 			
+		
     </LocalizedText>
 </GameData>
