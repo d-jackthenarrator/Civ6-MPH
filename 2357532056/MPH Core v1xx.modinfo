@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="134">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="135">
 
   <Properties>
     <Name>LOC_MPH_TITLE</Name>
@@ -127,9 +127,6 @@
 		
     </ImportFiles>
 
-    <UpdateDatabase id="None_Placeholder">
-      <File>configuration/NONE_Config.xml</File>
-    </UpdateDatabase>
         <UpdateDatabase id="CPL_SETTINGS">
             <File>configuration/Config.xml</File>
 			<File>configuration/Config_BBG.xml</File>
@@ -348,8 +345,6 @@
 		<File>ui/EndGameMenu.xml</File>
 		<File>ui/PausePanel.lua</File>
 		<File>ui/PausePanel.xml</File>
-		<File>ui/SuddenDeathPanel.lua</File>
-		<File>ui/SuddenDeathPanel.xml</File>
 	</ImportFiles>
 	
 	<AddUserInterfaces id="SD_InGameUI" criteria="Sudden_Death_Mode_Expansion2">
