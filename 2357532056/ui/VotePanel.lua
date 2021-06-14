@@ -29,6 +29,8 @@ local hostID = Network.GetGameHostPlayerID()
 local localID = Network.GetLocalPlayerID()
 local tick = os.clock()
 local tick_2 = os.clock()
+local map_sd = 0
+local game_sd = 0
 
 
 -- ===========================================================================
@@ -307,6 +309,10 @@ function OnHostRemap_Menu()
 	if localID ~= hostID then
 		return
 	end
+	Controls.VoteTitle:SetText(Locale.Lookup("LOC_MPH_VOTEPANEL_TITLE_REMAP_ADMIN_TEXT"))
+
+	Controls.MapSeedDisplay:SetText("Map Seed #"..map_sd)
+	Controls.GameSeedDisplay:SetText("Game Seed #"..game_sd)
 	Controls.VoteTitle:SetText(Locale.Lookup("LOC_MPH_VOTEPANEL_TITLE_REMAP_ADMIN_TEXT"))
 	ContextPtr:SetHide(false);
 	b_remap_passed = true
@@ -754,6 +760,10 @@ function Initialize()
 
 	ContextPtr:SetShutdown( OnShutdown );
 	ContextPtr:SetHide(true);
+
+	map_sd = tostring(MapConfiguration.GetValue("RANDOM_SEED"))
+	game_sd = tostring(GameConfiguration.GetValue("GAME_SYNC_RANDOM_SEED"))
+	
 	Controls.VoteStack:CalculateSize();
 	Events.MultiplayerChat.Add( OnMultiplayerChat );
 	_kPopupDialog = PopupDialog:new( "VotePanel" );

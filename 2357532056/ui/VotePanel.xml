@@ -34,14 +34,15 @@
 						<Stack				ID="RemapStack"  			Size="parent,1000"			Anchor="C,T" Offset="0,50" StackGrowth="Bottom" StackPadding="30">
 						<Label			ID="RemapLabel"       Anchor="L,T" Style="BodyTextDark18" Align="Left" WrapWidth="550" String="RemapLabel" Offset="15,0"  />
 						<Stack Anchor="C,T" StackGrowth="Bottom" Size="parent,1000"	 Padding="5">
-							<Label Anchor="C,C" Style="BodyTextDark18" WrapWidth="500" String="LOC_GAME_SYNC_RANDOM_SEED"/>
+							<Label ID="GameSeedDisplay" Anchor="C,C" Style="BodyTextDark18" WrapWidth="500" String="LOC_MPH_VOTEPANEL_GAME_RANDOM_SEED"/>
 							<Grid Style="EditTextArea" Size="auto,30" Anchor="C,T" InnerPadding="6,6">
 								<EditBox ID="GameSeedEdit" Anchor="C,T" Offset="0,0" Size="200,23" EditMode="0" Style="BodyTextDark18" ColorSet="BodyTextCool"   NumberInput="1" FontStyle="stroke" MaxLength="12"/>
 							</Grid>
-							<Label Anchor="C,C"  Style="BodyTextDark18"  WrapWidth="500" String="LOC_MAP_RANDOM_SEED"/>
+							<Label ID="MapSeedDisplay" Anchor="C,C"  Style="BodyTextDark18"  WrapWidth="500" String="LOC_MPH_VOTEPANEL_MAP_RANDOM_SEED"/>
 							<Grid Style="EditTextArea2" Size="200,30" Anchor="C,T" InnerPadding="6,6" >
 								<EditBox ID="MapSeedEdit" Anchor="C,T" Offset="0,0" Size="parent,23" EditMode="0" Style="BodyTextDark18" ColorSet="BodyTextCool"  NumberInput="1" FontStyle="stroke" MaxLength="12"/>
 							</Grid>
+							<Label ID="G" Anchor="C,C" Style="BodyTextDark18" WrapWidth="500" String=" "/>
 						</Stack>
 						<Grid Size="600,auto"	Anchor="C,C" Offset="0,0">
 							<GridButton ID="Remap_Confirm" Style="ButtonConfirm" Align="Center" Anchor="C,C" String="OK" Size="150,41" Offset="0,0" />

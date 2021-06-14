@@ -298,6 +298,12 @@
         <Replace Tag="LOC_MPH_VOTEPANEL_TITLE_REMAP_ADMIN_TEXT" language="en">
             <Text>Admin Re-map</Text>
         </Replace>
+		 <Replace Tag="LOC_MPH_VOTEPANEL_GAME_RANDOM_SEED" language="en">
+            <Text>Game Seed</Text>
+        </Replace>
+		<Replace Tag="LOC_MPH_VOTEPANEL_MAP_RANDOM_SEED" language="en">
+            <Text>Map Seed</Text>
+        </Replace>
         <Replace Tag="LOC_MPH_VOTEPANEL_LABEL_REMAP_TEXT" language="en">
             <Text>A vote to restart the game on a new map seed has been casted.</Text>
         </Replace>
@@ -669,7 +675,7 @@
             <Text>End Turn</Text>
         </Replace>
         <Replace Tag="LOC_MPH_UI_REFRESH_TEXT" Language="en_US">
-            <Text>Reset the UI</Text>
+            <Text>RESET THE UI</Text>
         </Replace>
         <Replace Tag="LOC_MPH_UI_REFRESH_TOOLTIP" Language="en_US">
             <Text>Hard reset the UI environment</Text>
