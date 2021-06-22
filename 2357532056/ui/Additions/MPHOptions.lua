@@ -185,8 +185,6 @@ function OnRequestHostResync()
 	local localID = Network.GetLocalPlayerID()
 	if localID ~= hostID then
 		Network.SendChat(".mph_ui_log_received_general_request_to_resync_to_host",-2,hostID)
-		--Network.RequestSnapshot()
-		--Network.TriggerTestSync()
 	end
 	OnReturn()
 end
@@ -427,29 +425,16 @@ function OnLoadScreenClose()
 	end
 end
 
-function OnLocalPlayerTurnBegin()
-	
-	local hostID = Network.GetGameHostPlayerID()
-	local localID = Network.GetLocalPlayerID()
-	local turn = Game.GetProperty("LOCAL_TURN")
-	local seed = Game.GetProperty("LOCAL_SEED")
-	if turn == nil or seed == nil then
-		g_local_seed = tostring(-1)
-		g_local_turn = tostring(-1)
-	end
-	g_local_seed = tostring(seed)
-	g_local_turn = tostring(turn)
-	if hostID ~= localID and localID ~= nil then
-		Network.SendChat(".mph_ui_checkseed_id_"..tostring(localID).."_turn_"..g_local_turn.."_seed_"..g_local_seed,-2,hostID)
-	end
-end
-
 -- ===========================================================================
 --	Callback
 -- ===========================================================================
 function OnShutdown()
 	ContextPtr:SetHide(true);
 	m_active = false
+	LuaEvents.MPHMenu_Click.Remove( OnShow );
+	LuaEvents.EscMenu_Show.Remove( OnReturn );
+	Events.MultiplayerChat.Remove( OnMultiplayerChat );
+	Events.LoadScreenClose.Remove( OnLoadScreenClose );
 	
 end
 
@@ -473,7 +458,7 @@ function Initialize()
 	LuaEvents.EscMenu_Show.Add( OnReturn );
 	Events.MultiplayerChat.Add( OnMultiplayerChat );
 	Events.LoadScreenClose.Add( OnLoadScreenClose );
-	Events.LocalPlayerTurnBegin.Add( OnLocalPlayerTurnBegin )
+
 end
 Initialize();
 

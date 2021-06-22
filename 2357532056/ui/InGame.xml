@@ -147,9 +147,7 @@
 	
 	<LuaContext		ID="Civilopedia"							FileName="CivilopediaScreen"				Hidden="1"/>
 	<LuaContext		ID="PausePanel"								FileName="PausePanel"						Hidden="1"/>
-	<LuaContext		ID="VotePanel"								FileName="VotePanel"						Hidden="1"/>
-	<LuaContext		ID="DropControl"								FileName="DropControl"						Hidden="1"/>
-	<LuaContext FileName="MPHOptions"			ID="MPHOptions"			Hidden="1" TutorialActive="1" />
+	
 	<!-- Movie Support -->
 	 <BoxButton	ID="InGameContainer" Size="parent,parent" Color="255,255,255,255" Hidden="1" ConsumeAllMouse="1">
     <Movie		ID="InGameMovie" Size="parent,parent" LoopMovie="0" StretchMode="UniformToFill" />

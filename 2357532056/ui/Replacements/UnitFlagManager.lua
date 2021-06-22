@@ -91,6 +91,9 @@ local m_DirtyComponents				:table  = nil;
 local m_UnitFlagInstances			:table  = {};
 local m_isMapDeselectDisabled		:boolean= false;
 
+local g_anon						:boolean= false;
+local g_spec						:boolean= false;
+
 -- COMMENTING OUT hstructures.
 -- These structures remained defined for the entire lifetime of the application.
 -- If a modder or scenario script needs to redefine it, yer boned.
@@ -245,22 +248,11 @@ function UnitFlag.Initialize( self, playerID: number, unitID : number, flagType 
 		self.m_IsDimmed = false;
 		self.m_OverrideDimmed = false;
 		self.m_FogState = 0;
-		local bspec = false
-		local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
+
+		if (g_spec == true) then
 			self.m_IsCurrentlyVisible = true
 			self.m_FogState = 2;
-	end				   
+		end				   
 	
 		self.m_Player = Players[playerID];
 		self.m_UnitID = unitID;
@@ -298,19 +290,8 @@ function OnUnitFlagClick( playerID : number, unitID : number )
 		Controls.PanelTop:ForceAnAssertDueToAboveCondition();
 		return;
 	end
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
+
+	if (g_spec == true) then
 		if Players[Game.GetLocalPlayer()]:IsTurnActive() == false then
 		print("IsTurnActiveComplete()",Players[Game.GetLocalPlayer()]:IsTurnActiveComplete())
 		print("CanUnreadyTurn()",Players[Game.GetLocalPlayer()]:CanUnreadyTurn())
@@ -600,19 +581,8 @@ end
 ------------------------------------------------------------------
 -- Change the flag's fog state
 function UnitFlag.SetFogState( self, fogState : number )
-	local bspec = false
-	local spec_ID = 0
-	if (Game:GetProperty("SPEC_NUM") ~= nil) then
-		for k = 1, Game:GetProperty("SPEC_NUM") do
-			if ( Game:GetProperty("SPEC_ID_"..k)~= nil) then
-				if Game.GetLocalPlayer() == Game:GetProperty("SPEC_ID_"..k) then
-					bspec = true
-					spec_ID = k
-				end
-			end
-		end
-	end
-	if (bspec == true) then
+
+	if (g_spec == true) then
 		self.m_eVisibility = 2
 		self:SetHide( false )
 		self.m_FogState = 2
@@ -879,7 +849,7 @@ function UnitFlag.UpdateName( self )
 		local unitName = pUnit:GetName();
 		local pPlayerCfg = PlayerConfigurations[ self.m_Player:GetID() ];
 		local playername =  pPlayerCfg:GetPlayerName()
-		if GameConfiguration.GetValue("GAMEMODE_ANONYMOUS") == true then
+		if g_anon == true and not g_spec then
 			playername = "Anon_"..self.m_Player:GetID()
 		end
 		if playername == nil then
@@ -2142,6 +2112,16 @@ end
 --	Initialize pattern, override if modding.
 -- ===========================================================================
 function LateInitialize()
+	if GameConfiguration.GetValue("GAMEMODE_ANONYMOUS") == true then
+		g_anon = true
+	end
+	local localPlayerId = Game.GetLocalPlayer()
+	
+	if localPlayerId ~= nil and localPlayerId > -1 then
+		if PlayerConfigurations[localPlayerId]:GetLeaderTypeName() == "LEADER_SPECTATOR" then
+			g_spec = true
+		end
+	end
 end
 
 
@@ -2152,7 +2132,6 @@ function OnInit(isHotload : boolean)
 	Subscribe();
 	RegisterDirtyEvents();
 	LateInitialize();
-
 	if isHotload then
 		Refresh();	-- If hotloading, rebuild from scratch.
 	end
@@ -2177,5 +2156,6 @@ end
 function Initialize()
 	ContextPtr:SetInitHandler( OnInit );
 	ContextPtr:SetShutdown( OnShutdown );
+
 end
 Initialize();

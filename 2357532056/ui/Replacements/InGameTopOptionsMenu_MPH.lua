@@ -1,4 +1,9 @@
 -- Copyright 2017-2019, Firaxis Games
+------------------------------------------------------------------------------
+--	FILE:	 InGameTopOptionsMenu_MPH.lua
+--	AUTHOR:  D. / Jack The Narrator
+--	PURPOSE: UI - Esc Main Menu
+-------------------------------------------------------------------------------
 include( "InGameTopOptionsMenu" );
 
 -- ===========================================================================
@@ -31,7 +36,9 @@ end
 function SetupButtons()
 	local localID = Network.GetLocalPlayerID()
 	LuaEvents.EscMenu_Show()
+	
 	BASE_SetupButtons();
+	
 	local bWorldBuilder = WorldBuilder and WorldBuilder:IsActive();
 	local bIsMultiplayer = GameConfiguration.IsAnyMultiplayer();
 	local bIsCloud = GameConfiguration.IsPlayByCloud()

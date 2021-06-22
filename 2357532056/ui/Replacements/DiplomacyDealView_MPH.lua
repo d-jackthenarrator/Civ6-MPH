@@ -62,17 +62,17 @@ if GameConfiguration.GetValue("NO_TRADING_AGREEMENTS") == true then
 end
 
 if Modding.IsModActive("4873eb62-8ccc-4574-b784-dda455e74e68") == true then
-	include("DiplomacyDealView_Expansion2.lua");
+	--include("DiplomacyDealView_Expansion2.lua");
 	isXP2 = true;
-	print("Diplomacy Trade View Manager for MPH - build 2 - GS Detected")
-	else
-	include("DiplomacyDealView.lua");
-	print("Diplomacy Trade View Manager for MPH - build 2")
 end
 
+--include("DiplomacyDealView_Expansion2.lua")
+print("MPH DiplomacyDealView")
 -- ===========================================================================
 -- CACHE BASE FUNCTIONS
 -- ===========================================================================
+
+
 BASE_PopulateAvailableGold = PopulateAvailableGold;
 BASE_PopulateAvailableResources = PopulateAvailableResources;
 BASE_PopulateAvailableLuxuryResources =  PopulateAvailableLuxuryResources;

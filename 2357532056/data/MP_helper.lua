@@ -84,20 +84,15 @@
 --		Presets Updated
 -- v1.3.5
 --		OCC Updated
-
-print("MPH Gamescript")
-
+-- v1.3.6
+--		Code Clean Up
 
 -- ===========================================================================
 --	NEW VARIABLES
 -- ===========================================================================
 ExposedMembers.LuaEvents = LuaEvents
-local g_version = "v1.3.5"
+local g_version = "v1.3.6"
 local Drop_Data = {};
-local b_freecity = false
-local g_turn_start_time = 0
-local b_teamer = false
-local g_timeshift = 0
 local b_debug = false
 
 -- ===========================================================================
@@ -116,173 +111,42 @@ function OnGameTurnStarted(turn)
 	b_debuff = false
 	local seed = Game.GetRandNum(100, "MPH Track Local State")
 	print("OnGameTurnStarted: Turn",turn,"Local State:",seed,g_turn_start_time)
-	Game:SetProperty("LOCAL_SEED",seed)
-	Game:SetProperty("LOCAL_TURN",turn)
-end
-
---------------------------------------------------------------------------------
-function OnCapturedCityState(playerID,cityID)
-	print("OnCapturedCityState", playerID,cityID)
-	local pPlayer = Players[ReceiverID]
-	local pCity = CityManager.GetCity(playerID, cityID) 
-	print(Locale.Lookup(pCity:GetName()))
-	CityManager.DestroyCity(pCity)
-
-end
-
-LuaEvents.UICPLRazeCity.Add( OnCapturedCityState );
-
-function OnIrr(playerID:number)
-	print("OnIrr Remove all AI convenants", playerID)
-	local pPlayer = Players[playerID]
-	local team = pPlayer:GetTeam();
-
-	-- FFA
-	if b_teamer == false then
-		print("OnIrr - FFA")
-		local playerCities = pPlayer:GetCities()
-		for i, pCity in playerCities:Members() do
-			if pCity ~= nil then
-				--pCity:ChangeLoyalty(-999)
-				CityManager.TransferCityToFreeCities(pCity)
-			end
-		end
-		return
-	end
 	
-	-- Teamer
-	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
-		if Players[i]:IsAlive() == true and i ~= playerID then
-			Players[playerID]:GetDiplomacy():SetHasDelegationAt(i,false)
-			Players[playerID]:GetDiplomacy():SetHasEmbassyAt(i,false)
-			if team == nil or team == -1 then
-				-- FFA
-				else
-				-- Teamer
-				local team_other = Players[i]:GetTeam()
-				if team_other ~= team then
-					--Players[playerID]:GetDiplomacy():SetHasAllied(i,false)
-					--Players[playerID]:GetDiplomacy():SetHasDeclaredFriendship(i,false) Only work in FireTuner environement ?
-				end 
-			end
-		end	
-	end
-	
-
 end
 
-LuaEvents.UICPLPlayerIrr.Add( OnIrr );
-
------------------------------------------------------------------------------------------
-
-function FreeCities_Sronger()
-	if GameConfiguration.GetValue("CPL_FREECITY_STRONGER") == 0 then
-		return
-	end
-	-- Free Cities
-	local max_era = 0
-	local second_era = 0
-	local count = 0
-		if Players[62] ~= nil then
-			if Players[62]:IsAlive() then
-				-- 0 Ancient
-				-- 1 Classical
-				-- 2 Medieval
-				-- 3 Renaissance
-				-- 4 Industrial
-				-- 5 Modern
-				-- 6 Atomic
-				-- 7 Information
-				for k = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do
-					if Players[k] ~= nil then
-						if Players[k]:IsAlive() == true then
-							--if Players[k]:GetEras():GetEra() > max_era then
-							--	second_era = max_era
-							--	max_era = Players[k]:GetEras():GetEra()
-							--end
-							max_era = max_era + Players[k]:GetEras():GetEra()
-							count = count + 1
-						end 
-					end		
-				end
-				local currentTurn = Game.GetCurrentGameTurn()
-				print ("CPL Helper Free City Module: Turn " .. tostring(currentTurn));
-				local FreeCities = Players[62]:GetCities()
-				local monument_idx = 0
-				local wall_idx = 0
-				for building in GameInfo.Buildings() do
-					if (building.BuildingType == "BUILDING_MONUMENT") then
-						monument_idx = building.Index
-						elseif building.BuildingType == "BUILDING_WALLS" then
-						wall_idx = building.Index
-					end
-				end
-				max_era = max_era / count
-				--max_era = second_era
-				for i, FreeCity in FreeCities:Members() do
-					if FreeCity ~= nil then
-						if FreeCity:GetBuildings():HasBuilding(monument_idx) == false then
-							FreeCity:GetBuildQueue():CreateBuilding(monument_idx)
-						end
-						if Game.GetCurrentGameTurn() >= 50 then
-							if FreeCity:GetBuildings():HasBuilding(wall_idx) == false then
-								FreeCity:GetBuildQueue():CreateBuilding(wall_idx)
-							end
-						end
-						mac_era = -1
-						if Game.GetCurrentGameTurn() % 10 == 0 then
-							local FreeUnits = Players[62]:GetUnits()
-							local rng = TerrainBuilder.GetRandomNumber(100,"test")/100
-							if max_era > 0.1 and  max_era < 1 then
-								FreeUnits:Create(GameInfo.Units["UNIT_ARCHER"].Index, FreeCity:GetX(), FreeCity:GetY())
-								elseif max_era > 0.9 and max_era < 1.5 then
-								FreeUnits:Create(GameInfo.Units["UNIT_SWORDMAN"].Index, FreeCity:GetX(), FreeCity:GetY())
-								elseif max_era > 1.49 and max_era < 2.5 then
-									if rng > 0.25 then
-										FreeUnits:Create(GameInfo.Units["UNIT_CROSSBOWMAN"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_KNIGHT"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-								elseif max_era > 2.49 and max_era < 3.75 then
-									if rng > 0.25 then
-										FreeUnits:Create(GameInfo.Units["UNIT_CROSSBOWMAN"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_BOMBARD"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-								elseif max_era > 3.74 and max_era < 4.75 then
-									if rng > 0.25 then
-										FreeUnits:Create(GameInfo.Units["UNIT_FIELD_CANNON"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_CAVALRY"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-								elseif max_era > 4.74 and max_era < 5.75 then
-									if rng > 0.05 then
-										FreeUnits:Create(GameInfo.Units["UNIT_FIELD_CANNON"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_TANK"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-								elseif max_era > 5.74 and max_era < 6.75 then
-									if rng > 0.25 then
-										FreeUnits:Create(GameInfo.Units["UNIT_ARTILLERY"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_TANK"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-								elseif max_era > 6.74  then
-									if rng > 0.005 then
-										FreeUnits:Create(GameInfo.Units["UNIT_MODERN_ARMOR"].Index, FreeCity:GetX(), FreeCity:GetY())
-										else
-										FreeUnits:Create(GameInfo.Units["UNIT_GIANT_DEATH_ROBOT"].Index, FreeCity:GetX(), FreeCity:GetY())
-									end
-							end
-						end
-					end
+function NoMoreStack()
+	if ( Game.GetCurrentGameTurn() ~= GameConfiguration.GetStartTurn()) then
+	for i = 0, PlayerManager.GetAliveMajorsCount() - 1 do
+		if (PlayerConfigurations[i]:GetLeaderTypeName() ~= "LEADER_SPECTATOR" and PlayerConfigurations[i]:GetHandicapTypeID() ~= 2021024770) then
+			local pPlayerCulture:table = Players[i]:GetCulture();
+			if pPlayerCulture:GetProgressingCivic() == -1 and pPlayerCulture:GetCultureYield()>0 then
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic: Adjust. Turn",Game.GetCurrentGameTurn())
+				for k = 0, 58 do
+					if (pPlayerCulture:HasCivic(k) == false) then
+						pPlayerCulture:SetProgressingCivic(k)
+						break
+					end	
 				end
 			end
-		end
+			local pPlayerTechs:table = Players[i]:GetTechs();
+			if pPlayerTechs:GetResearchingTech() == -1 and pPlayerTechs:GetScienceYield()>0 then
+				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech: Adjust. Turn",Game.GetCurrentGameTurn())
+				for k = 0, 73 do
+					if (pPlayerTechs:HasTech(k) == false) then
+						pPlayerTechs:SetResearchingTech(k)
+						break
+					end	
+				end
+			end
+		end		
+	end
+	end	
 end
 
 
--------------------------------------------------------------------------------------------------------------------------------
+-- =========================================================================== 
+--	REMOTE EVENTS (UI -> SCRIPT)
+-- ===========================================================================
 -- Drop/Restore Mechanics
 
 function OnDrop(playerID:number)
@@ -345,9 +209,7 @@ end
 
 LuaEvents.UICPLPlayerConnect.Add( OnConnect );
 
--- =========================================================================== 
 --	Sudden Death
--- =========================================================================== 
 
 function OnTimerExpires(playerID:number)
 	print("OnTimerExpires Script", playerID)
@@ -362,18 +224,17 @@ function OnTimerExpires(playerID:number)
 	end
 end
 
-
 LuaEvents.UISuddenDeathTimeExpireAI.Add( OnTimerExpires );
 
 function OnTimeSaved(timeleft:number)
 	Game:SetProperty("MPH_SD_TIME_LEFT", timeleft );	
 end
 
-
 LuaEvents.UISuddenDeathSavetime.Add( OnTimeSaved );
 
-
---==================================================================================================================================================================
+-- =========================================================================== 
+--	Utils
+-- ===========================================================================
 function Tablelength(T)
 	local count = 0
 	for _ in pairs(T) do count = count + 1 end
@@ -386,38 +247,8 @@ function FindTableIndex(t,val)
     end
 end
 
-function NoMoreStack()
-	if ( Game.GetCurrentGameTurn() ~= GameConfiguration.GetStartTurn()) then
-	for i = 0, PlayerManager.GetAliveMajorsCount() - 1 do
-		if (PlayerConfigurations[i]:GetLeaderTypeName() ~= "LEADER_SPECTATOR" and PlayerConfigurations[i]:GetHandicapTypeID() ~= 2021024770) then
-			local pPlayerCulture:table = Players[i]:GetCulture();
-			if pPlayerCulture:GetProgressingCivic() == -1 and pPlayerCulture:GetCultureYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a civic: Adjust. Turn",Game.GetCurrentGameTurn())
-				for k = 0, 58 do
-					if (pPlayerCulture:HasCivic(k) == false) then
-						pPlayerCulture:SetProgressingCivic(k)
-						break
-					end	
-				end
-			end
-			local pPlayerTechs:table = Players[i]:GetTechs();
-			if pPlayerTechs:GetResearchingTech() == -1 and pPlayerTechs:GetScienceYield()>0 then
-				print("Player",PlayerConfigurations[i]:GetLeaderTypeName()," forgot to pick a tech: Adjust. Turn",Game.GetCurrentGameTurn())
-				for k = 0, 73 do
-					if (pPlayerTechs:HasTech(k) == false) then
-						pPlayerTechs:SetResearchingTech(k)
-						break
-					end	
-				end
-			end
-		end		
-	end
-	end	
-end
 
--------------------------------------------------------
 -- Event Debugging
--------------------------------------------------------
 
 -- Player
 function Debug_OnGameTurnStarted(arg1,arg2)
@@ -533,7 +364,17 @@ function Debug_OnCombatOccurred(attackerPlayerID :number, attackerUnitID :number
 	print("Debug_OnCombatOccurred",os.date('%Y-%m-%d %H:%M:%S'),"attackerPlayerID",attackerPlayerID,"defenderPlayerID",defenderPlayerID,"defenderUnitID",defenderUnitID)
 end
 
+-- spy
+function Debug_OnSpyMissionUpdated(arg1, arg2, arg3, arg4)
+	print("Debug_OnSpyMissionUpdated",os.date('%Y-%m-%d %H:%M:%S'),"arg1",arg1,"arg2",arg2,"arg3",arg3,"arg4",arg4)
+end
 
+function Debug_OnSpyMissionCompleted(playerID:number, missionID:number, arg3, arg4)
+	print("Debug_OnSpyMissionCompleted",os.date('%Y-%m-%d %H:%M:%S'),"playerID",playerID,"missionID",missionID,"arg3",arg3,"arg4",arg4)
+end
+
+-------------------------------------------------------
+-------------------------------------------------------
 -------------------------------------------------------
 
 function Initialize()
@@ -573,7 +414,11 @@ function Initialize()
 		-- City
 		GameEvents.CityBuilt.Add(Debug_OnCityBuilt);
 		GameEvents.CityConquered.Add(Debug_OnCityConquered);
+		-- Spy
+		Events.SpyMissionUpdated.Add( Debug_OnSpyMissionUpdated );
+		Events.SpyMissionCompleted.Add(	Debug_OnSpyMissionCompleted );
 	end
+
 	GameEvents.OnGameTurnStarted.Add(OnGameTurnStarted);
 	GameEvents.OnGameTurnStarted.Add(NoMoreStack);
 	for i = 0, PlayerManager.GetWasEverAliveMajorsCount() -1 do

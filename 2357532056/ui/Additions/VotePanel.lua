@@ -748,6 +748,8 @@ function OnShutdown()
 	ContextPtr:SetHide(true);
 	print("MPH Shutdown - UI Refresh")
 	Events.GameCoreEventPublishComplete.Remove ( OnRefresh );
+	LuaEvents.MPHMenu_OnHostRemap.Remove(OnHostRemap_Menu)
+	Events.MultiplayerChat.Remove( OnMultiplayerChat );
 end
 
 function OnClose()

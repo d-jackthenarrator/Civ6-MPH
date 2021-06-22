@@ -12,7 +12,7 @@ print("Custom EndGameMenu for MPH")
 -- CONSTANTS
 -- ===========================================================================
 local RELOAD_CACHE_ID :string = "EndGameMenu";
-MAX_BUTTON_SIZE = 160;	-- also global
+local MAX_BUTTON_SIZE = 160;	-- also global
 local bWasInHistoricMoments = false;
 local m_concede = false
 local m_spec = false

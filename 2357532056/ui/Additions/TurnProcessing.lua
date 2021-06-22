@@ -11,7 +11,7 @@ include( "InstanceManager" );
 -- ===========================================================================
 --	Variables
 -- ===========================================================================
-UIEvents = ExposedMembers.LuaEvents;
+
 local m_isRetired		: boolean = false;
 local m_isClosing 		: boolean = false;
 
@@ -511,6 +511,25 @@ function OnInit( isReload:boolean )
 	end
 end
 
+
+function OnShutdown()
+	LuaEvents.InGame_OpenTurnProcessing.Remove( OnOpen );
+	LuaEvents.InGame_CloseTurnProcessing.Remove( Close );
+	
+	LuaEvents.UITimeAdjust.Remove( OnAdjustTime )
+	Events.LocalPlayerTurnBegin.Remove( OnLocalPlayerTurnBegin )
+	Events.RemotePlayerTurnBegin.Remove( OnRemotePlayerTurnBegin )
+	Events.RemotePlayerTurnEnd.Remove( OnRemotePlayerTurnEnd );
+	Events.LocalPlayerTurnEnd.Remove(OnLocalPlayerTurnEnd );
+	Events.TurnEnd.Remove(OnTurnEnd)
+		
+	Events.LoadScreenClose.Remove(OnLoadScreenClose);
+	
+end
+
+	
+
+
 -- ===========================================================================
 function Initialize()
 	Refresh_Data()
@@ -518,6 +537,7 @@ function Initialize()
 	ContextPtr:SetInitHandler( OnInit );
 	ContextPtr:SetInputHandler( OnInput, true );
 	ContextPtr:SetShowHandler( OnShow );
+	ContextPtr:SetShutdown( OnShutdown );
 	LuaEvents.InGame_OpenTurnProcessing.Add( OnOpen );
 	LuaEvents.InGame_CloseTurnProcessing.Add( Close );
 	

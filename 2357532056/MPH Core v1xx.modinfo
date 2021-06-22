@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="135">
+<Mod id="619ac86e-d99d-4bf3-b8f0-8c5b8c402176" version="136">
 
   <Properties>
     <Name>LOC_MPH_TITLE</Name>
     <Description>LOC_MPH_DESCRIPTION</Description>
 	<Created>1</Created>
-	<Version>135</Version>
+	<Version>136</Version>
     <Teaser>LOC_MPH_TEASER</Teaser>
     <Authors>D. / Jack The Narrator</Authors>
 	<SpecialThanks>Civfanatics.com, CPL, Gedemon, the [NnJa] crew, coloo, iElden</SpecialThanks>
@@ -14,8 +14,8 @@
   
 	<LocalizedText>
 		<Text id="LOC_MPH_TITLE">
-			<en_US>Multiplayer Helper 1.3.5</en_US>
-			<fr_FR>Multiplayer Helper 1.3.5</fr_FR>
+			<en_US>Multiplayer Helper 1.3.6</en_US>
+			<fr_FR>Multiplayer Helper 1.3.6</fr_FR>
 		</Text>
 		<Text id="LOC_MPH_TEASER">
 			<en_US>Esport oriented mod to help tournament and game statibility.</en_US>
@@ -110,21 +110,20 @@
   </ActionCriteria>
 
   <FrontEndActions>
-    <ImportFiles id="StagingRoom and Option">
+    <ImportFiles id="FrontEnd">
       <Properties>
         <LoadOrder>9999</LoadOrder>
       </Properties>
-	  
+		<File>ui/GameSetupLogic.lua</File>
+		<File>ui/HostGame.lua</File>
+		<File>ui/HostGame.xml</File>
 		<File>ui/MainMenu.lua</File>
 		<File>ui/MainMenu.xml</File>
+		<File>ui/PlayerTargetLogic.lua</File>
+		<File>ui/SetupParameters.lua</File>
 		<File>ui/StagingRoom.lua</File>
 		<File>ui/StagingRoom.xml</File>
-		<File>ui/HostGame.lua</File>
-		<File>ui/SetupParameters.lua</File>
-		<File>ui/GameSetupLogic.lua</File>
-		<File>ui/PlayerTargetLogic.lua</File>
-		<File>ui/HostGame.xml</File>
-		
+				
     </ImportFiles>
 
         <UpdateDatabase id="CPL_SETTINGS">
@@ -164,6 +163,7 @@
 		<File>data/Victories.xml</File>
         </UpdateDatabase>
 
+		<!-- Database adjustment FrontEnd dependent -->
 		<UpdateDatabase id="MPH_Control_Military_Alliance_Off">
             <Properties>
                 <LoadOrder>20000</LoadOrder>
@@ -261,7 +261,7 @@
 			<File>sql/mph_alliance_no_religious_xp1.sql</File>
         </UpdateDatabase>	
 
-			<UpdateDatabase id="MPH_Control_Research_Alliance_Off">
+		<UpdateDatabase id="MPH_Control_Research_Alliance_Off">
             <Properties>
                 <LoadOrder>20000</LoadOrder>
             </Properties>
@@ -306,105 +306,96 @@
 			<File>sql/mph_diplomacy_no_sw.sql</File>
         </UpdateDatabase>			
 
-	
+		<!-- General MPH Ingame Files -->
         <UpdateText id="MPH_INGAME_TEXTS">
             <File>lang/Text_EN.xml</File>
         </UpdateText>
-
-	<ReplaceUIScript id="MPH_DiplomacyDealView">
+		
+		
+		<!-- Master UI -->
+		<ImportFiles id="MPH_Ingame">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
-			<LuaContext>DiplomacyDealView_Expansion2</LuaContext>
-			<LuaReplace>ui/DiplomacyDealView_MPH.lua</LuaReplace>
+		 </Properties>
+		<File>ui/InGame.xml</File>
+		<File>ui/InGame.lua</File>
+	</ImportFiles>
+
+		<!-- Replacement UI -->
+	<ReplaceUIScript id="MPH_DiplomacyActionView" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+			<LuaContext>DiplomacyActionView</LuaContext>
+			<LuaReplace>ui/Replacements/DiplomacyActionView_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 	<ReplaceUIScript id="MPH_InGameTopOptionsMenu">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 			<LuaContext>InGameTopOptionsMenu</LuaContext>
-			<LuaReplace>ui/CPL_helper_InGameTopOptionsMenu.lua</LuaReplace>
+			<LuaReplace>ui/Replacements/InGameTopOptionsMenu_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
-	<ImportFiles id="MPH_InGameTopOptionsMenu">
+
+
+	<ImportFiles id="MPH_UI_Replacements">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/InGameTopOptionsMenu.xml</File>
-	</ImportFiles>
-	<ImportFiles id="cpl_MPHOption">
-		<Properties>
-			<LoadOrder>9</LoadOrder>
-		 </Properties>
-		<File>ui/MPHOptions.xml</File>
-		<File>ui/MPHOptions.lua</File>
-		<File>ui/VotePanel.xml</File>
-		<File>ui/VotePanel.lua</File>
-		<File>ui/DropControl.xml</File>
-		<File>ui/DropControl.lua</File>
-		<File>ui/EndGameMenu.lua</File>
-		<File>ui/EndGameMenu.xml</File>
-		<File>ui/PausePanel.lua</File>
-		<File>ui/PausePanel.xml</File>
+		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
+		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
+		<File>ui/Replacements/EndGameMenu.lua</File>
+		<File>ui/Replacements/EndGameMenu.xml</File>
+		<File>ui/Replacements/InGameTopOptionsMenu.xml</File>	
+		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
+		<File>ui/Replacements/MapPinListPanel.lua</File>
+		<File>ui/Replacements/MapPinListPanel.xml</File>	
+		<File>ui/Replacements/PausePanel.lua</File>
+		<File>ui/Replacements/PausePanel.xml</File>		
+		<File>ui/Replacements/StatusMessagePanel.lua</File>
+		<File>ui/Replacements/StatusMessagePanel.xml</File>	
 	</ImportFiles>
 	
-	<AddUserInterfaces id="SD_InGameUI" criteria="Sudden_Death_Mode_Expansion2">
+	<!-- UI Additions -->
+	<AddUserInterfaces id="MPH_DropControl">
 			<Properties>
+				<LoadOrder>99</LoadOrder>
 				<Context>InGame</Context>
 			</Properties>
-		<File>ui/Additions/SuddenDeathPanel.xml</File>
+		<File>ui/Additions/DropControl.xml</File>
+	</AddUserInterfaces>
+	<AddUserInterfaces id="MPH_Options">
+			<Properties>
+				<LoadOrder>99</LoadOrder>
+				<Context>InGame</Context>
+			</Properties>
+		<File>ui/Additions/MPHOptions.xml</File>
+	</AddUserInterfaces>
+		<AddUserInterfaces id="MPH_Options">
+			<Properties>
+				<LoadOrder>99</LoadOrder>
+				<Context>InGame</Context>
+			</Properties>
+		<File>ui/Additions/VotePanel.xml</File>
 	</AddUserInterfaces>
 	
-	<ImportFiles id="SD_Import" criteria="Sudden_Death_Mode_Expansion2">
+	<ImportFiles id="MPH_UI_Additions">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/Additions/SuddenDeathPanel.lua</File>
-		<File>ui/Additions/SuddenDeathPanel.xml</File>
+		<File>ui/Additions/DropControl.xml</File>
+		<File>ui/Additions/DropControl.lua</File>
+		<File>ui/Additions/MPHOptions.xml</File>
+		<File>ui/Additions/MPHOptions.lua</File>
+		<File>ui/Additions/TurnProcessing.xml</File>
+		<File>ui/Additions/TurnProcessing.lua</File>
+		<File>ui/Additions/VotePanel.xml</File>
+		<File>ui/Additions/VotePanel.lua</File>
 	</ImportFiles>
 	
 	
 	
-	<ImportFiles id="cpl_InGame">
-		<Properties>
-			<LoadOrder>9</LoadOrder>
-		 </Properties>
-		<File>ui/InGame.xml</File>
-		<File>ui/InGame.lua</File>
-		<File>ui/TurnProcessing.xml</File>
-		<File>ui/TurnProcessing.lua</File>
-	</ImportFiles>
-
-	<ReplaceUIScript id="CPL_ChatPanel">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-			<LuaContext>ChatPanel</LuaContext>
-			<LuaReplace>ui/CPL_helper_ChatPanel.lua</LuaReplace>
-		</Properties>
-	</ReplaceUIScript>
-
-
-	<ReplaceUIScript id="Spectator_StatusMessagePanel" criteria="Expansion2">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-			<LuaContext>StatusMessagePanel</LuaContext>
-			<LuaReplace>ui/StatusMessagePanel_Spectator.lua</LuaReplace>
-		</Properties>
-	</ReplaceUIScript>
-	<ImportFiles id="Spectator_StatusMessagePanel" criteria="Expansion2">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-		 </Properties>
-		<File>ui/StatusMessagePanel.xml</File>
-	</ImportFiles>
-
-	<ReplaceUIScript id="MPH_DiplomacyActionView" criteria="Expansion2">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-			<LuaContext>DiplomacyActionView</LuaContext>
-			<LuaReplace>ui/DiplomacyActionView_MPH.lua</LuaReplace>
-		</Properties>
-	</ReplaceUIScript>
-	
+	<!-- Extra Icons For Modes -->
 	<ImportFiles id="AN_Import">
       <Items>
 		<File>icons/Anonymous_44.dds</File>
@@ -422,9 +413,26 @@
     <UpdateIcons id="Sudden_Death_Icon">
 	 <File>icons/Sudden_Death_Icons.xml</File>
     </UpdateIcons>
-
-
-
+	
+	<!-- Sudden Death Only -->
+	<AddUserInterfaces id="SD_InGameUI" criteria="Sudden_Death_Mode_Expansion2">
+			<Properties>
+				<Context>InGame</Context>
+			</Properties>
+		<File>ui/Additions/SuddenDeathPanel.xml</File>
+	</AddUserInterfaces>
+	
+	<ImportFiles id="SD_Import" criteria="Sudden_Death_Mode_Expansion2">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/Additions/SuddenDeathPanel.lua</File>
+		<File>ui/Additions/SuddenDeathPanel.xml</File>
+	</ImportFiles>
+	
+	
+	
+	<!-- Anonymous Only -->
 	
     <UpdateText id="AnonText" criteria="Anonymous_Mode_Expansion2">
       <Properties>
@@ -433,9 +441,21 @@
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
 	
-
+	<ReplaceUIScript id="Anon_UI_ChatPanel" criteria="Anonymous_Mode_Expansion2">
+		<Properties>
+			<LoadOrder>9999</LoadOrder>
+			<LuaContext>ChatPanel</LuaContext>
+			<LuaReplace>ui/Replacements/ChatPanel_MPH.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
 	
-	
+	<ImportFiles id="Anon_Import" criteria="Anonymous_Mode_Expansion2">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+		 </Properties>
+		<File>ui/Replacements/ChatPanel_MPH.lua</File>
+		<File>ui/Replacements/UnitFlagManager.lua</File>
+	</ImportFiles>	
 	
  </InGameActions>
   <Files>
@@ -458,42 +478,50 @@
 	<File>sql/mph_alliance_no_economic_xp1.sql</File>
 	<File>sql/mph_diplomacy_no_fs.sql</File>
 	<File>sql/mph_diplomacy_no_sw.sql</File>
-
-	<File>ui/CPL_helper_ChatPanel.lua</File>
-	<File>ui/CPL_helper_InGameTopOptionsMenu.lua</File>
-	<File>ui/DiplomacyActionView_MPH.lua</File>
-	<File>ui/DiplomacyDealView_MPH.lua</File>
-	<File>ui/DropControl.xml</File>
-	<File>ui/DropControl.lua</File>
-	<File>ui/EndGameMenu.lua</File>
-	<File>ui/EndGameMenu.xml</File>
+	
+	<!-- FrontEnd UI -->
 	<File>ui/GameSetupLogic.lua</File>
 	<File>ui/HostGame.lua</File>
 	<File>ui/HostGame.xml</File>
-	<File>ui/InGame.xml</File>
-	<File>ui/InGame.lua</File>
-	<File>ui/InGameTopOptionsMenu.xml</File>
 	<File>ui/MainMenu.lua</File>
 	<File>ui/MainMenu.xml</File>
-	<File>ui/MPHOptions.xml</File>
-	<File>ui/MPHOptions.lua</File>
-	<File>ui/PausePanel.lua</File>
-	<File>ui/PausePanel.xml</File>
 	<File>ui/PlayerTargetLogic.lua</File>
 	<File>ui/SetupParameters.lua</File>
 	<File>ui/StagingRoom.lua</File>
 	<File>ui/StagingRoom.xml</File>
-	<File>ui/StatusMessagePanel_Spectator.lua</File>
-	<File>ui/StatusMessagePanel.xml</File>
-	<File>ui/TurnProcessing.xml</File>
-	<File>ui/TurnProcessing.lua</File>
-	<File>ui/UnitFlagManager.lua</File>
-	<File>ui/VotePanel.xml</File>
-	<File>ui/VotePanel.lua</File>	
-	
-	<File>ui/Additions/SuddenDeathPanel.lua</File>
-	<File>ui/Additions/SuddenDeathPanel.xml</File>
 
+	<!-- InGame UI -->
+	<File>ui/InGame.xml</File>
+	<File>ui/InGame.lua</File>
+		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
+		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
+		<File>ui/Replacements/EndGameMenu.lua</File>
+		<File>ui/Replacements/EndGameMenu.xml</File>
+		<File>ui/Replacements/InGameTopOptionsMenu.xml</File>	
+		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
+		<File>ui/Replacements/MapPinListPanel.lua</File>
+		<File>ui/Replacements/MapPinListPanel.xml</File>	
+		<File>ui/Replacements/PausePanel.lua</File>
+		<File>ui/Replacements/PausePanel.xml</File>		
+		<File>ui/Replacements/StatusMessagePanel.lua</File>
+		<File>ui/Replacements/StatusMessagePanel.xml</File>	
+		<!-- Anon -->
+		<File>ui/Replacements/ChatPanel_MPH.lua</File>
+		<File>ui/Replacements/UnitFlagManager.lua</File>
+	
+		<File>ui/Additions/DropControl.xml</File>
+		<File>ui/Additions/DropControl.lua</File>
+		<File>ui/Additions/MPHOptions.xml</File>
+		<File>ui/Additions/MPHOptions.lua</File>
+		<File>ui/Additions/TurnProcessing.xml</File>
+		<File>ui/Additions/TurnProcessing.lua</File>
+		<File>ui/Additions/VotePanel.xml</File>
+		<File>ui/Additions/VotePanel.lua</File>
+		<!-- Sudden Death -->
+		<File>ui/Additions/SuddenDeathPanel.lua</File>
+		<File>ui/Additions/SuddenDeathPanel.xml</File>
+		<File>ui/Replacements/UnitFlagManager.lua</File>
+	
 	<File>configuration/Config.xml</File>
 	<File>configuration/Config_BBG.xml</File>
 
@@ -510,9 +538,6 @@
 	<File>icons/Anonymous_44.dds</File>
     <File>icons/Sudden_Death_Icons.xml</File>
 	<File>icons/Sudden_Death_44.dds</File>
-
-
-	
 
   </Files>
 </Mod>
