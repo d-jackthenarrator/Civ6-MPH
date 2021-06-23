@@ -344,16 +344,16 @@
 		 </Properties>
 		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
 		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
-		<File>ui/Replacements/EndGameMenu.lua</File>
-		<File>ui/Replacements/EndGameMenu.xml</File>
-		<File>ui/Replacements/InGameTopOptionsMenu.xml</File>	
+		<File>ui/Replacements/endgamemenu.lua</File>
+		<File>ui/Replacements/endgamemenu.xml</File>
+		<File>ui/Replacements/ingametopoptionsmenu.xml</File>	
 		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
-		<File>ui/Replacements/MapPinListPanel.lua</File>
-		<File>ui/Replacements/MapPinListPanel.xml</File>	
-		<File>ui/Replacements/PausePanel.lua</File>
-		<File>ui/Replacements/PausePanel.xml</File>		
-		<File>ui/Replacements/StatusMessagePanel.lua</File>
-		<File>ui/Replacements/StatusMessagePanel.xml</File>	
+		<File>ui/Replacements/mappinlistpanel.lua</File>
+		<File>ui/Replacements/mappinlistpanel.xml</File>	
+		<File>ui/Replacements/pausepanel.lua</File>
+		<File>ui/Replacements/pausepanel.xml</File>		
+		<File>ui/Replacements/statusmessagepanel.lua</File>
+		<File>ui/Replacements/statusmessagepanel.xml</File>	
 	</ImportFiles>
 	
 	<!-- UI Additions -->
@@ -454,7 +454,7 @@
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
 		<File>ui/Replacements/ChatPanel_MPH.lua</File>
-		<File>ui/Replacements/UnitFlagManager.lua</File>
+		<File>ui/Replacements/unitflagmanager.lua</File>
 	</ImportFiles>	
 	
  </InGameActions>
@@ -495,19 +495,19 @@
 	<File>ui/ingame.lua</File>
 		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
 		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
-		<File>ui/Replacements/EndGameMenu.lua</File>
-		<File>ui/Replacements/EndGameMenu.xml</File>
-		<File>ui/Replacements/InGameTopOptionsMenu.xml</File>	
+		<File>ui/Replacements/endgamemenu.lua</File>
+		<File>ui/Replacements/endgamemenu.xml</File>
+		<File>ui/Replacements/ingametopoptionsmenu.xml</File>	
 		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
-		<File>ui/Replacements/MapPinListPanel.lua</File>
-		<File>ui/Replacements/MapPinListPanel.xml</File>	
-		<File>ui/Replacements/PausePanel.lua</File>
-		<File>ui/Replacements/PausePanel.xml</File>		
-		<File>ui/Replacements/StatusMessagePanel.lua</File>
-		<File>ui/Replacements/StatusMessagePanel.xml</File>	
+		<File>ui/Replacements/mappinlistpanel.lua</File>
+		<File>ui/Replacements/mappinlistpanel.xml</File>	
+		<File>ui/Replacements/pausepanel.lua</File>
+		<File>ui/Replacements/pausepanel.xml</File>		
+		<File>ui/Replacements/statusmessagepanel.lua</File>
+		<File>ui/Replacements/statusmessagepanel.xml</File>	
 		<!-- Anon -->
 		<File>ui/Replacements/ChatPanel_MPH.lua</File>
-		<File>ui/Replacements/UnitFlagManager.lua</File>
+		<File>ui/Replacements/unitflagmanager.lua</File>
 	
 		<File>ui/Additions/DropControl.xml</File>
 		<File>ui/Additions/DropControl.lua</File>
@@ -520,7 +520,7 @@
 		<!-- Sudden Death -->
 		<File>ui/Additions/SuddenDeathPanel.lua</File>
 		<File>ui/Additions/SuddenDeathPanel.xml</File>
-		<File>ui/Replacements/UnitFlagManager.lua</File>
+		<File>ui/Replacements/unitflagmanager.lua</File>
 	
 	<File>configuration/Config.xml</File>
 	<File>configuration/Config_BBG.xml</File>
