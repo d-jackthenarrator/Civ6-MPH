@@ -326,14 +326,14 @@
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 			<LuaContext>DiplomacyActionView</LuaContext>
-			<LuaReplace>ui/Replacements/DiplomacyActionView_MPH.lua</LuaReplace>
+			<LuaReplace>ui/Replacements/diplomacyactionview_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 	<ReplaceUIScript id="MPH_InGameTopOptionsMenu">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 			<LuaContext>InGameTopOptionsMenu</LuaContext>
-			<LuaReplace>ui/Replacements/InGameTopOptionsMenu_MPH.lua</LuaReplace>
+			<LuaReplace>ui/Replacements/ingametopoptionsmenu_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 
@@ -342,12 +342,12 @@
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
-		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
+		<File>ui/Replacements/diplomacyactionview_MPH.lua</File>
+		<File>ui/Replacements/diplomacydealview_MPH.lua</File>
 		<File>ui/Replacements/endgamemenu.lua</File>
 		<File>ui/Replacements/endgamemenu.xml</File>
 		<File>ui/Replacements/ingametopoptionsmenu.xml</File>	
-		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
+		<File>ui/Replacements/ingametopoptionsmenu_MPH.lua</File>
 		<File>ui/Replacements/mappinlistpanel.lua</File>
 		<File>ui/Replacements/mappinlistpanel.xml</File>	
 		<File>ui/Replacements/pausepanel.lua</File>
@@ -445,7 +445,7 @@
 		<Properties>
 			<LoadOrder>9999</LoadOrder>
 			<LuaContext>ChatPanel</LuaContext>
-			<LuaReplace>ui/Replacements/ChatPanel_MPH.lua</LuaReplace>
+			<LuaReplace>ui/Replacements/chatpanel_MPH.lua</LuaReplace>
 		</Properties>
 	</ReplaceUIScript>
 	
@@ -453,7 +453,7 @@
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/Replacements/ChatPanel_MPH.lua</File>
+		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/unitflagmanager.lua</File>
 	</ImportFiles>	
 	
@@ -493,12 +493,12 @@
 	<!-- InGame UI -->
 	<File>ui/ingame.xml</File>
 	<File>ui/ingame.lua</File>
-		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
-		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
+		<File>ui/Replacements/diplomacyactionview_MPH.lua</File>
+		<File>ui/Replacements/diplomacydealview_MPH.lua</File>
 		<File>ui/Replacements/endgamemenu.lua</File>
 		<File>ui/Replacements/endgamemenu.xml</File>
 		<File>ui/Replacements/ingametopoptionsmenu.xml</File>	
-		<File>ui/Replacements/InGameTopOptionsMenu_MPH.lua</File>
+		<File>ui/Replacements/ingametopoptionsmenu_MPH.lua</File>
 		<File>ui/Replacements/mappinlistpanel.lua</File>
 		<File>ui/Replacements/mappinlistpanel.xml</File>	
 		<File>ui/Replacements/pausepanel.lua</File>
@@ -506,7 +506,7 @@
 		<File>ui/Replacements/statusmessagepanel.lua</File>
 		<File>ui/Replacements/statusmessagepanel.xml</File>	
 		<!-- Anon -->
-		<File>ui/Replacements/ChatPanel_MPH.lua</File>
+		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/unitflagmanager.lua</File>
 	
 		<File>ui/Additions/DropControl.xml</File>
