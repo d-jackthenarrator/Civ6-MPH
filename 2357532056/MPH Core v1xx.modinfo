@@ -114,15 +114,15 @@
       <Properties>
         <LoadOrder>9999</LoadOrder>
       </Properties>
-		<File>ui/GameSetupLogic.lua</File>
-		<File>ui/HostGame.lua</File>
-		<File>ui/HostGame.xml</File>
-		<File>ui/MainMenu.lua</File>
-		<File>ui/MainMenu.xml</File>
-		<File>ui/PlayerTargetLogic.lua</File>
-		<File>ui/SetupParameters.lua</File>
-		<File>ui/StagingRoom.lua</File>
-		<File>ui/StagingRoom.xml</File>
+		<File>ui/gamesetuplogic.lua</File>
+		<File>ui/hostgame.lua</File>
+		<File>ui/hostgame.xml</File>
+		<File>ui/mainmenu.lua</File>
+		<File>ui/mainmenu.xml</File>
+		<File>ui/playertargetlogic.lua</File>
+		<File>ui/setupparameters.lua</File>
+		<File>ui/stagingroom.lua</File>
+		<File>ui/stagingroom.xml</File>
 				
     </ImportFiles>
 
@@ -317,8 +317,8 @@
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/InGame.xml</File>
-		<File>ui/InGame.lua</File>
+		<File>ui/ingame.xml</File>
+		<File>ui/ingame.lua</File>
 	</ImportFiles>
 
 		<!-- Replacement UI -->
@@ -480,19 +480,19 @@
 	<File>sql/mph_diplomacy_no_sw.sql</File>
 	
 	<!-- FrontEnd UI -->
-	<File>ui/GameSetupLogic.lua</File>
-	<File>ui/HostGame.lua</File>
-	<File>ui/HostGame.xml</File>
-	<File>ui/MainMenu.lua</File>
-	<File>ui/MainMenu.xml</File>
-	<File>ui/PlayerTargetLogic.lua</File>
-	<File>ui/SetupParameters.lua</File>
-	<File>ui/StagingRoom.lua</File>
-	<File>ui/StagingRoom.xml</File>
+	<File>ui/gamesetuplogic.lua</File>
+	<File>ui/hostgame.lua</File>
+	<File>ui/hostgame.xml</File>
+	<File>ui/mainmenu.lua</File>
+	<File>ui/mainmenu.xml</File>
+	<File>ui/playertargetlogic.lua</File>
+	<File>ui/setupparameters.lua</File>
+	<File>ui/stagingroom.lua</File>
+	<File>ui/stagingroom.xml</File>
 
 	<!-- InGame UI -->
-	<File>ui/InGame.xml</File>
-	<File>ui/InGame.lua</File>
+	<File>ui/ingame.xml</File>
+	<File>ui/ingame.lua</File>
 		<File>ui/Replacements/DiplomacyActionView_MPH.lua</File>
 		<File>ui/Replacements/DiplomacyDealView_MPH.lua</File>
 		<File>ui/Replacements/EndGameMenu.lua</File>
