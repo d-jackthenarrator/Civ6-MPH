@@ -4,12 +4,12 @@
 --	Civilization VI, Firaxis Games
 -- ===========================================================================
 include("ChatPanel.lua");
-print("MPH Anonymous Chat Panel")
+print("MPH Chat Panel")
 
 -- ===========================================================================
 --	ORIGINAL VARIABLES
 -- ===========================================================================
-
+BASE_OnChat = OnChat
 -- ===========================================================================
 --	NEW VARIABLES
 -- ===========================================================================
@@ -27,3 +27,18 @@ function OnMultplayerPlayerConnected( playerID )
 		BuildPlayerList();
 	end
 end
+
+-- ===========================================================================
+function OnChat( fromPlayer, toPlayer, text, eTargetType, playSounds :boolean )
+	if text == nil then
+		return
+	end
+	if ( (string.sub(string.lower(text),1,4) == ".mph"))  then
+		print("MPH Command",text)
+		return
+	end
+	
+	BASE_OnChat(fromPlayer, toPlayer, text, eTargetType, playSounds);
+end
+
+-- ===========================================================================

@@ -322,6 +322,14 @@
 	</ImportFiles>
 
 		<!-- Replacement UI -->
+	<ReplaceUIScript id="MPH_ChatPanel" criteria="Expansion2">
+		<Properties>
+			<LoadOrder>9</LoadOrder>
+			<LuaContext>ChatPanel</LuaContext>
+			<LuaReplace>ui/Replacements/chatpanel_MPH.lua</LuaReplace>
+		</Properties>
+	</ReplaceUIScript>
+	
 	<ReplaceUIScript id="MPH_DiplomacyActionView" criteria="Expansion2">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
@@ -342,6 +350,7 @@
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
+		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/diplomacyactionview_MPH.lua</File>
 		<File>ui/Replacements/diplomacydealview_MPH.lua</File>
 		<File>ui/Replacements/endgamemenu.lua</File>
@@ -441,19 +450,10 @@
       <File>mode/anonymous/text_anon.xml</File>
     </UpdateText>
 	
-	<ReplaceUIScript id="Anon_UI_ChatPanel" criteria="Anonymous_Mode_Expansion2">
-		<Properties>
-			<LoadOrder>9999</LoadOrder>
-			<LuaContext>ChatPanel</LuaContext>
-			<LuaReplace>ui/Replacements/chatpanel_MPH.lua</LuaReplace>
-		</Properties>
-	</ReplaceUIScript>
-	
 	<ImportFiles id="Anon_Import" criteria="Anonymous_Mode_Expansion2">
 		<Properties>
 			<LoadOrder>9</LoadOrder>
 		 </Properties>
-		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/unitflagmanager.lua</File>
 	</ImportFiles>	
 	
@@ -493,6 +493,7 @@
 	<!-- InGame UI -->
 	<File>ui/ingame.xml</File>
 	<File>ui/ingame.lua</File>
+		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/diplomacyactionview_MPH.lua</File>
 		<File>ui/Replacements/diplomacydealview_MPH.lua</File>
 		<File>ui/Replacements/endgamemenu.lua</File>
@@ -505,8 +506,8 @@
 		<File>ui/Replacements/pausepanel.xml</File>		
 		<File>ui/Replacements/statusmessagepanel.lua</File>
 		<File>ui/Replacements/statusmessagepanel.xml</File>	
+		
 		<!-- Anon -->
-		<File>ui/Replacements/chatpanel_MPH.lua</File>
 		<File>ui/Replacements/unitflagmanager.lua</File>
 	
 		<File>ui/Additions/DropControl.xml</File>
