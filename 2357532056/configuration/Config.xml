@@ -222,12 +222,30 @@
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="GAME_NO_BARBARIANS" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="DRAFT_MAP" TargetValue="1" Hash="0"/>
+		<!--
+		<Row ParameterId="BAN_POOL_1" Name="LOC_MAP_ARCHIPELAGO_NAME" 
+		<Row ParameterId="BAN_POOL_2" Name="LOC_MAP_CONTINENTS" 
+		<Row ParameterId="BAN_POOL_3" Name="LOC_MAP_CONTINENTS_ISLANDS_NAME"
+		<Row ParameterId="BAN_POOL_4" Name="LOC_MAP_FRACTAL" 
+		<Row ParameterId="BAN_POOL_5" Name="LOC_MAP_LAKES" 
+		<Row ParameterId="BAN_POOL_6" Name="LOC_MAP_INLANDSEA" 
+		<Row ParameterId="BAN_POOL_7" Name="LOC_MAP_PANGAEA" 
+		<Row ParameterId="BAN_POOL_8" Name="LOC_MAP_PRIMORDIAL_NAME" 
+		<Row ParameterId="BAN_POOL_9" Name="LOC_MAP_SEVEN_SEAS"
+		<Row ParameterId="BAN_POOL_10" Name="LOC_MAP_SHUFFLE" 
+		<Row ParameterId="BAN_POOL_11" Name="LOC_MAP_SMALL_CONTINENTS" 
+		<Row ParameterId="BAN_POOL_12" Name="LOC_MAP_SPLINTERED_FRACTAL_NAME" 
+		<Row ParameterId="BAN_POOL_13" Name="LOC_MAP_TERRA"
+		<Row ParameterId="BAN_POOL_14" Name="LOC_MAP_TILTED_AXIS_NAME" 
+		<Row ParameterId="BAN_POOL_15" Name="LOC_MAP_HIGHLANDS_NAME" 
+		-->
+		
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_1" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_2" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="1" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_5" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_6" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_6" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_7" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_8" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_9" TargetValue="1" Hash="0"/>
@@ -235,7 +253,7 @@
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_11" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_12" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_13" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="BAN_POOL_15" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="3" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Game" TargetId="DRAFT_TIMER" TargetValue="1" />
@@ -264,9 +282,49 @@
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_DUPLICATE_LEADERS" TargetValue="0" Hash="0" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_DUPLICATE_CIVILIZATIONS" TargetValue="0" Hash="0" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="GAME_START_ERA" TargetValue="ERA_ANCIENT" Hash="1"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="world_age" TargetValue="1"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="GAME_TURN_LIMIT" TargetValue="TURNLIMIT_GAMESPEED" Hash="1"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="world_age" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="MAP_SIZE" TargetValue="MAPSIZE_STANDARD" Hash="1"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="GAME_NO_BARBARIANS" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_SMARTTIMER" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="DRAFT_MAP" TargetValue="1" Hash="0"/>
+		<!--
+		<Row ParameterId="BAN_POOL_1" Name="LOC_MAP_ARCHIPELAGO_NAME" 
+		<Row ParameterId="BAN_POOL_2" Name="LOC_MAP_CONTINENTS" 
+		<Row ParameterId="BAN_POOL_3" Name="LOC_MAP_CONTINENTS_ISLANDS_NAME"
+		<Row ParameterId="BAN_POOL_4" Name="LOC_MAP_FRACTAL" 
+		<Row ParameterId="BAN_POOL_5" Name="LOC_MAP_LAKES" 
+		<Row ParameterId="BAN_POOL_6" Name="LOC_MAP_INLANDSEA" 
+		<Row ParameterId="BAN_POOL_7" Name="LOC_MAP_PANGAEA" 
+		<Row ParameterId="BAN_POOL_8" Name="LOC_MAP_PRIMORDIAL_NAME" 
+		<Row ParameterId="BAN_POOL_9" Name="LOC_MAP_SEVEN_SEAS"
+		<Row ParameterId="BAN_POOL_10" Name="LOC_MAP_SHUFFLE" 
+		<Row ParameterId="BAN_POOL_11" Name="LOC_MAP_SMALL_CONTINENTS" 
+		<Row ParameterId="BAN_POOL_12" Name="LOC_MAP_SPLINTERED_FRACTAL_NAME" 
+		<Row ParameterId="BAN_POOL_13" Name="LOC_MAP_TERRA"
+		<Row ParameterId="BAN_POOL_14" Name="LOC_MAP_TILTED_AXIS_NAME" 
+		<Row ParameterId="BAN_POOL_15" Name="LOC_MAP_HIGHLANDS_NAME" 
+		-->
+		
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_1" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_2" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_5" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_6" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_7" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_8" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_9" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_10" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_11" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_12" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_13" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_15" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="3" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="DRAFT_TIMER" TargetValue="1" />
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="DRAFT_SLOT_ORDER" TargetValue="3" />
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_TRADING_CITIES" TargetValue="1" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="resources" TargetValue="2"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="BBSStratRes" TargetValue="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="NO_TRADING_GOLD" TargetValue="0"/>

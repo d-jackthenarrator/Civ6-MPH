@@ -857,7 +857,7 @@
             <Text>CPL FFA</Text>
         </Replace>
         <Replace Tag="MPH_PRESET_CIVFRTEAMER_NAME" Language="en_US">
-            <Text>CivFR Teamer</Text>
+            <Text>Squadron CivFR</Text>
         </Replace>
 		<Replace Tag="MPH_PRESET_NONE_DESC" Language="en_US">
             <Text>Default Settings</Text>

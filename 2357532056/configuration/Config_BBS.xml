@@ -1,0 +1,8 @@
+<GameInfo>
+	<ConfigurationUpdates>
+		<!--  CWC Defaulting  -->
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="1" TargetGroup="Map" TargetId="BBSRidge" TargetValue="1" Hash="0" />
+		<!--  Squadron CivFR Defaulting  -->
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Map" TargetId="BBSRidge" TargetValue="1" Hash="0" />
+	</ConfigurationUpdates>
+</GameInfo>

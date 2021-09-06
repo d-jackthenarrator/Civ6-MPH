@@ -31,6 +31,8 @@ local m_shellTabIM:table = InstanceManager:new("ShellTab", "TopControl", Control
 local m_kPopupDialog:table;
 local m_pCityStateWarningPopup:table = PopupDialog:new("CityStateWarningPopup");
 local m_InSession = false
+local m_Preset = -1;
+local b_visible = false;
 
 
 function OnSetParameterValues(pid: string, values: table)
@@ -436,7 +438,7 @@ end
 
 
 function OnShow()
-	
+	CheckPreset()
 	RebuildPlayerParameters(true);
 	GameSetup_RefreshParameters();
 	Refresh()
@@ -458,10 +460,6 @@ function OnShow()
 	--]]
 
 	RealizeShellTabs();
-	
-	if isInSession == false then
-		Default_Natural_Wonders()
-	end
 end
 
 -- ===========================================================================
@@ -481,6 +479,7 @@ end
 
 -- ===========================================================================
 function OnHide( isHide, isInit )
+	b_visible = false
 	ReleasePlayerParameters();
 	HideGameSetup();
 end
@@ -838,6 +837,53 @@ function Default_Natural_Wonders()
 	GameConfiguration.SetValue("EXCLUDE_NATURAL_WONDERS",default)
 end
 
+function Squadron_Natural_Wonders()
+	local default = {}
+	default = {
+				"FEATURE_LYSEFJORDEN",
+				"FEATURE_GIANTS_CAUSEWAY"
+				}
+	GameConfiguration.SetValue("EXCLUDE_NATURAL_WONDERS",default)
+end
+
+function CheckPreset()
+	local currentPreset = GameConfiguration.GetValue("MPH_PRESET")
+	print("CheckPreset()",currentPreset,m_Preset,isInSession)
+	if currentPreset == nil then
+		return
+	end
+	
+	if m_Preset ~= currentPreset then
+		if m_Preset == -1 then
+			Default_Natural_Wonders()
+		end
+		-- None
+		if currentPreset == 0 then
+			print("Applied Default Settings")
+			Default_Natural_Wonders()
+		end
+		-- CWC
+		if currentPreset == 1 then
+			print("Applied CWC Settings")
+			Default_Natural_Wonders()
+		end
+		-- FFA
+		if currentPreset == 2 then
+			print("Applied Default Settings")
+			Default_Natural_Wonders()
+		end
+		-- Squadron
+		if currentPreset == 3 then
+			print("Applied Squadron Settings")
+			Squadron_Natural_Wonders()
+		end	
+		Network.BroadcastGameConfig();	
+		OnUpdateUI()
+	end
+	
+	m_Preset = currentPreset
+
+end
 
 
 -- ===========================================================================
@@ -857,7 +903,7 @@ end
 -- ===========================================================================
 function Initialize()
 	
-	Default_Natural_Wonders()
+	CheckPreset()
 	Events.SystemUpdateUI.Add(OnUpdateUI);
 
 	ContextPtr:SetInitHandler(OnInit);
@@ -876,6 +922,7 @@ function Initialize()
 	Events.MultiplayerGameAbandoned.Add( OnAbandoned );
 	Events.LeaveGameComplete.Add( OnLeaveGameComplete );
 	Events.BeforeMultiplayerInviteProcessing.Add( OnBeforeMultiplayerInviteProcessing );
+	Events.GameConfigChanged.Add(CheckPreset);
 	
 	LuaEvents.ChangeMPLobbyMode.Add( OnChangeMPLobbyMode );
 	LuaEvents.GameDebug_Return.Add(OnGameDebugReturn);
