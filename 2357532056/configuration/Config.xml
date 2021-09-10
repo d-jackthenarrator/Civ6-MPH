@@ -146,7 +146,7 @@
 		<Row Domain="MphPreset" Value="0" Name="MPH_PRESET_NONE_NAME" Description="MPH_PRESET_NONE_DESC" SortIndex="0"/>
 		<Row Domain="MphPreset" Value="1" Name="MPH_PRESET_CWC_NAME" Description="MPH_PRESET_CWC_DESC" SortIndex="1"/>
 		<Row Domain="MphPreset" Value="2" Name="MPH_PRESET_CPLFFA_NAME" Description="MPH_PRESET_CPLFFA_DESC" SortIndex="2"/>
-		<Row Domain="MphPreset" Value="3" Name="MPH_PRESET_CIVFRTEAMER_NAME" Description="MPH_PRESET_CIVFRTEAMER_DESC" SortIndex="3"/>
+		<Row Domain="MphPreset" Value="3" Name="MPH_PRESET_CIVFRSQUADRON_NAME" Description="MPH_PRESET_CIVFRSQUADRON_DESC" SortIndex="3"/>
 
 		<Row Domain="FreeLimits" Value="0" Name="FC_NOTHING_NAME" Description="FC_NOTHING_DESC" SortIndex="1"/>
 		<Row Domain="FreeLimits" Value="1" Name="FC_FREE_NAME" Description="FC_FREE_DESC" SortIndex="2"/>
