@@ -146,7 +146,7 @@
 		<Row Domain="MphPreset" Value="0" Name="MPH_PRESET_NONE_NAME" Description="MPH_PRESET_NONE_DESC" SortIndex="0"/>
 		<Row Domain="MphPreset" Value="1" Name="MPH_PRESET_CWC_NAME" Description="MPH_PRESET_CWC_DESC" SortIndex="1"/>
 		<Row Domain="MphPreset" Value="2" Name="MPH_PRESET_CPLFFA_NAME" Description="MPH_PRESET_CPLFFA_DESC" SortIndex="2"/>
-		<Row Domain="MphPreset" Value="3" Name="MPH_PRESET_CIVFRTEAMER_NAME" Description="MPH_PRESET_CIVFRTEAMER_DESC" SortIndex="3"/>
+		<Row Domain="MphPreset" Value="3" Name="MPH_PRESET_CIVFRSQUADRON_NAME" Description="MPH_PRESET_CIVFRSQUADRON_DESC" SortIndex="3"/>
 
 		<Row Domain="FreeLimits" Value="0" Name="FC_NOTHING_NAME" Description="FC_NOTHING_DESC" SortIndex="1"/>
 		<Row Domain="FreeLimits" Value="1" Name="FC_FREE_NAME" Description="FC_FREE_DESC" SortIndex="2"/>
@@ -308,19 +308,19 @@
 		
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_1" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_2" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_3" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_4" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_5" TargetValue="1" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_5" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_6" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_7" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_8" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_9" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_10" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_11" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_11" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_12" TargetValue="0" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_13" TargetValue="0" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="1" Hash="0"/>
-		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_15" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_14" TargetValue="0" Hash="0"/>
+		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="BAN_POOL_15" TargetValue="1" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="CPL_BAN_FORMAT" TargetValue="3" Hash="0"/>
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="DRAFT_TIMER" TargetValue="1" />
 		<Row SourceGroup="Game" SourceId="MPH_PRESET" SourceValue="3" TargetGroup="Game" TargetId="DRAFT_SLOT_ORDER" TargetValue="3" />

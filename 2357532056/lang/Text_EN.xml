@@ -856,7 +856,7 @@
         <Replace Tag="MPH_PRESET_CPLFFA_NAME" Language="en_US">
             <Text>CPL FFA</Text>
         </Replace>
-        <Replace Tag="MPH_PRESET_CIVFRTEAMER_NAME" Language="en_US">
+        <Replace Tag="MPH_PRESET_CIVFRSQUADRON_NAME" Language="en_US">
             <Text>Squadron CivFR</Text>
         </Replace>
 		<Replace Tag="MPH_PRESET_NONE_DESC" Language="en_US">
@@ -868,7 +868,7 @@
         <Replace Tag="MPH_PRESET_CPLFFA_DESC" Language="en_US">
             <Text>CivPlayer League typical settings with abundant resources</Text>
         </Replace>
-        <Replace Tag="MPH_PRESET_CIVFRTEAMER_DESC" Language="en_US">
+        <Replace Tag="MPH_PRESET_CIVFRSQUADRON_DESC" Language="en_US">
             <Text>CivFR typical settings for teamers</Text>
         </Replace>
 		
